@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Youss Mass"/>
+  <meta name="theme-color" content="#3b2a2a"/>
+  <title>Youss Mass à Dom</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #f5efe6;
+      --sand: #e8d9c4;
+      --rose: #c97b6e;
+      --deep: #3b2a2a;
+      --warm: #8b5e52;
+      --gold: #c4a46b;
+      --green: #7a9e7e;
+      --white: #ffffff;
+    }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+    body {
+      background: var(--cream);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--deep);
+      min-height: 100vh;
+      padding-bottom: 90px;
+      overscroll-behavior: none;
+    }
+
+```
+/* ── NAV BAS ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--deep);
+  display: flex;
+  border-top: 2px solid var(--gold);
+  z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-tab {
+  flex: 1;
+  padding: 12px 0 10px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--warm);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color 0.2s;
+}
+.nav-tab .tab-icon { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+.nav-tab.active { color: var(--gold); }
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── HEADER ── */
+.header {
+  background: var(--deep);
+  padding: 14px 16px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.brand {
+  font-size: 1.1rem;
+  color: var(--cream);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.brand em { color: var(--gold); font-style: italic; }
+.today-btn {
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 5px 13px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.nav-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(196,164,107,0.3);
+  color: var(--gold);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+#week-label {
+  font-size: 0.82rem;
+  color: var(--sand);
+  text-align: center;
+  flex: 1;
+}
+
+/* ── STATS ── */
+.stats {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px 6px;
+}
+.stat {
+  flex: 1;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 10px 6px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(59,42,42,0.06);
+}
+.stat-val {
+  font-size: 1.25rem;
+  color: var(--rose);
+  font-weight: 700;
+}
+.stat-lbl {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--warm);
+  margin-top: 2px;
+}
+
+/* ── JOURS ── */
+.days-strip {
+  display: flex;
+  overflow-x: auto;
+  gap: 7px;
+  padding: 10px 14px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.days-strip::-webkit-scrollbar { display: none; }
+.day-pill {
+  flex-shrink: 0;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 8px 12px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(59,42,42,0.06);
+  min-width: 54px;
+  transition: all 0.15s;
+}
+.day-pill.active { background: var(--deep); border-color: var(--gold); }
+.day-pill.today { border-color: var(--rose); }
+.day-pill .dname { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); }
+.day-pill.active .dname { color: var(--sand); }
+.day-pill .dnum { font-size: 1.2rem; font-weight: 700; color: var(--deep); margin-top: 1px; }
+.day-pill.active .dnum { color: var(--gold); }
+.day-pill.today .dnum { color: var(--rose); }
+.day-pill.active.today .dnum { color: var(--gold); }
+.day-badge {
+  width: 16px; height: 16px;
+  background: var(--rose);
+  border-radius: 50%;
+  font-size: 0.55rem;
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  margin: 3px auto 0;
+  font-weight: 700;
+}
+.day-badge.hidden { visibility: hidden; }
+
+/* ── TITRE JOUR ── */
+.day-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--deep);
+  padding: 2px 16px 8px;
+  font-style: italic;
+  color: var(--warm);
+}
+
+/* ── CRENEAUX ── */
+.slots-list { padding: 0 14px; }
+.slot-item {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  margin-bottom: 5px;
+  min-height: 48px;
+}
+.slot-time {
+  font-size: 0.68rem;
+  color: var(--warm);
+  width: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: 600;
+}
+.slot-area {
+  flex: 1;
+  border-radius: 11px;
+  min-height: 48px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s;
+}
+.slot-area.empty {
+  border: 1.5px dashed var(--sand);
+}
+.slot-area.empty:active { background: #fdf5ee; }
+.slot-add {
+  position: absolute;
+  right: 10px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: var(--sand);
+}
+.rdv-card {
+  border-radius: 11px;
+  padding: 9px 13px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.rdv-card.c-rose { background: #fbe8e6; border-left: 3px solid var(--rose); }
+.rdv-card.c-gold { background: #fdf3e3; border-left: 3px solid var(--gold); }
+.rdv-card.c-green { background: #eaf3eb; border-left: 3px solid var(--green); }
+.rdv-name { font-weight: 700; font-size: 0.92rem; }
+.rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
+
+/* ── FAB ── */
+.fab {
+  position: fixed;
+  bottom: calc(70px + env(safe-area-inset-bottom));
+  right: 18px;
+  width: 54px; height: 54px;
+  background: var(--rose);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  box-shadow: 0 4px 16px rgba(201,123,110,0.45);
+  cursor: pointer;
+  z-index: 150;
+  border: none;
+  color: white;
+}
+
+/* ── CARNET CLIENTES ── */
+.clientes-header {
+  background: var(--deep);
+  padding: 16px 16px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.clientes-header .brand { margin-bottom: 10px; display: block; }
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 8px 14px;
+  gap: 8px;
+}
+.search-bar input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--cream);
+  font-size: 0.9rem;
+  flex: 1;
+  font-family: inherit;
+}
+.search-bar input::placeholder { color: var(--warm); }
+.search-bar span { color: var(--warm); font-size: 1rem; }
+
+.clientes-list { padding: 12px 14px; }
+.cliente-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 10px rgba(59,42,42,0.07);
+  cursor: pointer;
+  border-left: 3px solid var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cliente-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--sand);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--warm);
+  flex-shrink: 0;
+}
+.cliente-info { flex: 1; }
+.cliente-name { font-weight: 700; font-size: 0.95rem; }
+.cliente-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
+.cliente-badge {
+  background: var(--sand);
+  color: var(--warm);
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.empty-state {
+  text-align: center;
+  padding: 50px 30px;
+  color: var(--warm);
+}
+.empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state p { font-size: 0.9rem; line-height: 1.5; }
+
+/* ── MODAL GÉNÉRIQUE ── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(59,42,42,0.55);
+  z-index: 300;
+  display: none;
+  align-items: flex-end;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--cream);
+  border-radius: 24px 24px 0 0;
+  padding: 20px 18px calc(24px + env(safe-area-inset-bottom));
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.22s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-handle {
+  width: 38px; height: 4px;
+  background: var(--sand);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--deep);
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--warm); padding: 4px; }
+.form-group { margin-bottom: 12px; }
+label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--warm);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+input[type=text], input[type=tel], input[type=time], input[type=date], select, textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--sand);
+  border-radius: 12px;
+  font-size: 1rem;
+  color: var(--deep);
+  background: var(--white);
+  outline: none;
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+textarea { resize: none; height: 70px; }
+input:focus, select:focus, textarea:focus { border-color: var(--rose); }
+.form-row { display: flex; gap: 10px; }
+.form-row .form-group { flex: 1; }
+.btn-primary {
+  width: 100%;
+  background: var(--deep);
+  color: var(--gold);
+  border: none;
+  border-radius: 13px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+  font-family: inherit;
+}
+.btn-danger {
+  width: 100%;
+  background: none;
+  color: var(--rose);
+  border: 1.5px solid var(--rose);
+  border-radius: 13px;
+  padding: 11px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 8px;
+  font-family: inherit;
+}
+
+/* Section label */
+.section-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rose);
+  font-weight: 700;
+  padding: 8px 16px 4px;
+}
+```
+
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ PAGE PLANNING ══════════════ -->
+
+<div class="page active" id="page-planning">
+  <div class="header">
+    <div class="header-row">
+      <div class="brand">🌸 Youss Mass <em>à Dom</em></div>
+      <button class="today-btn" onclick="goToday()">Aujourd'hui</button>
+    </div>
+    <div class="week-nav">
+      <button class="nav-btn" onclick="changeWeek(-1)">‹</button>
+      <div id="week-label"></div>
+      <button class="nav-btn" onclick="changeWeek(1)">›</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="s-rdv">0</div><div class="stat-lbl">RDV semaine</div></div>
+    <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Recettes</div></div>
+    <div class="stat"><div class="stat-val" id="s-h">0h</div><div class="stat-lbl">Heures</div></div>
+  </div>
+
+  <div class="days-strip" id="days-strip"></div>
+  <div class="day-title" id="day-title"></div>
+  <div class="slots-list" id="slots-list"></div>
+
+<button class="fab" onclick="openRdvModal()">＋</button>
+
+</div>
+
+<!-- ══════════════ PAGE CLIENTES ══════════════ -->
+
+<div class="page" id="page-clientes">
+  <div class="clientes-header">
+    <span class="brand">👩 Mes Clientes</span>
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" id="search-input" placeholder="Rechercher une cliente..." oninput="filterClientes()"/>
+    </div>
+  </div>
+  <div class="clientes-list" id="clientes-list"></div>
+  <button class="fab" onclick="openClienteModal()">＋</button>
+</div>
+
+<!-- ══════════════ NAV BAS ══════════════ -->
+
+<nav class="bottom-nav">
+  <div class="nav-tab active" id="tab-planning" onclick="switchTab('planning')">
+    <span class="tab-icon">📅</span>Planning
+  </div>
+  <div class="nav-tab" id="tab-clientes" onclick="switchTab('clientes')">
+    <span class="tab-icon">👩</span>Clientes
+  </div>
+</nav>
+
+<!-- ══════════════ MODAL RDV ══════════════ -->
+
+<div class="overlay" id="overlay-rdv">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">
+      <span id="rdv-modal-title">Nouveau RDV</span>
+      <button class="close-btn" onclick="closeModal('overlay-rdv')">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Prénom de la cliente</label>
+      <input type="text" id="f-name" placeholder="Ex : Sophie"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="f-date"/>
+      </div>
+      <div class="form-group">
+        <label>Heure</label>
+        <input type="time" id="f-time" value="10:00"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Durée</label>
+        <select id="f-duree">
+          <option value="30">30 min – 25€</option>
+          <option value="60" selected>1h – 40€</option>
+          <option value="90">1h30 – 55€</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Déplacement</label>
+        <select id="f-dep">
+          <option value="0">Non</option>
+          <option value="10">Oui +10€</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Note (adresse, infos...)</label>
+      <input type="text" id="f-note" placeholder="Optionnel"/>
+    </div>
+    <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
+    <button class="btn-danger" id="btn-delete-rdv" onclick="deleteRdv()" style="display:none">🗑 Supprimer ce RDV</button>
+  </div>
+</div>
+
+<!-- ══════════════ MODAL CLIENTE ══════════════ -->
+
+<div class="overlay" id="overlay-cliente">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">
+      <span id="cliente-modal-title">Nouvelle cliente</span>
+      <button class="close-btn" onclick="closeModal('overlay-cliente')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" id="c-prenom" placeholder="Sophie"/>
+      </div>
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" id="c-nom" placeholder="Martin"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Téléphone</label>
+      <input type="tel" id="c-tel" placeholder="06 XX XX XX XX"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Comment trouvée ?</label>
+        <select id="c-source">
+          <option value="Instagram">Instagram</option>
+          <option value="TikTok">TikTok</option>
+          <option value="Bouche à oreille">Bouche à oreille</option>
+          <option value="WhatsApp">WhatsApp</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Séances total</label>
+        <input type="text" id="c-seances" placeholder="0" value="0"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Préférences / Notes</label>
+      <textarea id="c-notes" placeholder="Préférences de massage, adresse, infos importantes..."></textarea>
+    </div>
+    <button class="btn-primary" onclick="saveCliente()">✔ Enregistrer</button>
+    <button class="btn-danger" id="btn-delete-cliente" onclick="deleteCliente()" style="display:none">🗑 Supprimer cette cliente</button>
+  </div>
+</div>
+
+<script>
+// ── STORAGE ──
+const DB = {
+  get: (k) => JSON.parse(localStorage.getItem('youss-' + k) || (k === 'rdvs' ? '{}' : '[]')),
+  set: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v))
+};
+
+// ── CONSTANTES ──
+const HOURS = [];
+for (let h = 8; h <= 20; h++) { HOURS.push(`${String(h).padStart(2,'0')}:00`); if (h < 20) HOURS.push(`${String(h).padStart(2,'0')}:30`); }
+const DAYS_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const DAYS_LONG  = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const MONTHS     = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const PRICES     = {30:25, 60:40, 90:55};
+const COLORS     = {30:'c-rose', 60:'c-gold', 90:'c-green'};
+
+// ── STATE ──
+let weekOffset = 0;
+let selectedDay = fmtDate(new Date());
+let editingRdvKey = null;
+let editingClienteId = null;
+
+// ── UTILS ──
+function fmtDate(d) { return d.toISOString().split('T')[0]; }
+function getWeekDates(off) {
+  const now = new Date(), day = now.getDay();
+  const mon = new Date(now);
+  mon.setDate(now.getDate() - (day === 0 ? 6 : day - 1) + off * 7);
+  return Array.from({length:7}, (_,i) => { const d = new Date(mon); d.setDate(mon.getDate()+i); return d; });
+}
+function rdvKey(date, time) { return date + '_' + time; }
+function initials(prenom, nom) { return ((prenom||'?')[0] + (nom||'')[0]).toUpperCase(); }
+
+// ── TABS ──
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'clientes') renderClientes();
+}
+
+// ══════════ PLANNING ══════════
+function buildPlanning() {
+  const dates = getWeekDates(weekOffset);
+  const today = fmtDate(new Date());
+  const s = dates[0], e = dates[6];
+  document.getElementById('week-label').textContent =
+    s.getDate() + ' ' + MONTHS[s.getMonth()] + ' – ' + e.getDate() + ' ' + MONTHS[e.getMonth()];
+
+  // Jours
+  const strip = document.getElementById('days-strip');
+  strip.innerHTML = '';
+  dates.forEach((d, i) => {
+    const ds = fmtDate(d);
+    const pill = document.createElement('div');
+    pill.className = 'day-pill' + (ds === selectedDay ? ' active' : '') + (ds === today ? ' today' : '');
+    const count = Object.keys(DB.get('rdvs')).filter(k => k.startsWith(ds + '_')).length;
+    pill.innerHTML = `<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count}</div>`;
+    pill.onclick = () => { selectedDay = ds; buildPlanning(); };
+    strip.appendChild(pill);
+  });
+
+  // Titre jour
+  const sel = new Date(selectedDay + 'T12:00:00');
+  const di = (sel.getDay() + 6) % 7;
+  document.getElementById('day-title').textContent = DAYS_LONG[di] + ' ' + sel.getDate() + ' ' + MONTHS[sel.getMonth()];
+
+  // Créneaux
+  const rdvs = DB.get('rdvs');
+  const list = document.getElementById('slots-list');
+  list.innerHTML = '';
+  HOURS.forEach(h => {
+    const key = rdvKey(selectedDay, h);
+    const item = document.createElement('div');
+    item.className = 'slot-item';
+    const timeEl = document.createElement('div');
+    timeEl.className = 'slot-time';
+    timeEl.textContent = h;
+    const area = document.createElement('div');
+    area.className = 'slot-area';
+
+    if (rdvs[key]) {
+      const r = rdvs[key];
+      area.className += ' has-rdv';
+      const card = document.createElement('div');
+      card.className = 'rdv-card ' + COLORS[r.duree];
+      const durLabel = r.duree===90?'1h30':r.duree===60?'1h':'30min';
+      const total = PRICES[r.duree] + (r.dep ? 10 : 0);
+      card.innerHTML = `<div class="rdv-name">💆‍♀️ ${r.name}</div><div class="rdv-detail">${durLabel} · ${total}€${r.dep?' 🚗':''}${r.note?' · '+r.note:''}</div>`;
+      card.onclick = () => openRdvModal(key);
+      area.appendChild(card);
+    } else {
+      area.className += ' empty';
+      area.innerHTML = '<span class="slot-add">＋</span>';
+      area.onclick = () => openRdvModal(null, h);
+    }
+    item.appendChild(timeEl);
+    item.appendChild(area);
+    list.appendChild(item);
+  });
+
+  // Stats semaine
+  let count=0, ca=0, mins=0;
+  const rdvsAll = DB.get('rdvs');
+  dates.forEach(d => {
+    HOURS.forEach(h => {
+      const k = rdvKey(fmtDate(d), h);
+      if (rdvsAll[k]) { const r=rdvsAll[k]; count++; ca+=PRICES[r.duree]+(r.dep?10:0); mins+=r.duree; }
+    });
+  });
+  document.getElementById('s-rdv').textContent = count;
+  document.getElementById('s-ca').textContent = ca + '€';
+  const hh=Math.floor(mins/60), mm=mins%60;
+  document.getElementById('s-h').textContent = hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
+}
+
+function goToday() { weekOffset=0; selectedDay=fmtDate(new Date()); buildPlanning(); }
+function changeWeek(dir) {
+  weekOffset += dir;
+  const dates = getWeekDates(weekOffset);
+  selectedDay = fmtDate(dates[0]);
+  buildPlanning();
+}
+
+// ── MODAL RDV ──
+function openRdvModal(key, defaultHour) {
+  editingRdvKey = key || null;
+  document.getElementById('rdv-modal-title').textContent = key ? '✏️ Modifier le RDV' : '➕ Nouveau RDV';
+  document.getElementById('btn-delete-rdv').style.display = key ? 'block' : 'none';
+
+  if (key && DB.get('rdvs')[key]) {
+    const r = DB.get('rdvs')[key];
+    document.getElementById('f-name').value = r.name;
+    document.getElementById('f-date').value = key.split('_')[0];
+    document.getElementById('f-time').value = r.time || key.split('_')[1];
+    document.getElementById('f-duree').value = r.duree;
+    document.getElementById('f-dep').value = r.dep ? '10' : '0';
+    document.getElementById('f-note').value = r.note || '';
+  } else {
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-date').value = selectedDay;
+    document.getElementById('f-time').value = defaultHour || '10:00';
+    document.getElementById('f-duree').value = '60';
+    document.getElementById('f-dep').value = '0';
+    document.getElementById('f-note').value = '';
+  }
+  openModal('overlay-rdv');
+  setTimeout(() => document.getElementById('f-name').focus(), 300);
+}
+
+function saveRdv() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { document.getElementById('f-name').focus(); return; }
+  const date = document.getElementById('f-date').value || selectedDay;
+  const time = document.getElementById('f-time').value;
+  const newKey = rdvKey(date, time);
+  const rdvs = DB.get('rdvs');
+  if (editingRdvKey && editingRdvKey !== newKey) delete rdvs[editingRdvKey];
+  rdvs[newKey] = { name, time, duree: parseInt(document.getElementById('f-duree').value), dep: document.getElementById('f-dep').value==='10', note: document.getElementById('f-note').value.trim() };
+  DB.set('rdvs', rdvs);
+  selectedDay = date;
+  closeModal('overlay-rdv');
+  buildPlanning();
+}
+
+function deleteRdv() {
+  if (!editingRdvKey) return;
+  const rdvs = DB.get('rdvs');
+  delete rdvs[editingRdvKey];
+  DB.set('rdvs', rdvs);
+  closeModal('overlay-rdv');
+  buildPlanning();
+}
+
+// ══════════ CLIENTES ══════════
+function renderClientes(filter) {
+  let clientes = DB.get('clientes');
+  if (filter) clientes = clientes.filter(c => (c.prenom+' '+c.nom).toLowerCase().includes(filter.toLowerCase()));
+  const list = document.getElementById('clientes-list');
+  list.innerHTML = '';
+  if (clientes.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="es-icon">👩</div><p>${filter ? 'Aucune cliente trouvée' : 'Pas encore de clientes\nAppuie sur + pour en ajouter une !'}</p></div>`;
+    return;
+  }
+  clientes.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'cliente-card';
+    card.innerHTML = `<div class="cliente-avatar">${initials(c.prenom, c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}</div><div class="cliente-sub">${c.tel||''}${c.source?' · '+c.source:''}</div>${c.notes?`<div class="cliente-sub" style="margin-top:3px;font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}</div><div class="cliente-badge">${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>`;
+    card.onclick = () => openClienteModal(c.id);
+    list.appendChild(card);
+  });
+}
+
+function filterClientes() {
+  renderClientes(document.getElementById('search-input').value);
+}
+
+function openClienteModal(id) {
+  editingClienteId = id || null;
+  document.getElementById('cliente-modal-title').textContent = id ? '✏️ Modifier' : '➕ Nouvelle cliente';
+  document.getElementById('btn-delete-cliente').style.display = id ? 'block' : 'none';
+
+  if (id) {
+    const c = DB.get('clientes').find(x => x.id === id);
+    if (c) {
+      document.getElementById('c-prenom').value = c.prenom || '';
+      document.getElementById('c-nom').value = c.nom || '';
+      document.getElementById('c-tel').value = c.tel || '';
+      document.getElementById('c-source').value = c.source || 'Instagram';
+      document.getElementById('c-seances').value = c.seances || 0;
+      document.getElementById('c-notes').value = c.notes || '';
+    }
+  } else {
+    document.getElementById('c-prenom').value = '';
+    document.getElementById('c-nom').value = '';
+    document.getElementById('c-tel').value = '';
+    document.getElementById('c-source').value = 'Instagram';
+    document.getElementById('c-seances').value = '0';
+    document.getElementById('c-notes').value = '';
+  }
+  openModal('overlay-cliente');
+  setTimeout(() => document.getElementById('c-prenom').focus(), 300);
+}
+
+function saveCliente() {
+  const prenom = document.getElementById('c-prenom').value.trim();
+  if (!prenom) { document.getElementById('c-prenom').focus(); return; }
+  const clientes = DB.get('clientes');
+  const data = {
+    id: editingClienteId || Date.now().toString(),
+    prenom,
+    nom: document.getElementById('c-nom').value.trim(),
+    tel: document.getElementById('c-tel').value.trim(),
+    source: document.getElementById('c-source').value,
+    seances: parseInt(document.getElementById('c-seances').value) || 0,
+    notes: document.getElementById('c-notes').value.trim()
+  };
+  if (editingClienteId) {
+    const idx = clientes.findIndex(c => c.id === editingClienteId);
+    if (idx >= 0) clientes[idx] = data;
+  } else {
+    clientes.push(data);
+  }
+  DB.set('clientes', clientes);
+  closeModal('overlay-cliente');
+  renderClientes();
+}
+
+function deleteCliente() {
+  if (!editingClienteId) return;
+  const clientes = DB.get('clientes').filter(c => c.id !== editingClienteId);
+  DB.set('clientes', clientes);
+  closeModal('overlay-cliente');
+  renderClientes();
+}
+
+// ── MODALS ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); editingRdvKey=null; editingClienteId=null; }
+
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', function(e) { if (e.target === this) closeModal(this.id); });
+});
+
+// ── INIT ──
+buildPlanning();
+</script>
