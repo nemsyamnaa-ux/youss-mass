@@ -91,6 +91,10 @@
     .form-row .form-group { flex: 1; }
     .btn-primary { width: 100%; background: var(--deep); color: var(--gold); border: none; border-radius: 13px; padding: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 6px; font-family: inherit; }
     .btn-danger { width: 100%; background: none; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 13px; padding: 11px; font-size: 0.9rem; cursor: pointer; margin-top: 8px; font-family: inherit; }
+    .checkbox-group { display: flex; align-items: center; gap: 10px; background: var(--white); border: 1.5px solid var(--sand); border-radius: 12px; padding: 11px 14px; cursor: pointer; }
+    .checkbox-group input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--rose); cursor: pointer; }
+    .checkbox-group span { font-size: 0.95rem; color: var(--deep); }
+    .checkbox-group .prix-sup { margin-left: auto; font-weight: 700; color: var(--rose); font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -143,6 +147,14 @@
     <div class="form-row">
       <div class="form-group"><label>Durée</label><select id="f-duree"><option value="30">30 min – 25€</option><option value="60" selected>1h – 40€</option><option value="90">1h30 – 55€</option></select></div>
       <div class="form-group"><label>Déplacement</label><select id="f-dep"><option value="0">Non</option><option value="10">Oui +10€</option></select></div>
+    </div>
+    <div class="form-group">
+      <label>Supplément</label>
+      <label class="checkbox-group">
+        <input type="checkbox" id="f-prolongation"/>
+        <span>⏱ Prolongation +20 min</span>
+        <span class="prix-sup">+15€</span>
+      </label>
     </div>
     <div class="form-group"><label>Note (adresse, infos...)</label><input type="text" id="f-note" placeholder="Optionnel"/></div>
     <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
@@ -199,7 +211,8 @@ function getBlockedSlots(rdvs) {
   Object.entries(rdvs).forEach(([key, r]) => {
     const [date, time] = key.split('_');
     const start = timeToMins(time);
-    const slots = r.duree / 30;
+    const totalMins = r.duree + (r.prolongation ? 20 : 0);
+    const slots = Math.ceil(totalMins / 30);
     for (let i = 1; i < slots; i++) {
       blocked.add(date + '_' + minsToTime(start + i * 30));
     }
@@ -251,8 +264,9 @@ function buildPlanning() {
       const card = document.createElement('div');
       card.className = 'rdv-card ' + COLORS[r.duree];
       const durLabel = r.duree===90?'1h30':r.duree===60?'1h':'30min';
-      const total = PRICES[r.duree] + (r.dep ? 10 : 0);
-      card.innerHTML = `<div class="rdv-name">💆‍♀️ ${r.name}</div><div class="rdv-detail">${durLabel} · ${total}€${r.dep?' 🚗':''}${r.note?' · '+r.note:''}</div>`;
+      const total = PRICES[r.duree] + (r.dep ? 10 : 0) + (r.prolongation ? 15 : 0);
+      const prolongLabel = r.prolongation ? ' · ⏱+20min' : '';
+      card.innerHTML = `<div class="rdv-name">💆 ${r.name}</div><div class="rdv-detail">${durLabel}${prolongLabel} · ${total}€${r.dep?' 🚗':''}${r.note?' · '+r.note:''}</div>`;
       card.onclick = () => openRdvModal(key);
       area.appendChild(card);
     } else if (blocked.has(key)) {
@@ -271,7 +285,7 @@ function buildPlanning() {
   dates.forEach(d => {
     HOURS.forEach(h => {
       const k = rdvKey(fmtDate(d), h);
-      if (rdvsAll[k]) { const r=rdvsAll[k]; count++; ca+=PRICES[r.duree]+(r.dep?10:0); mins+=r.duree; }
+      if (rdvsAll[k]) { const r=rdvsAll[k]; count++; ca+=PRICES[r.duree]+(r.dep?10:0)+(r.prolongation?15:0); mins+=r.duree+(r.prolongation?20:0); }
     });
   });
   document.getElementById('s-rdv').textContent = count;
@@ -292,6 +306,7 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-time').value = r.time || key.split('_')[1];
     document.getElementById('f-duree').value = r.duree;
     document.getElementById('f-dep').value = r.dep ? '10' : '0';
+    document.getElementById('f-prolongation').checked = r.prolongation || false;
     document.getElementById('f-note').value = r.note || '';
   } else {
     document.getElementById('f-name').value = '';
@@ -299,6 +314,7 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-time').value = defaultHour || '10:00';
     document.getElementById('f-duree').value = '60';
     document.getElementById('f-dep').value = '0';
+    document.getElementById('f-prolongation').checked = false;
     document.getElementById('f-note').value = '';
   }
   openModal('overlay-rdv');
@@ -312,7 +328,7 @@ function saveRdv() {
   const newKey = rdvKey(date, time);
   const rdvs = DB.get('rdvs');
   if (editingRdvKey && editingRdvKey !== newKey) delete rdvs[editingRdvKey];
-  rdvs[newKey] = { name, time, duree: parseInt(document.getElementById('f-duree').value), dep: document.getElementById('f-dep').value==='10', note: document.getElementById('f-note').value.trim() };
+  rdvs[newKey] = { name, time, duree: parseInt(document.getElementById('f-duree').value), dep: document.getElementById('f-dep').value==='10', prolongation: document.getElementById('f-prolongation').checked, note: document.getElementById('f-note').value.trim() };
   DB.set('rdvs', rdvs);
   selectedDay = date;
   closeModal('overlay-rdv');
