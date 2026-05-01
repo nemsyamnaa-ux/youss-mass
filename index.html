@@ -10,27 +10,17 @@
   <title>Youss Mass à Dom</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --cream: #f5efe6;
-      --sand: #e8d9c4;
-      --rose: #c97b6e;
-      --deep: #3b2a2a;
-      --warm: #8b5e52;
-      --gold: #c4a46b;
-      --green: #7a9e7e;
-      --white: #ffffff;
-    }
+    :root { --cream: #f5efe6; --sand: #e8d9c4; --rose: #c97b6e; --deep: #3b2a2a; --warm: #8b5e52; --gold: #c4a46b; --green: #7a9e7e; --white: #ffffff; }
     html { font-size: 16px; -webkit-text-size-adjust: 100%; }
     body { background: var(--cream); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--deep); min-height: 100vh; padding-bottom: 90px; overscroll-behavior: none; }
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--deep); display: flex; border-top: 2px solid var(--gold); z-index: 200; padding-bottom: env(safe-area-inset-bottom); }
     .nav-tab { flex: 1; padding: 12px 0 10px; text-align: center; cursor: pointer; color: var(--warm); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
     .nav-tab .tab-icon { font-size: 1.4rem; display: block; margin-bottom: 3px; }
     .nav-tab.active { color: var(--gold); }
-    .page { display: none; }
-    .page.active { display: block; }
+    .page { display: none; } .page.active { display: block; }
     .header { background: var(--deep); padding: 14px 16px 12px; position: sticky; top: 0; z-index: 100; }
     .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .brand { font-size: 1.1rem; color: var(--cream); font-weight: 700; letter-spacing: 0.01em; }
+    .brand { font-size: 1.1rem; color: var(--cream); font-weight: 700; }
     .brand em { color: var(--gold); font-style: italic; }
     .today-btn { background: var(--rose); color: white; border: none; border-radius: 16px; padding: 5px 13px; font-size: 0.78rem; cursor: pointer; font-family: inherit; }
     .week-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -60,6 +50,7 @@
     .slot-area { flex: 1; border-radius: 11px; min-height: 48px; cursor: pointer; position: relative; transition: background 0.15s; }
     .slot-area.empty { border: 1.5px dashed var(--sand); }
     .slot-area.empty:active { background: #fdf5ee; }
+    .slot-area.blocked { background: var(--sand); opacity: 0.4; cursor: default; border-radius: 11px; }
     .slot-add { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--sand); }
     .rdv-card { border-radius: 11px; padding: 9px 13px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
     .rdv-card.c-rose { background: #fbe8e6; border-left: 3px solid var(--rose); }
@@ -184,7 +175,7 @@ const DB = {
 const HOURS = [];
 for (let h = 8; h <= 23; h++) { HOURS.push(`${String(h).padStart(2,'0')}:00`); if (h < 23) HOURS.push(`${String(h).padStart(2,'0')}:30`); }
 const DAYS_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-const DAYS_LONG  = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const DAYS_LONG = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
 const PRICES = {30:25, 60:40, 90:55};
 const COLORS = {30:'c-rose', 60:'c-gold', 90:'c-green'};
@@ -201,6 +192,20 @@ function getWeekDates(off) {
 }
 function rdvKey(date, time) { return date + '_' + time; }
 function initials(prenom, nom) { return ((prenom||'?')[0] + (nom||'')[0]).toUpperCase(); }
+function timeToMins(t) { const [h,m] = t.split(':').map(Number); return h*60+m; }
+function minsToTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
+function getBlockedSlots(rdvs) {
+  const blocked = new Set();
+  Object.entries(rdvs).forEach(([key, r]) => {
+    const [date, time] = key.split('_');
+    const start = timeToMins(time);
+    const slots = r.duree / 30;
+    for (let i = 1; i < slots; i++) {
+      blocked.add(date + '_' + minsToTime(start + i * 30));
+    }
+  });
+  return blocked;
+}
 function switchTab(tab) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -228,6 +233,7 @@ function buildPlanning() {
   const di = (sel.getDay() + 6) % 7;
   document.getElementById('day-title').textContent = DAYS_LONG[di] + ' ' + sel.getDate() + ' ' + MONTHS[sel.getMonth()];
   const rdvs = DB.get('rdvs');
+  const blocked = getBlockedSlots(rdvs);
   const list = document.getElementById('slots-list');
   list.innerHTML = '';
   HOURS.forEach(h => {
@@ -249,6 +255,8 @@ function buildPlanning() {
       card.innerHTML = `<div class="rdv-name">💆‍♀️ ${r.name}</div><div class="rdv-detail">${durLabel} · ${total}€${r.dep?' 🚗':''}${r.note?' · '+r.note:''}</div>`;
       card.onclick = () => openRdvModal(key);
       area.appendChild(card);
+    } else if (blocked.has(key)) {
+      area.className += ' blocked';
     } else {
       area.className += ' empty';
       area.innerHTML = '<span class="slot-add">＋</span>';
