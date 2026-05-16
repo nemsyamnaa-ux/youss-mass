@@ -7,6 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="Youss Mass"/>
   <meta name="theme-color" content="#3b2a2a"/>
+  <link rel="manifest" href="manifest.json"/>
   <title>Youss Mass à Dom</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -56,6 +57,8 @@
     .rdv-card.c-rose { background: #fbe8e6; border-left: 3px solid var(--rose); }
     .rdv-card.c-gold { background: #fdf3e3; border-left: 3px solid var(--gold); }
     .rdv-card.c-green { background: #eaf3eb; border-left: 3px solid var(--green); }
+    .rdv-card.c-blue { background: #e6eef8; border-left: 3px solid #5b8ac9; }
+    .rdv-card.c-purple { background: #f0e6f8; border-left: 3px solid #9b6bc9; }
     .rdv-name { font-weight: 700; font-size: 0.92rem; }
     .rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
     .fab { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); right: 18px; width: 54px; height: 54px; background: var(--rose); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 16px rgba(201,123,110,0.45); cursor: pointer; z-index: 150; border: none; color: white; }
@@ -95,8 +98,10 @@
     .checkbox-group input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--rose); cursor: pointer; }
     .checkbox-group span { font-size: 0.95rem; color: var(--deep); }
     .checkbox-group .prix-sup { margin-left: auto; font-weight: 700; color: var(--rose); font-size: 0.9rem; }
-    .notif-banner { background: #eaf3eb; border: 1.5px solid var(--green); border-radius: 12px; padding: 10px 14px; font-size: 0.8rem; color: var(--deep); margin: 0 14px 10px; display: flex; align-items: center; gap: 8px; }
-    .notif-banner.denied { background: #fbe8e6; border-color: var(--rose); }
+    .notif-banner { margin: 0 14px 10px; border-radius: 12px; padding: 10px 14px; font-size: 0.8rem; color: var(--deep); display: flex; align-items: center; gap: 8px; cursor: pointer; background: #eaf3eb; border: 1.5px solid var(--green); }
+    .notif-banner.denied { background: #fbe8e6; border-color: var(--rose); cursor: default; }
+    .notif-banner.ok { cursor: default; }
+    optgroup { font-weight: 700; color: var(--warm); }
   </style>
 </head>
 <body>
@@ -117,7 +122,7 @@
     <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Recettes</div></div>
     <div class="stat"><div class="stat-val" id="s-h">0h</div><div class="stat-lbl">Heures</div></div>
   </div>
-  <div id="notif-banner"></div>
+  <div id="notif-banner-wrap"></div>
   <div class="days-strip" id="days-strip"></div>
   <div class="day-title" id="day-title"></div>
   <div class="slots-list" id="slots-list"></div>
@@ -148,9 +153,28 @@
       <div class="form-group"><label>Date</label><input type="date" id="f-date"/></div>
       <div class="form-group"><label>Heure</label><input type="time" id="f-time" value="10:00"/></div>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label>Durée</label><select id="f-duree"><option value="30">30 min – 25€</option><option value="60" selected>1h – 40€</option><option value="90">1h30 – 55€</option></select></div>
-      <div class="form-group"><label>Déplacement</label><select id="f-dep"><option value="0">Non</option><option value="10">Oui +10€</option></select></div>
+    <div class="form-group">
+      <label>Prestation</label>
+      <select id="f-prestation">
+        <optgroup label="💆 Massage Classique">
+          <option value="classic_30">Massage 30 min — 25€</option>
+          <option value="classic_60" selected>Massage 1h — 40€</option>
+          <option value="classic_90">Massage 1h30 — 55€</option>
+          <option value="classic_120">Massage 2h — 80€</option>
+        </optgroup>
+        <optgroup label="🪨 Massage Pierres Chaudes">
+          <option value="pierres_60">Pierres chaudes 1h — 50€</option>
+          <option value="pierres_90">Pierres chaudes 1h30 — 65€</option>
+        </optgroup>
+        <optgroup label="💧 Drainage Lymphatique">
+          <option value="drainage_30">Drainage 1 zone 30 min — 35€</option>
+          <option value="drainage_75">Drainage corps entier 1h15 — 65€</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Déplacement</label>
+      <select id="f-dep"><option value="0">Non</option><option value="10">Oui +10€</option></select>
     </div>
     <div class="form-group">
       <label>Supplément</label>
@@ -188,13 +212,24 @@ const DB = {
   get: (k) => JSON.parse(localStorage.getItem('youss-' + k) || (k === 'rdvs' ? '{}' : '[]')),
   set: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v))
 };
+
+const PRESTATIONS = {
+  classic_30:   { label: 'Massage 30min',             duree: 30,  prix: 25,  color: 'c-rose' },
+  classic_60:   { label: 'Massage 1h',                duree: 60,  prix: 40,  color: 'c-gold' },
+  classic_90:   { label: 'Massage 1h30',              duree: 90,  prix: 55,  color: 'c-green' },
+  classic_120:  { label: 'Massage 2h',                duree: 120, prix: 80,  color: 'c-green' },
+  pierres_60:   { label: '🪨 Pierres chaudes 1h',     duree: 60,  prix: 50,  color: 'c-blue' },
+  pierres_90:   { label: '🪨 Pierres chaudes 1h30',   duree: 90,  prix: 65,  color: 'c-blue' },
+  drainage_30:  { label: '💧 Drainage 1 zone 30min',  duree: 30,  prix: 35,  color: 'c-purple' },
+  drainage_75:  { label: '💧 Drainage corps 1h15',    duree: 75,  prix: 65,  color: 'c-purple' },
+};
+
 const HOURS = [];
 for (let h = 8; h <= 23; h++) { HOURS.push(`${String(h).padStart(2,'0')}:00`); if (h < 23) HOURS.push(`${String(h).padStart(2,'0')}:30`); }
 const DAYS_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const DAYS_LONG = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-const PRICES = {30:25, 60:40, 90:55};
-const COLORS = {30:'c-rose', 60:'c-gold', 90:'c-green'};
+
 let weekOffset = 0;
 let selectedDay = fmtDate(new Date());
 let editingRdvKey = null;
@@ -216,8 +251,9 @@ function getBlockedSlots(rdvs) {
   const blocked = new Set();
   Object.entries(rdvs).forEach(([key, r]) => {
     const [date, time] = key.split('_');
+    const p = PRESTATIONS[r.prestation] || { duree: r.duree || 60 };
+    const totalMins = p.duree + (r.prolongation ? 20 : 0);
     const start = timeToMins(time);
-    const totalMins = r.duree + (r.prolongation ? 20 : 0);
     const slots = Math.ceil(totalMins / 30);
     for (let i = 1; i < slots; i++) {
       blocked.add(date + '_' + minsToTime(start + i * 30));
@@ -227,25 +263,22 @@ function getBlockedSlots(rdvs) {
 }
 
 // ── NOTIFICATIONS ──
-async function requestNotifPermission() {
-  const banner = document.getElementById('notif-banner');
-  if (!('Notification' in window)) {
-    banner.innerHTML = '';
-    return;
-  }
+function showNotifBanner() {
+  const wrap = document.getElementById('notif-banner-wrap');
+  if (!('Notification' in window)) { wrap.innerHTML = ''; return; }
   if (Notification.permission === 'granted') {
-    banner.innerHTML = '<div class="notif-banner">🔔 Notifications activées — tu seras prévenue 1h avant chaque RDV</div>';
-    scheduleAllNotifs();
-  } else if (Notification.permission !== 'denied') {
-    banner.innerHTML = '<div class="notif-banner" style="cursor:pointer" onclick="askNotif()">🔔 Appuie ici pour activer les notifications RDV</div>';
+    wrap.innerHTML = '<div class="notif-banner ok">🔔 Notifications activées — tu seras prévenue 1h avant chaque RDV</div>';
+  } else if (Notification.permission === 'denied') {
+    wrap.innerHTML = '<div class="notif-banner denied">🔕 Notifications bloquées — active-les dans Réglages > Safari</div>';
   } else {
-    banner.innerHTML = '<div class="notif-banner denied">🔕 Notifications bloquées — active-les dans les réglages de ton téléphone</div>';
+    wrap.innerHTML = '<div class="notif-banner" onclick="askNotif()">🔔 Appuie ici pour activer les notifications RDV 👆</div>';
   }
 }
 
 async function askNotif() {
-  const perm = await Notification.requestPermission();
-  requestNotifPermission();
+  await Notification.requestPermission();
+  showNotifBanner();
+  scheduleAllNotifs();
 }
 
 function scheduleAllNotifs() {
@@ -259,9 +292,10 @@ function scheduleAllNotifs() {
     const delay = notifTime - now;
     if (delay > 0 && delay < 7 * 24 * 60 * 60 * 1000) {
       setTimeout(() => {
-        new Notification('🌸 Youss Mass — RDV dans 1h !', {
-          body: `💆‍♀️ ${r.name} à ${time}${r.tel ? ' · 📞 ' + r.tel : ''}${r.note ? ' · 📍 ' + r.note : ''}`,
-          icon: '/youss-mass/icon.png'
+        const p = PRESTATIONS[r.prestation];
+        const label = p ? p.label : 'Massage';
+        new Notification('🌸 RDV dans 1h — Youss Mass', {
+          body: `💆‍♀️ ${r.name} · ${label} à ${time}${r.tel ? '\n📞 ' + r.tel : ''}${r.note ? '\n📍 ' + r.note : ''}`,
         });
       }, delay);
     }
@@ -310,13 +344,13 @@ function buildPlanning() {
     area.className = 'slot-area';
     if (rdvs[key]) {
       const r = rdvs[key];
+      const p = PRESTATIONS[r.prestation] || { label: 'Massage', prix: 40, color: 'c-gold' };
       area.className += ' has-rdv';
       const card = document.createElement('div');
-      card.className = 'rdv-card ' + COLORS[r.duree];
-      const durLabel = r.duree===90?'1h30':r.duree===60?'1h':'30min';
-      const total = PRICES[r.duree] + (r.dep ? 10 : 0) + (r.prolongation ? 15 : 0);
+      card.className = 'rdv-card ' + p.color;
+      const total = p.prix + (r.dep ? 10 : 0) + (r.prolongation ? 15 : 0);
       const prolongLabel = r.prolongation ? ' · ⏱+20min' : '';
-      card.innerHTML = `<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${durLabel}${prolongLabel} · ${total}€${r.dep?' 🚗':''}${r.note?' · 📍 '+r.note:''}</div>`;
+      card.innerHTML = `<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${prolongLabel} · ${total}€${r.dep?' 🚗':''}${r.note?' · 📍 '+r.note:''}</div>`;
       card.onclick = () => openRdvModal(key);
       area.appendChild(card);
     } else if (blocked.has(key)) {
@@ -335,7 +369,13 @@ function buildPlanning() {
   dates.forEach(d => {
     HOURS.forEach(h => {
       const k = rdvKey(fmtDate(d), h);
-      if (rdvsAll[k]) { const r=rdvsAll[k]; count++; ca+=PRICES[r.duree]+(r.dep?10:0)+(r.prolongation?15:0); mins+=r.duree+(r.prolongation?20:0); }
+      if (rdvsAll[k]) {
+        const r = rdvsAll[k];
+        const p = PRESTATIONS[r.prestation] || { prix: 40, duree: 60 };
+        count++;
+        ca += p.prix + (r.dep?10:0) + (r.prolongation?15:0);
+        mins += p.duree + (r.prolongation?20:0);
+      }
     });
   });
   document.getElementById('s-rdv').textContent = count;
@@ -357,7 +397,7 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-tel').value = r.tel || '';
     document.getElementById('f-date').value = key.split('_')[0];
     document.getElementById('f-time').value = r.time || key.split('_')[1];
-    document.getElementById('f-duree').value = r.duree;
+    document.getElementById('f-prestation').value = r.prestation || 'classic_60';
     document.getElementById('f-dep').value = r.dep ? '10' : '0';
     document.getElementById('f-prolongation').checked = r.prolongation || false;
     document.getElementById('f-note').value = r.note || '';
@@ -366,7 +406,7 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-tel').value = '';
     document.getElementById('f-date').value = selectedDay;
     document.getElementById('f-time').value = defaultHour || '10:00';
-    document.getElementById('f-duree').value = '60';
+    document.getElementById('f-prestation').value = 'classic_60';
     document.getElementById('f-dep').value = '0';
     document.getElementById('f-prolongation').checked = false;
     document.getElementById('f-note').value = '';
@@ -383,7 +423,15 @@ function saveRdv() {
   const newKey = rdvKey(date, time);
   const rdvs = DB.get('rdvs');
   if (editingRdvKey && editingRdvKey !== newKey) delete rdvs[editingRdvKey];
-  rdvs[newKey] = { name, tel: document.getElementById('f-tel').value.trim(), time, duree: parseInt(document.getElementById('f-duree').value), dep: document.getElementById('f-dep').value==='10', prolongation: document.getElementById('f-prolongation').checked, note: document.getElementById('f-note').value.trim() };
+  rdvs[newKey] = {
+    name,
+    tel: document.getElementById('f-tel').value.trim(),
+    time,
+    prestation: document.getElementById('f-prestation').value,
+    dep: document.getElementById('f-dep').value === '10',
+    prolongation: document.getElementById('f-prolongation').checked,
+    note: document.getElementById('f-note').value.trim()
+  };
   DB.set('rdvs', rdvs);
   selectedDay = date;
   closeModal('overlay-rdv');
@@ -455,22 +503,4 @@ function saveCliente() {
   DB.set('clientes', clientes);
   closeModal('overlay-cliente');
   renderClientes();
-}
-
-function deleteCliente() {
-  if (!editingClienteId) return;
-  const clientes = DB.get('clientes').filter(c => c.id !== editingClienteId);
-  DB.set('clientes', clientes);
-  closeModal('overlay-cliente');
-  renderClientes();
-}
-
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); editingRdvKey=null; editingClienteId=null; }
-document.querySelectorAll('.overlay').forEach(o => { o.addEventListener('click', function(e) { if (e.target === this) closeModal(this.id); }); });
-
-requestNotifPermission();
-buildPlanning();
-</script>
-</body>
-</html>
+}​​​​​​​​​​​​​​​​
