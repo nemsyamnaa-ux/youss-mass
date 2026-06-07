@@ -23,6 +23,9 @@
     .brand { font-size: 1.1rem; color: var(--cream); font-weight: 700; }
     .brand em { color: var(--gold); font-style: italic; }
     .today-btn { background: var(--rose); color: white; border: none; border-radius: 16px; padding: 5px 13px; font-size: 0.78rem; cursor: pointer; font-family: inherit; }
+    .view-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
+    .view-btn { flex: 1; padding: 7px; border-radius: 10px; border: 1.5px solid rgba(196,164,107,0.3); background: rgba(255,255,255,0.08); color: var(--sand); font-size: 0.75rem; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.2s; }
+    .view-btn.active { background: var(--gold); color: var(--deep); border-color: var(--gold); font-weight: 700; }
     .week-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(196,164,107,0.3); color: var(--gold); width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
     #week-label { font-size: 0.82rem; color: var(--sand); text-align: center; flex: 1; }
@@ -30,6 +33,7 @@
     .stat { flex: 1; background: var(--white); border-radius: 12px; padding: 10px 6px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
     .stat-val { font-size: 1.25rem; color: var(--rose); font-weight: 700; }
     .stat-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--warm); margin-top: 2px; }
+    /* VUE SEMAINE */
     .days-strip { display: flex; overflow-x: auto; gap: 7px; padding: 10px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     .days-strip::-webkit-scrollbar { display: none; }
     .day-pill { flex-shrink: 0; background: var(--white); border-radius: 14px; padding: 8px 12px; text-align: center; cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 8px rgba(59,42,42,0.06); min-width: 54px; transition: all 0.15s; }
@@ -61,6 +65,35 @@
     .rdv-name { font-weight: 700; font-size: 0.92rem; }
     .rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
     .fab { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); right: 18px; width: 54px; height: 54px; background: var(--rose); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 16px rgba(201,123,110,0.45); cursor: pointer; z-index: 150; border: none; color: white; }
+    /* VUE MOIS */
+    .month-grid { padding: 0 14px 14px; }
+    .month-days-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
+    .month-day-name { text-align: center; font-size: 0.6rem; text-transform: uppercase; color: var(--warm); font-weight: 700; padding: 4px 0; }
+    .month-cells { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .month-cell { background: var(--white); border-radius: 10px; min-height: 52px; padding: 4px; cursor: pointer; border: 2px solid transparent; box-shadow: 0 1px 4px rgba(59,42,42,0.05); position: relative; transition: all 0.15s; }
+    .month-cell.today { border-color: var(--rose); }
+    .month-cell.selected { border-color: var(--gold); background: var(--deep); }
+    .month-cell.other-month { opacity: 0.35; }
+    .month-cell .cell-num { font-size: 0.75rem; font-weight: 700; color: var(--deep); margin-bottom: 2px; }
+    .month-cell.selected .cell-num { color: var(--gold); }
+    .month-cell.today .cell-num { color: var(--rose); }
+    .month-cell.selected.today .cell-num { color: var(--gold); }
+    .month-cell .cell-dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 2px; }
+    .month-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .month-dot.c-rose { background: var(--rose); }
+    .month-dot.c-gold { background: var(--gold); }
+    .month-dot.c-green { background: var(--green); }
+    .month-dot.c-blue { background: #5b8ac9; }
+    .month-dot.c-purple { background: #9b6bc9; }
+    .month-selected-day { padding: 8px 16px 4px; font-size: 0.9rem; font-style: italic; color: var(--warm); font-weight: 600; }
+    .month-rdv-list { padding: 0 14px; }
+    .month-rdv-item { background: var(--white); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(59,42,42,0.06); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+    .month-rdv-time { font-size: 0.8rem; font-weight: 700; color: var(--rose); min-width: 38px; }
+    .month-rdv-info { flex: 1; }
+    .month-rdv-name { font-weight: 700; font-size: 0.9rem; }
+    .month-rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
+    .month-empty { text-align: center; padding: 20px; color: var(--warm); font-size: 0.85rem; font-style: italic; }
+    /* CLIENTES */
     .clientes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
     .clientes-header .brand { margin-bottom: 10px; display: block; }
     .search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px 14px; gap: 8px; }
@@ -109,10 +142,14 @@
       <div class="brand">🌸 Youss Mass <em>à Dom</em></div>
       <button class="today-btn" onclick="goToday()">Aujourd'hui</button>
     </div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="btn-semaine" onclick="setView('semaine')">📅 Semaine</button>
+      <button class="view-btn" id="btn-mois" onclick="setView('mois')">🗓 Mois</button>
+    </div>
     <div class="week-nav">
-      <button class="nav-btn" onclick="changeWeek(-1)">‹</button>
+      <button class="nav-btn" onclick="navPrev()">‹</button>
       <div id="week-label"></div>
-      <button class="nav-btn" onclick="changeWeek(1)">›</button>
+      <button class="nav-btn" onclick="navNext()">›</button>
     </div>
   </div>
   <div class="stats">
@@ -121,9 +158,29 @@
     <div class="stat"><div class="stat-val" id="s-h">0h</div><div class="stat-lbl">Heures</div></div>
   </div>
   <div id="notif-banner-wrap"></div>
-  <div class="days-strip" id="days-strip"></div>
-  <div class="day-title" id="day-title"></div>
-  <div class="slots-list" id="slots-list"></div>
+  <!-- VUE SEMAINE -->
+  <div id="view-semaine">
+    <div class="days-strip" id="days-strip"></div>
+    <div class="day-title" id="day-title"></div>
+    <div class="slots-list" id="slots-list"></div>
+  </div>
+  <!-- VUE MOIS -->
+  <div id="view-mois" style="display:none">
+    <div class="month-grid">
+      <div class="month-days-header">
+        <div class="month-day-name">Lun</div>
+        <div class="month-day-name">Mar</div>
+        <div class="month-day-name">Mer</div>
+        <div class="month-day-name">Jeu</div>
+        <div class="month-day-name">Ven</div>
+        <div class="month-day-name">Sam</div>
+        <div class="month-day-name">Dim</div>
+      </div>
+      <div class="month-cells" id="month-cells"></div>
+    </div>
+    <div class="month-selected-day" id="month-selected-day"></div>
+    <div class="month-rdv-list" id="month-rdv-list"></div>
+  </div>
   <button class="fab" onclick="openRdvModal()">＋</button>
 </div>
 <div class="page" id="page-clientes">
@@ -208,24 +265,28 @@ const DB = {
   set: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v))
 };
 const PRESTATIONS = {
-  classic_30:  { label: 'Massage 30min',           duree: 30,  prix: 25, color: 'c-rose' },
-  classic_60:  { label: 'Massage 1h',              duree: 60,  prix: 40, color: 'c-gold' },
-  classic_90:  { label: 'Massage 1h30',            duree: 90,  prix: 55, color: 'c-green' },
-  classic_120: { label: 'Massage 2h',              duree: 120, prix: 80, color: 'c-green' },
-  pierres_60:  { label: '🪨 Pierres chaudes 1h',   duree: 60,  prix: 50, color: 'c-blue' },
-  pierres_90:  { label: '🪨 Pierres chaudes 1h30', duree: 90,  prix: 65, color: 'c-blue' },
-  drainage_30: { label: '💧 Drainage 1 zone 30min',duree: 30,  prix: 35, color: 'c-purple' },
-  drainage_75: { label: '💧 Drainage corps 1h15',  duree: 75,  prix: 65, color: 'c-purple' },
+  classic_30:  { label: 'Massage 30min',            duree: 30,  prix: 25, color: 'c-rose' },
+  classic_60:  { label: 'Massage 1h',               duree: 60,  prix: 40, color: 'c-gold' },
+  classic_90:  { label: 'Massage 1h30',             duree: 90,  prix: 55, color: 'c-green' },
+  classic_120: { label: 'Massage 2h',               duree: 120, prix: 80, color: 'c-green' },
+  pierres_60:  { label: '🪨 Pierres chaudes 1h',    duree: 60,  prix: 50, color: 'c-blue' },
+  pierres_90:  { label: '🪨 Pierres chaudes 1h30',  duree: 90,  prix: 65, color: 'c-blue' },
+  drainage_30: { label: '💧 Drainage 1 zone 30min', duree: 30,  prix: 35, color: 'c-purple' },
+  drainage_75: { label: '💧 Drainage corps 1h15',   duree: 75,  prix: 65, color: 'c-purple' },
 };
 const HOURS = [];
 for (let h = 8; h <= 23; h++) { HOURS.push(`${String(h).padStart(2,'0')}:00`); if (h < 23) HOURS.push(`${String(h).padStart(2,'0')}:30`); }
 const DAYS_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const DAYS_LONG = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const MONTHS_SHORT = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
 let weekOffset = 0;
+let monthOffset = 0;
 let selectedDay = fmtDate(new Date());
+let currentView = 'semaine';
 let editingRdvKey = null;
 let editingClienteId = null;
+
 function fmtDate(d) { return d.toISOString().split('T')[0]; }
 function getWeekDates(off) {
   const now = new Date(), day = now.getDay();
@@ -237,6 +298,7 @@ function rdvKey(date, time) { return date + '_' + time; }
 function initials(prenom, nom) { return ((prenom||'?')[0] + (nom||'')[0]).toUpperCase(); }
 function timeToMins(t) { const [h,m] = t.split(':').map(Number); return h*60+m; }
 function minsToTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
+
 function getBlockedSlots(rdvs) {
   const blocked = new Set();
   Object.entries(rdvs).forEach(([key, r]) => {
@@ -249,6 +311,21 @@ function getBlockedSlots(rdvs) {
   });
   return blocked;
 }
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('view-semaine').style.display = v === 'semaine' ? 'block' : 'none';
+  document.getElementById('view-mois').style.display = v === 'mois' ? 'block' : 'none';
+  document.getElementById('btn-semaine').classList.toggle('active', v === 'semaine');
+  document.getElementById('btn-mois').classList.toggle('active', v === 'mois');
+  if (v === 'semaine') buildPlanning();
+  else buildMonth();
+}
+
+function navPrev() { if (currentView === 'semaine') { weekOffset--; buildPlanning(); } else { monthOffset--; buildMonth(); } }
+function navNext() { if (currentView === 'semaine') { weekOffset++; buildPlanning(); } else { monthOffset++; buildMonth(); } }
+function goToday() { weekOffset = 0; monthOffset = 0; selectedDay = fmtDate(new Date()); if (currentView === 'semaine') buildPlanning(); else buildMonth(); }
+
 function showNotifBanner() {
   const wrap = document.getElementById('notif-banner-wrap');
   if (!('Notification' in window)) { wrap.innerHTML = ''; return; }
@@ -260,29 +337,23 @@ function showNotifBanner() {
     wrap.innerHTML = '<div class="notif-banner" onclick="askNotif()">🔔 Appuie ici pour activer les notifications 👆</div>';
   }
 }
-async function askNotif() {
-  await Notification.requestPermission();
-  showNotifBanner();
-  scheduleAllNotifs();
-}
+async function askNotif() { await Notification.requestPermission(); showNotifBanner(); scheduleAllNotifs(); }
 function scheduleAllNotifs() {
   if (Notification.permission !== 'granted') return;
   const rdvs = DB.get('rdvs');
   const now = Date.now();
   Object.entries(rdvs).forEach(([key, r]) => {
     const [date, time] = key.split('_');
-    const rdvDate = new Date(date + 'T' + time + ':00');
-    const delay = rdvDate.getTime() - 60 * 60 * 1000 - now;
-    if (delay > 0 && delay < 7 * 24 * 60 * 60 * 1000) {
+    const delay = new Date(date + 'T' + time + ':00').getTime() - 60*60*1000 - now;
+    if (delay > 0 && delay < 7*24*60*60*1000) {
       setTimeout(() => {
         const p = PRESTATIONS[r.prestation];
-        new Notification('🌸 RDV dans 1h — Youss Mass', {
-          body: `💆‍♀️ ${r.name} · ${p ? p.label : 'Massage'} à ${time}${r.tel ? ' · 📞 ' + r.tel : ''}${r.note ? ' · 📍 ' + r.note : ''}`,
-        });
+        new Notification('🌸 RDV dans 1h — Youss Mass', { body: `💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.note?' · 📍 '+r.note:''}` });
       }, delay);
     }
   });
 }
+
 function switchTab(tab) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -290,6 +361,7 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
   if (tab === 'clientes') renderClientes();
 }
+
 function buildPlanning() {
   const dates = getWeekDates(weekOffset);
   const today = fmtDate(new Date());
@@ -328,7 +400,7 @@ function buildPlanning() {
       area.className += ' has-rdv';
       const card = document.createElement('div');
       card.className = 'rdv-card ' + p.color;
-      const total = p.prix + (r.dep ? 10 : 0) + (r.prolongation ? 15 : 0);
+      const total = p.prix + (r.dep?10:0) + (r.prolongation?15:0);
       card.innerHTML = `<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗':''}${r.note?' · 📍 '+r.note:''}</div>`;
       card.onclick = () => openRdvModal(key);
       area.appendChild(card);
@@ -346,9 +418,8 @@ function buildPlanning() {
   let count=0, ca=0, mins=0;
   dates.forEach(d => {
     HOURS.forEach(h => {
-      const k = rdvKey(fmtDate(d), h);
-      const r = DB.get('rdvs')[k];
-      if (r) { const p = PRESTATIONS[r.prestation] || { prix:40, duree:60 }; count++; ca += p.prix+(r.dep?10:0)+(r.prolongation?15:0); mins += p.duree+(r.prolongation?20:0); }
+      const r = DB.get('rdvs')[rdvKey(fmtDate(d), h)];
+      if (r) { const p = PRESTATIONS[r.prestation]||{prix:40,duree:60}; count++; ca+=p.prix+(r.dep?10:0)+(r.prolongation?15:0); mins+=p.duree+(r.prolongation?20:0); }
     });
   });
   document.getElementById('s-rdv').textContent = count;
@@ -356,8 +427,75 @@ function buildPlanning() {
   const hh=Math.floor(mins/60), mm=mins%60;
   document.getElementById('s-h').textContent = hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
 }
-function goToday() { weekOffset=0; selectedDay=fmtDate(new Date()); buildPlanning(); }
-function changeWeek(dir) { weekOffset += dir; selectedDay = fmtDate(getWeekDates(weekOffset)[0]); buildPlanning(); }
+
+function buildMonth() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + monthOffset;
+  const d = new Date(year, month, 1);
+  const monthName = MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+  document.getElementById('week-label').textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+  const firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
+  const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  let startDow = firstDay.getDay();
+  if (startDow === 0) startDow = 7;
+  const cells = document.getElementById('month-cells');
+  cells.innerHTML = '';
+  const rdvs = DB.get('rdvs');
+  const today = fmtDate(new Date());
+  for (let i = 1; i < startDow; i++) {
+    const prev = new Date(d.getFullYear(), d.getMonth(), 1 - (startDow - i));
+    const cell = document.createElement('div');
+    cell.className = 'month-cell other-month';
+    cell.innerHTML = `<div class="cell-num">${prev.getDate()}</div>`;
+    cells.appendChild(cell);
+  }
+  for (let day = 1; day <= lastDay.getDate(); day++) {
+    const dd = new Date(d.getFullYear(), d.getMonth(), day);
+    const ds = fmtDate(dd);
+    const cell = document.createElement('div');
+    cell.className = 'month-cell' + (ds === today ? ' today' : '') + (ds === selectedDay ? ' selected' : '');
+    const dayRdvs = Object.entries(rdvs).filter(([k]) => k.startsWith(ds + '_'));
+    const dots = dayRdvs.map(([, r]) => { const p = PRESTATIONS[r.prestation]||{color:'c-gold'}; return `<div class="month-dot ${p.color}"></div>`; }).join('');
+    cell.innerHTML = `<div class="cell-num">${day}</div><div class="cell-dots">${dots}</div>`;
+    cell.onclick = () => { selectedDay = ds; buildMonth(); };
+    cells.appendChild(cell);
+  }
+  const remaining = (7 - (cells.children.length % 7)) % 7;
+  for (let i = 1; i <= remaining; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'month-cell other-month';
+    cell.innerHTML = `<div class="cell-num">${i}</div>`;
+    cells.appendChild(cell);
+  }
+  const sel = new Date(selectedDay + 'T12:00:00');
+  const di = (sel.getDay() + 6) % 7;
+  document.getElementById('month-selected-day').textContent = DAYS_LONG[di] + ' ' + sel.getDate() + ' ' + MONTHS[sel.getMonth()];
+  const dayRdvs = Object.entries(rdvs).filter(([k]) => k.startsWith(selectedDay + '_')).sort((a,b) => a[0].localeCompare(b[0]));
+  const rdvList = document.getElementById('month-rdv-list');
+  if (dayRdvs.length === 0) {
+    rdvList.innerHTML = '<div class="month-empty">Aucun RDV ce jour — appuie sur ＋ pour en ajouter</div>';
+  } else {
+    rdvList.innerHTML = '';
+    dayRdvs.forEach(([key, r]) => {
+      const time = key.split('_')[1];
+      const p = PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
+      const total = p.prix+(r.dep?10:0)+(r.prolongation?15:0);
+      const item = document.createElement('div');
+      item.className = 'month-rdv-item';
+      item.innerHTML = `<div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗':''}${r.prolongation?' · ⏱+20min':''}${r.note?' · 📍 '+r.note:''}</div></div>`;
+      item.onclick = () => openRdvModal(key);
+      rdvList.appendChild(item);
+    });
+  }
+  let count=0, ca=0, mins=0;
+  Object.values(rdvs).forEach(r => { const p = PRESTATIONS[r.prestation]||{prix:40,duree:60}; count++; ca+=p.prix+(r.dep?10:0)+(r.prolongation?15:0); mins+=p.duree+(r.prolongation?20:0); });
+  document.getElementById('s-rdv').textContent = count;
+  document.getElementById('s-ca').textContent = ca + '€';
+  const hh=Math.floor(mins/60), mm=mins%60;
+  document.getElementById('s-h').textContent = hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
+}
+
 function openRdvModal(key, defaultHour) {
   editingRdvKey = key || null;
   document.getElementById('rdv-modal-title').textContent = key ? '✏️ Modifier le RDV' : '➕ Nouveau RDV';
@@ -365,18 +503,18 @@ function openRdvModal(key, defaultHour) {
   if (key && DB.get('rdvs')[key]) {
     const r = DB.get('rdvs')[key];
     document.getElementById('f-name').value = r.name;
-    document.getElementById('f-tel').value = r.tel || '';
+    document.getElementById('f-tel').value = r.tel||'';
     document.getElementById('f-date').value = key.split('_')[0];
-    document.getElementById('f-time').value = r.time || key.split('_')[1];
-    document.getElementById('f-prestation').value = r.prestation || 'classic_60';
-    document.getElementById('f-dep').value = r.dep ? '10' : '0';
-    document.getElementById('f-prolongation').checked = r.prolongation || false;
-    document.getElementById('f-note').value = r.note || '';
+    document.getElementById('f-time').value = r.time||key.split('_')[1];
+    document.getElementById('f-prestation').value = r.prestation||'classic_60';
+    document.getElementById('f-dep').value = r.dep?'10':'0';
+    document.getElementById('f-prolongation').checked = r.prolongation||false;
+    document.getElementById('f-note').value = r.note||'';
   } else {
     document.getElementById('f-name').value = '';
     document.getElementById('f-tel').value = '';
     document.getElementById('f-date').value = selectedDay;
-    document.getElementById('f-time').value = defaultHour || '10:00';
+    document.getElementById('f-time').value = defaultHour||'10:00';
     document.getElementById('f-prestation').value = 'classic_60';
     document.getElementById('f-dep').value = '0';
     document.getElementById('f-prolongation').checked = false;
@@ -388,7 +526,7 @@ function openRdvModal(key, defaultHour) {
 function saveRdv() {
   const name = document.getElementById('f-name').value.trim();
   if (!name) { document.getElementById('f-name').focus(); return; }
-  const date = document.getElementById('f-date').value || selectedDay;
+  const date = document.getElementById('f-date').value||selectedDay;
   const time = document.getElementById('f-time').value;
   const newKey = rdvKey(date, time);
   const rdvs = DB.get('rdvs');
@@ -397,7 +535,7 @@ function saveRdv() {
   DB.set('rdvs', rdvs);
   selectedDay = date;
   closeModal('overlay-rdv');
-  buildPlanning();
+  if (currentView === 'semaine') buildPlanning(); else buildMonth();
   scheduleAllNotifs();
 }
 function deleteRdv() {
@@ -406,17 +544,14 @@ function deleteRdv() {
   delete rdvs[editingRdvKey];
   DB.set('rdvs', rdvs);
   closeModal('overlay-rdv');
-  buildPlanning();
+  if (currentView === 'semaine') buildPlanning(); else buildMonth();
 }
 function renderClientes(filter) {
   let clientes = DB.get('clientes');
   if (filter) clientes = clientes.filter(c => (c.prenom+' '+c.nom).toLowerCase().includes(filter.toLowerCase()));
   const list = document.getElementById('clientes-list');
   list.innerHTML = '';
-  if (clientes.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="es-icon">👩</div><p>${filter ? 'Aucune cliente trouvée' : 'Pas encore de clientes\nAppuie sur + pour en ajouter une !'}</p></div>`;
-    return;
-  }
+  if (clientes.length === 0) { list.innerHTML = `<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes\nAppuie sur + pour en ajouter une !'}</p></div>`; return; }
   clientes.forEach(c => {
     const card = document.createElement('div');
     card.className = 'cliente-card';
@@ -427,15 +562,13 @@ function renderClientes(filter) {
 }
 function filterClientes() { renderClientes(document.getElementById('search-input').value); }
 function openClienteModal(id) {
-  editingClienteId = id || null;
-  document.getElementById('cliente-modal-title').textContent = id ? '✏️ Modifier' : '➕ Nouvelle cliente';
-  document.getElementById('btn-delete-cliente').style.display = id ? 'block' : 'none';
+  editingClienteId = id||null;
+  document.getElementById('cliente-modal-title').textContent = id?'✏️ Modifier':'➕ Nouvelle cliente';
+  document.getElementById('btn-delete-cliente').style.display = id?'block':'none';
   if (id) {
-    const c = DB.get('clientes').find(x => x.id === id);
-    if (c) { document.getElementById('c-prenom').value = c.prenom||''; document.getElementById('c-nom').value = c.nom||''; document.getElementById('c-tel').value = c.tel||''; document.getElementById('c-source').value = c.source||'Instagram'; document.getElementById('c-seances').value = c.seances||0; document.getElementById('c-notes').value = c.notes||''; }
-  } else {
-    document.getElementById('c-prenom').value = ''; document.getElementById('c-nom').value = ''; document.getElementById('c-tel').value = ''; document.getElementById('c-source').value = 'Instagram'; document.getElementById('c-seances').value = '0'; document.getElementById('c-notes').value = '';
-  }
+    const c = DB.get('clientes').find(x => x.id===id);
+    if (c) { document.getElementById('c-prenom').value=c.prenom||''; document.getElementById('c-nom').value=c.nom||''; document.getElementById('c-tel').value=c.tel||''; document.getElementById('c-source').value=c.source||'Instagram'; document.getElementById('c-seances').value=c.seances||0; document.getElementById('c-notes').value=c.notes||''; }
+  } else { document.getElementById('c-prenom').value=''; document.getElementById('c-nom').value=''; document.getElementById('c-tel').value=''; document.getElementById('c-source').value='Instagram'; document.getElementById('c-seances').value='0'; document.getElementById('c-notes').value=''; }
   openModal('overlay-cliente');
   setTimeout(() => document.getElementById('c-prenom').focus(), 300);
 }
@@ -443,22 +576,21 @@ function saveCliente() {
   const prenom = document.getElementById('c-prenom').value.trim();
   if (!prenom) { document.getElementById('c-prenom').focus(); return; }
   const clientes = DB.get('clientes');
-  const data = { id: editingClienteId || Date.now().toString(), prenom, nom: document.getElementById('c-nom').value.trim(), tel: document.getElementById('c-tel').value.trim(), source: document.getElementById('c-source').value, seances: parseInt(document.getElementById('c-seances').value)||0, notes: document.getElementById('c-notes').value.trim() };
-  if (editingClienteId) { const idx = clientes.findIndex(c => c.id === editingClienteId); if (idx >= 0) clientes[idx] = data; } else { clientes.push(data); }
+  const data = { id: editingClienteId||Date.now().toString(), prenom, nom: document.getElementById('c-nom').value.trim(), tel: document.getElementById('c-tel').value.trim(), source: document.getElementById('c-source').value, seances: parseInt(document.getElementById('c-seances').value)||0, notes: document.getElementById('c-notes').value.trim() };
+  if (editingClienteId) { const idx=clientes.findIndex(c=>c.id===editingClienteId); if(idx>=0) clientes[idx]=data; } else { clientes.push(data); }
   DB.set('clientes', clientes);
   closeModal('overlay-cliente');
   renderClientes();
 }
 function deleteCliente() {
   if (!editingClienteId) return;
-  const clientes = DB.get('clientes').filter(c => c.id !== editingClienteId);
-  DB.set('clientes', clientes);
+  DB.set('clientes', DB.get('clientes').filter(c=>c.id!==editingClienteId));
   closeModal('overlay-cliente');
   renderClientes();
 }
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); editingRdvKey=null; editingClienteId=null; }
-document.querySelectorAll('.overlay').forEach(o => { o.addEventListener('click', function(e) { if (e.target === this) closeModal(this.id); }); });
+document.querySelectorAll('.overlay').forEach(o => { o.addEventListener('click', function(e) { if(e.target===this) closeModal(this.id); }); });
 showNotifBanner();
 buildPlanning();
 </script>
