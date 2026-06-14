@@ -54,6 +54,8 @@
     .slot-area.empty { border: 1.5px dashed var(--sand); }
     .slot-area.empty:active { background: #fdf5ee; }
     .slot-area.blocked { background: var(--sand); opacity: 0.4; cursor: default; }
+    .slot-area.travel { background: #f0e6d9; opacity: 0.6; cursor: default; border: 1.5px dashed var(--gold); }
+    .slot-area.travel .travel-label { font-size: 0.65rem; color: var(--warm); display: flex; align-items: center; justify-content: center; height: 100%; font-style: italic; }
     .slot-add { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--sand); }
     .rdv-card { border-radius: 11px; padding: 9px 13px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
     .rdv-card.c-rose { background: #fbe8e6; border-left: 3px solid var(--rose); }
@@ -288,22 +290,27 @@ function rdvKey(date, time) { return date+'_'+time; }
 function initials(prenom, nom) { return ((prenom||'?')[0]+(nom||'')[0]).toUpperCase(); }
 function timeToMins(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
 function minsToTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
-function fmtDateFr(ds) {
-  const d = new Date(ds+'T12:00:00');
-  const di = (d.getDay()+6)%7;
-  return DAYS_LONG[di]+' '+d.getDate()+' '+MONTHS[d.getMonth()];
-}
 
+// blocked = pendant le massage (occupé)
+// travel = battement de 1h après si déplacement (libre mais bloqué pour trajet)
 function getBlockedSlots(rdvs) {
   const blocked = new Set();
+  const travel = new Set();
   Object.entries(rdvs).forEach(([key,r]) => {
     const [date,time] = key.split('_');
     const p = PRESTATIONS[r.prestation]||{duree:60};
     const total = p.duree+(r.prolongation?20:0);
     const start = timeToMins(time);
-    for (let i=1; i<Math.ceil(total/30); i++) blocked.add(date+'_'+minsToTime(start+i*30));
+    const slots = Math.ceil(total/30);
+    for (let i=1; i<slots; i++) blocked.add(date+'_'+minsToTime(start+i*30));
+    if (r.dep) {
+      const endSlot = start + slots*30;
+      for (let i=0; i<2; i++) travel.add(date+'_'+minsToTime(endSlot+i*30));
+    }
   });
-  return blocked;
+  // si un créneau travel coïncide avec un RDV ou un blocked, il reste blocked (priorité au RDV)
+  travel.forEach(k => { if (!Object.keys(rdvs).includes(k) && !blocked.has(k)) {} });
+  return { blocked, travel };
 }
 
 function sendWaRappel() {
@@ -333,7 +340,7 @@ function scheduleAllNotifs() {
     if (delay>0 && delay<7*24*60*60*1000) {
       setTimeout(() => {
         const p = PRESTATIONS[r.prestation];
-        new Notification('🌸 RDV dans 1h — Youss Mass', { body: `💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.note?' · 📍 '+r.note:''}` });
+        new Notification('🌸 RDV dans 1h — Youss Mass', { body: `💆 ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.note?' · 📍 '+r.note:''}` });
       }, delay);
     }
   });
@@ -374,7 +381,9 @@ function buildPlanning() {
   });
   const sel=new Date(selectedDay+'T12:00:00'), di=(sel.getDay()+6)%7;
   document.getElementById('day-title').textContent=DAYS_LONG[di]+' '+sel.getDate()+' '+MONTHS[sel.getMonth()];
-  const rdvs=DB.get('rdvs'), blocked=getBlockedSlots(rdvs), list=document.getElementById('slots-list');
+  const rdvs=DB.get('rdvs');
+  const { blocked, travel } = getBlockedSlots(rdvs);
+  const list=document.getElementById('slots-list');
   list.innerHTML='';
   HOURS.forEach(h => {
     const key=rdvKey(selectedDay,h), item=document.createElement('div');
@@ -391,6 +400,9 @@ function buildPlanning() {
       area.appendChild(card);
     } else if (blocked.has(key)) {
       area.className+=' blocked';
+    } else if (travel.has(key)) {
+      area.className+=' travel';
+      area.innerHTML='<div class="travel-label">🚗 Trajet</div>';
     } else {
       area.className+=' empty';
       area.innerHTML='<span class="slot-add">＋</span>';
