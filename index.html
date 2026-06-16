@@ -38,15 +38,22 @@
     .day-pill { flex-shrink: 0; background: var(--white); border-radius: 14px; padding: 8px 12px; text-align: center; cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 8px rgba(59,42,42,0.06); min-width: 54px; transition: all 0.15s; }
     .day-pill.active { background: var(--deep); border-color: var(--gold); }
     .day-pill.today { border-color: var(--rose); }
+    .day-pill.conge { background: #fbe8e6; border-color: var(--rose); }
+    .day-pill.active.conge { background: #c0392b; border-color: #c0392b; }
     .day-pill .dname { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); }
     .day-pill.active .dname { color: var(--sand); }
     .day-pill .dnum { font-size: 1.2rem; font-weight: 700; color: var(--deep); margin-top: 1px; }
     .day-pill.active .dnum { color: var(--gold); }
     .day-pill.today .dnum { color: var(--rose); }
+    .day-pill.conge .dnum { color: var(--rose); }
     .day-pill.active.today .dnum { color: var(--gold); }
     .day-badge { width: 16px; height: 16px; background: var(--rose); border-radius: 50%; font-size: 0.55rem; color: white; display: flex; align-items: center; justify-content: center; margin: 3px auto 0; font-weight: 700; }
     .day-badge.hidden { visibility: hidden; }
-    .day-title { font-size: 0.95rem; font-weight: 600; padding: 2px 16px 8px; font-style: italic; color: var(--warm); }
+    .day-title { font-size: 0.95rem; font-weight: 600; padding: 2px 16px 8px; font-style: italic; color: var(--warm); display: flex; align-items: center; justify-content: space-between; padding-right: 14px; }
+    .btn-conge { font-size: 0.72rem; padding: 4px 10px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-weight: 700; }
+    .btn-conge.off { background: #fbe8e6; color: var(--rose); }
+    .btn-conge.on { background: var(--rose); color: white; }
+    .conge-banner { background: #fbe8e6; border: 1.5px solid var(--rose); border-radius: 12px; margin: 0 14px 10px; padding: 12px 14px; text-align: center; color: var(--rose); font-weight: 700; font-size: 0.9rem; }
     .slots-list { padding: 0 14px; }
     .slot-item { display: flex; align-items: stretch; gap: 8px; margin-bottom: 5px; min-height: 48px; }
     .slot-time { font-size: 0.68rem; color: var(--warm); width: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; font-weight: 600; }
@@ -56,6 +63,7 @@
     .slot-area.blocked { background: var(--sand); opacity: 0.4; cursor: default; }
     .slot-area.travel { background: #f0e6d9; opacity: 0.6; cursor: default; border: 1.5px dashed var(--gold); }
     .slot-area.travel .travel-label { font-size: 0.65rem; color: var(--warm); display: flex; align-items: center; justify-content: center; height: 100%; font-style: italic; }
+    .slot-area.conge-slot { background: #fbe8e6; opacity: 0.5; cursor: default; }
     .slot-add { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--sand); }
     .rdv-card { border-radius: 11px; padding: 9px 13px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
     .rdv-card.c-rose { background: #fbe8e6; border-left: 3px solid var(--rose); }
@@ -76,9 +84,12 @@
     .month-cell.today { border-color: var(--rose); }
     .month-cell.selected { border-color: var(--gold); background: var(--deep); }
     .month-cell.other-month { opacity: 0.35; }
+    .month-cell.conge { background: #fbe8e6; border-color: var(--rose); }
+    .month-cell.conge.selected { background: #c0392b; border-color: #c0392b; }
     .month-cell .cell-num { font-size: 0.75rem; font-weight: 700; color: var(--deep); margin-bottom: 2px; }
     .month-cell.selected .cell-num { color: var(--gold); }
     .month-cell.today .cell-num { color: var(--rose); }
+    .month-cell.conge .cell-num { color: var(--rose); }
     .month-cell.selected.today .cell-num { color: var(--gold); }
     .month-cell .cell-dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 2px; }
     .month-dot { width: 7px; height: 7px; border-radius: 50%; }
@@ -87,7 +98,7 @@
     .month-dot.c-green { background: var(--green); }
     .month-dot.c-blue { background: #5b8ac9; }
     .month-dot.c-purple { background: #9b6bc9; }
-    .month-selected-day { padding: 8px 16px 4px; font-size: 0.9rem; font-style: italic; color: var(--warm); font-weight: 600; }
+    .month-selected-day { padding: 8px 16px 4px; font-size: 0.9rem; font-style: italic; color: var(--warm); font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-right: 14px; }
     .month-rdv-list { padding: 0 14px; }
     .month-rdv-item { background: var(--white); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(59,42,42,0.06); cursor: pointer; }
     .month-rdv-top { display: flex; align-items: center; gap: 10px; }
@@ -164,7 +175,8 @@
   <div id="notif-banner-wrap"></div>
   <div id="view-semaine">
     <div class="days-strip" id="days-strip"></div>
-    <div class="day-title" id="day-title"></div>
+    <div class="day-title" id="day-title-wrap"></div>
+    <div id="conge-banner-wrap"></div>
     <div class="slots-list" id="slots-list"></div>
   </div>
   <div id="view-mois" style="display:none">
@@ -175,6 +187,7 @@
       <div class="month-cells" id="month-cells"></div>
     </div>
     <div class="month-selected-day" id="month-selected-day"></div>
+    <div id="month-conge-banner"></div>
     <div class="month-rdv-list" id="month-rdv-list"></div>
   </div>
   <button class="fab" onclick="openRdvModal()">＋</button>
@@ -255,7 +268,7 @@
 </div>
 <script>
 const DB = {
-  get: (k) => JSON.parse(localStorage.getItem('youss-' + k) || (k === 'rdvs' ? '{}' : '[]')),
+  get: (k) => JSON.parse(localStorage.getItem('youss-' + k) || (k === 'rdvs' ? '{}' : k === 'conges' ? '[]' : '[]')),
   set: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v))
 };
 const PRESTATIONS = {
@@ -290,9 +303,15 @@ function rdvKey(date, time) { return date+'_'+time; }
 function initials(prenom, nom) { return ((prenom||'?')[0]+(nom||'')[0]).toUpperCase(); }
 function timeToMins(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
 function minsToTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
+function isConge(date) { return DB.get('conges').includes(date); }
+function toggleConge(date) {
+  const conges = DB.get('conges');
+  const idx = conges.indexOf(date);
+  if (idx >= 0) conges.splice(idx, 1); else conges.push(date);
+  DB.set('conges', conges);
+  if (currentView === 'semaine') buildPlanning(); else buildMonth();
+}
 
-// blocked = pendant le massage (occupé)
-// travel = battement de 1h après si déplacement (libre mais bloqué pour trajet)
 function getBlockedSlots(rdvs) {
   const blocked = new Set();
   const travel = new Set();
@@ -304,12 +323,16 @@ function getBlockedSlots(rdvs) {
     const slots = Math.ceil(total/30);
     for (let i=1; i<slots; i++) blocked.add(date+'_'+minsToTime(start+i*30));
     if (r.dep) {
+      // 1h avant
+      for (let i=1; i<=2; i++) {
+        const t = minsToTime(start - i*30);
+        if (start - i*30 >= 0) travel.add(date+'_'+t);
+      }
+      // 1h après
       const endSlot = start + slots*30;
       for (let i=0; i<2; i++) travel.add(date+'_'+minsToTime(endSlot+i*30));
     }
   });
-  // si un créneau travel coïncide avec un RDV ou un blocked, il reste blocked (priorité au RDV)
-  travel.forEach(k => { if (!Object.keys(rdvs).includes(k) && !blocked.has(k)) {} });
   return { blocked, travel };
 }
 
@@ -321,6 +344,12 @@ function sendWaRappel() {
   const p = PRESTATIONS[r.prestation]||{label:'massage'};
   const msg = `Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain à ${r.time} pour un ${p.label}.\n\nMerci de confirmer votre présence en répondant à ce message 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom`;
   window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg), '_blank');
+}
+function sendWaFromCard(key) {
+  const r = DB.get('rdvs')[key];
+  if (!r || !r.tel) return;
+  currentRdvForWa = r;
+  sendWaRappel();
 }
 
 function showNotifBanner() {
@@ -340,7 +369,7 @@ function scheduleAllNotifs() {
     if (delay>0 && delay<7*24*60*60*1000) {
       setTimeout(() => {
         const p = PRESTATIONS[r.prestation];
-        new Notification('🌸 RDV dans 1h — Youss Mass', { body: `💆 ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.note?' · 📍 '+r.note:''}` });
+        new Notification('🌸 RDV dans 1h — Youss Mass', { body: `💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.note?' · 📍 '+r.note:''}` });
       }, delay);
     }
   });
@@ -373,14 +402,27 @@ function buildPlanning() {
   strip.innerHTML='';
   dates.forEach((d,i) => {
     const ds=fmtDate(d), pill=document.createElement('div');
-    pill.className='day-pill'+(ds===selectedDay?' active':'')+(ds===today?' today':'');
+    const cng = isConge(ds);
+    pill.className='day-pill'+(ds===selectedDay?' active':'')+(ds===today?' today':'')+(cng?' conge':'');
     const count=Object.keys(DB.get('rdvs')).filter(k=>k.startsWith(ds+'_')).length;
-    pill.innerHTML=`<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count}</div>`;
+    pill.innerHTML=`<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count||'🏖'}</div>`;
     pill.onclick=()=>{selectedDay=ds;buildPlanning();};
     strip.appendChild(pill);
   });
   const sel=new Date(selectedDay+'T12:00:00'), di=(sel.getDay()+6)%7;
-  document.getElementById('day-title').textContent=DAYS_LONG[di]+' '+sel.getDate()+' '+MONTHS[sel.getMonth()];
+  const cng = isConge(selectedDay);
+  const titleLabel = DAYS_LONG[di]+' '+sel.getDate()+' '+MONTHS[sel.getMonth()];
+  const btnLabel = cng ? '🏖 Congé — Retirer' : '🏖 Bloquer congé';
+  const btnClass = cng ? 'btn-conge on' : 'btn-conge off';
+  document.getElementById('day-title-wrap').innerHTML = `<span>${titleLabel}</span><button class="${btnClass}" onclick="toggleConge('${selectedDay}')">${btnLabel}</button>`;
+
+  const congeBanner = document.getElementById('conge-banner-wrap');
+  if (cng) {
+    congeBanner.innerHTML = '<div class="conge-banner">🏖 Jour de congé — aucune réservation possible</div>';
+  } else {
+    congeBanner.innerHTML = '';
+  }
+
   const rdvs=DB.get('rdvs');
   const { blocked, travel } = getBlockedSlots(rdvs);
   const list=document.getElementById('slots-list');
@@ -398,6 +440,8 @@ function buildPlanning() {
       card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗':''}${r.note?' · 📍 '+r.note:''}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
+    } else if (cng) {
+      area.className+=' conge-slot';
     } else if (blocked.has(key)) {
       area.className+=' blocked';
     } else if (travel.has(key)) {
@@ -418,13 +462,6 @@ function buildPlanning() {
   document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
 }
 
-function sendWaFromCard(key) {
-  const r = DB.get('rdvs')[key];
-  if (!r || !r.tel) return;
-  currentRdvForWa = r;
-  sendWaRappel();
-}
-
 function buildMonth() {
   const now=new Date(), year=now.getFullYear(), month=now.getMonth()+monthOffset;
   const d=new Date(year,month,1);
@@ -438,10 +475,11 @@ function buildMonth() {
   for(let i=1;i<startDow;i++){const prev=new Date(d.getFullYear(),d.getMonth(),1-(startDow-i));const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${prev.getDate()}</div>`;cells.appendChild(cell);}
   for(let day=1;day<=lastDay.getDate();day++){
     const dd=new Date(d.getFullYear(),d.getMonth(),day), ds=fmtDate(dd);
+    const cng=isConge(ds);
     const cell=document.createElement('div');
-    cell.className='month-cell'+(ds===today?' today':'')+(ds===selectedDay?' selected':'');
+    cell.className='month-cell'+(ds===today?' today':'')+(ds===selectedDay?' selected':'')+(cng?' conge':'');
     const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(ds+'_'));
-    const dots=dayRdvs.map(([,r])=>{const p=PRESTATIONS[r.prestation]||{color:'c-gold'};return`<div class="month-dot ${p.color}"></div>`;}).join('');
+    const dots=cng?'<div style="font-size:0.7rem">🏖</div>':dayRdvs.map(([,r])=>{const p=PRESTATIONS[r.prestation]||{color:'c-gold'};return`<div class="month-dot ${p.color}"></div>`;}).join('');
     cell.innerHTML=`<div class="cell-num">${day}</div><div class="cell-dots">${dots}</div>`;
     cell.onclick=()=>{selectedDay=ds;buildMonth();};
     cells.appendChild(cell);
@@ -449,10 +487,16 @@ function buildMonth() {
   const remaining=(7-cells.children.length%7)%7;
   for(let i=1;i<=remaining;i++){const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${i}</div>`;cells.appendChild(cell);}
   const sel=new Date(selectedDay+'T12:00:00'), di=(sel.getDay()+6)%7;
-  document.getElementById('month-selected-day').textContent=DAYS_LONG[di]+' '+sel.getDate()+' '+MONTHS[sel.getMonth()];
+  const cng=isConge(selectedDay);
+  const titleLabel=DAYS_LONG[di]+' '+sel.getDate()+' '+MONTHS[sel.getMonth()];
+  const btnLabel=cng?'🏖 Congé — Retirer':'🏖 Bloquer congé';
+  const btnClass=cng?'btn-conge on':'btn-conge off';
+  document.getElementById('month-selected-day').innerHTML=`<span>${titleLabel}</span><button class="${btnClass}" onclick="toggleConge('${selectedDay}')">${btnLabel}</button>`;
+  const congeBanner=document.getElementById('month-conge-banner');
+  if(cng){congeBanner.innerHTML='<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>';}else{congeBanner.innerHTML='';}
   const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
   const rdvList=document.getElementById('month-rdv-list');
-  if(dayRdvs.length===0){rdvList.innerHTML='<div class="month-empty">Aucun RDV ce jour — appuie sur ＋ pour en ajouter</div>';}
+  if(dayRdvs.length===0){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour — appuie sur ＋ pour en ajouter</div>';}
   else{
     rdvList.innerHTML='';
     dayRdvs.forEach(([key,r])=>{
@@ -473,6 +517,7 @@ function buildMonth() {
 }
 
 function openRdvModal(key, defaultHour) {
+  if (isConge(selectedDay) && !key) { alert('Ce jour est bloqué en congé 🏖'); return; }
   editingRdvKey=key||null;
   document.getElementById('rdv-modal-title').textContent=key?'✏️ Modifier le RDV':'➕ Nouveau RDV';
   document.getElementById('btn-delete-rdv').style.display=key?'block':'none';
