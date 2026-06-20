@@ -133,7 +133,7 @@
     .close-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--warm); padding: 4px; }
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 4px; font-weight: 600; }
-    input[type=text], input[type=tel], input[type=time], input[type=date], select, textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--sand); border-radius: 12px; font-size: 1rem; color: var(--deep); background: var(--white); outline: none; font-family: inherit; -webkit-appearance: none; appearance: none; }
+    input[type=text], input[type=tel], input[type=time], input[type=date], input[type=number], select, textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--sand); border-radius: 12px; font-size: 1rem; color: var(--deep); background: var(--white); outline: none; font-family: inherit; -webkit-appearance: none; appearance: none; }
     textarea { resize: none; height: 70px; }
     input:focus, select:focus, textarea:focus { border-color: var(--rose); }
     .form-row { display: flex; gap: 10px; }
@@ -148,6 +148,13 @@
     .notif-banner { margin: 0 14px 10px; border-radius: 12px; padding: 10px 14px; font-size: 0.8rem; color: var(--deep); display: flex; align-items: center; gap: 8px; cursor: pointer; background: #eaf3eb; border: 1.5px solid var(--green); }
     .notif-banner.denied { background: #fbe8e6; border-color: var(--rose); cursor: default; }
     .notif-banner.ok { cursor: default; }
+    .pay-toggle { display: flex; gap: 8px; }
+    .pay-btn { flex: 1; padding: 11px; border-radius: 12px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
+    .pay-btn.active { background: var(--deep); color: var(--gold); border-color: var(--deep); }
+    .tip-badge { display: inline-block; background: #fdf3e3; color: var(--gold); font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 4px; }
+    .pay-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 4px; }
+    .pay-badge.especes { background: #eaf3eb; color: var(--green); }
+    .pay-badge.virement { background: #e6eef8; color: #5b8ac9; }
   </style>
 </head>
 <body>
@@ -242,6 +249,19 @@
         <span class="prix-sup">+15€</span>
       </label>
     </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>💰 Pourboire</label>
+        <input type="number" id="f-pourboire" placeholder="0" min="0" step="1"/>
+      </div>
+      <div class="form-group">
+        <label>💳 Paiement</label>
+        <div class="pay-toggle">
+          <button type="button" class="pay-btn active" id="pay-especes" onclick="setPayment('especes')">💵 Espèces</button>
+          <button type="button" class="pay-btn" id="pay-virement" onclick="setPayment('virement')">🏦 Virement</button>
+        </div>
+      </div>
+    </div>
     <div class="form-group"><label>📍 Adresse / Infos</label><input type="text" id="f-note" placeholder="Adresse, infos importantes..."/></div>
     <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
     <button class="btn-whatsapp" id="btn-wa-rappel" onclick="sendWaRappel()" style="display:none">📲 Envoyer rappel WhatsApp</button>
@@ -291,6 +311,7 @@ let selectedDay = fmtDate(new Date());
 let currentView = 'semaine';
 let editingRdvKey = null, editingClienteId = null;
 let currentRdvForWa = null;
+let currentPayment = 'especes';
 
 function fmtDate(d) { return d.toISOString().split('T')[0]; }
 function getWeekDates(off) {
@@ -311,6 +332,11 @@ function toggleConge(date) {
   DB.set('conges', conges);
   if (currentView === 'semaine') buildPlanning(); else buildMonth();
 }
+function setPayment(mode) {
+  currentPayment = mode;
+  document.getElementById('pay-especes').classList.toggle('active', mode === 'especes');
+  document.getElementById('pay-virement').classList.toggle('active', mode === 'virement');
+}
 
 function getBlockedSlots(rdvs) {
   const blocked = new Set();
@@ -323,12 +349,10 @@ function getBlockedSlots(rdvs) {
     const slots = Math.ceil(total/30);
     for (let i=1; i<slots; i++) blocked.add(date+'_'+minsToTime(start+i*30));
     if (r.dep) {
-      // 1h avant
       for (let i=1; i<=2; i++) {
         const t = minsToTime(start - i*30);
         if (start - i*30 >= 0) travel.add(date+'_'+t);
       }
-      // 1h après
       const endSlot = start + slots*30;
       for (let i=0; i<2; i++) travel.add(date+'_'+minsToTime(endSlot+i*30));
     }
@@ -394,6 +418,10 @@ function switchTab(tab) {
   if (tab==='clientes') renderClientes();
 }
 
+function calcTotal(r, p) {
+  return p.prix + (r.dep?10:0) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0);
+}
+
 function buildPlanning() {
   const dates = getWeekDates(weekOffset), today = fmtDate(new Date());
   const s=dates[0], e=dates[6];
@@ -417,11 +445,7 @@ function buildPlanning() {
   document.getElementById('day-title-wrap').innerHTML = `<span>${titleLabel}</span><button class="${btnClass}" onclick="toggleConge('${selectedDay}')">${btnLabel}</button>`;
 
   const congeBanner = document.getElementById('conge-banner-wrap');
-  if (cng) {
-    congeBanner.innerHTML = '<div class="conge-banner">🏖 Jour de congé — aucune réservation possible</div>';
-  } else {
-    congeBanner.innerHTML = '';
-  }
+  congeBanner.innerHTML = cng ? '<div class="conge-banner">🏖 Jour de congé — aucune réservation possible</div>' : '';
 
   const rdvs=DB.get('rdvs');
   const { blocked, travel } = getBlockedSlots(rdvs);
@@ -436,8 +460,10 @@ function buildPlanning() {
       const r=rdvs[key], p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
       area.className+=' has-rdv';
       const card=document.createElement('div'); card.className='rdv-card '+p.color;
-      const total=p.prix+(r.dep?10:0)+(r.prolongation?15:0);
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗':''}${r.note?' · 📍 '+r.note:''}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
+      const total=calcTotal(r,p);
+      const payBadge = r.payment === 'virement' ? '<span class="pay-badge virement">🏦 Virement</span>' : '<span class="pay-badge especes">💵 Espèces</span>';
+      const tipBadge = r.pourboire && parseFloat(r.pourboire) > 0 ? `<span class="tip-badge">💰 +${r.pourboire}€</span>` : '';
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
     } else if (cng) {
@@ -455,7 +481,7 @@ function buildPlanning() {
     item.appendChild(timeEl); item.appendChild(area); list.appendChild(item);
   });
   let count=0,ca=0,mins=0;
-  dates.forEach(d=>{HOURS.forEach(h=>{const r=DB.get('rdvs')[rdvKey(fmtDate(d),h)];if(r){const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=p.prix+(r.dep?10:0)+(r.prolongation?15:0);mins+=p.duree+(r.prolongation?20:0);}});});
+  dates.forEach(d=>{HOURS.forEach(h=>{const r=DB.get('rdvs')[rdvKey(fmtDate(d),h)];if(r){const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);}});});
   document.getElementById('s-rdv').textContent=count;
   document.getElementById('s-ca').textContent=ca+'€';
   const hh=Math.floor(mins/60),mm=mins%60;
@@ -493,7 +519,7 @@ function buildMonth() {
   const btnClass=cng?'btn-conge on':'btn-conge off';
   document.getElementById('month-selected-day').innerHTML=`<span>${titleLabel}</span><button class="${btnClass}" onclick="toggleConge('${selectedDay}')">${btnLabel}</button>`;
   const congeBanner=document.getElementById('month-conge-banner');
-  if(cng){congeBanner.innerHTML='<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>';}else{congeBanner.innerHTML='';}
+  congeBanner.innerHTML = cng ? '<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>' : '';
   const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
   const rdvList=document.getElementById('month-rdv-list');
   if(dayRdvs.length===0){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour — appuie sur ＋ pour en ajouter</div>';}
@@ -501,15 +527,17 @@ function buildMonth() {
     rdvList.innerHTML='';
     dayRdvs.forEach(([key,r])=>{
       const time=key.split('_')[1], p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
-      const total=p.prix+(r.dep?10:0)+(r.prolongation?15:0);
+      const total=calcTotal(r,p);
+      const payBadge = r.payment === 'virement' ? '<span class="pay-badge virement">🏦 Virement</span>' : '<span class="pay-badge especes">💵 Espèces</span>';
+      const tipBadge = r.pourboire && parseFloat(r.pourboire) > 0 ? `<span class="tip-badge">💰 +${r.pourboire}€</span>` : '';
       const item=document.createElement('div'); item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗':''}${r.prolongation?' · ⏱+20min':''}${r.note?' · 📍 '+r.note:''}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗':''}${r.prolongation?' · ⏱+20min':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
   }
   let count=0,ca=0,mins=0;
-  Object.values(rdvs).forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=p.prix+(r.dep?10:0)+(r.prolongation?15:0);mins+=p.duree+(r.prolongation?20:0);});
+  Object.values(rdvs).forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);});
   document.getElementById('s-rdv').textContent=count;
   document.getElementById('s-ca').textContent=ca+'€';
   const hh=Math.floor(mins/60),mm=mins%60;
@@ -533,10 +561,12 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-prestation').value=r.prestation||'classic_60';
     document.getElementById('f-dep').value=r.dep?'10':'0';
     document.getElementById('f-prolongation').checked=r.prolongation||false;
+    document.getElementById('f-pourboire').value=r.pourboire||'';
+    setPayment(r.payment||'especes');
     document.getElementById('f-note').value=r.note||'';
     if(r.tel) document.getElementById('btn-wa-rappel').style.display='flex';
   } else {
-    document.getElementById('f-name').value=''; document.getElementById('f-tel').value=''; document.getElementById('f-date').value=selectedDay; document.getElementById('f-time').value=defaultHour||'10:00'; document.getElementById('f-prestation').value='classic_60'; document.getElementById('f-dep').value='0'; document.getElementById('f-prolongation').checked=false; document.getElementById('f-note').value='';
+    document.getElementById('f-name').value=''; document.getElementById('f-tel').value=''; document.getElementById('f-date').value=selectedDay; document.getElementById('f-time').value=defaultHour||'10:00'; document.getElementById('f-prestation').value='classic_60'; document.getElementById('f-dep').value='0'; document.getElementById('f-prolongation').checked=false; document.getElementById('f-pourboire').value=''; setPayment('especes'); document.getElementById('f-note').value='';
   }
   openModal('overlay-rdv');
   setTimeout(()=>document.getElementById('f-name').focus(),300);
@@ -547,7 +577,7 @@ function saveRdv() {
   const date=document.getElementById('f-date').value||selectedDay, time=document.getElementById('f-time').value;
   const newKey=rdvKey(date,time), rdvs=DB.get('rdvs');
   if(editingRdvKey&&editingRdvKey!==newKey) delete rdvs[editingRdvKey];
-  rdvs[newKey]={name,tel:document.getElementById('f-tel').value.trim(),time,prestation:document.getElementById('f-prestation').value,dep:document.getElementById('f-dep').value==='10',prolongation:document.getElementById('f-prolongation').checked,note:document.getElementById('f-note').value.trim()};
+  rdvs[newKey]={name,tel:document.getElementById('f-tel').value.trim(),time,prestation:document.getElementById('f-prestation').value,dep:document.getElementById('f-dep').value==='10',prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment,note:document.getElementById('f-note').value.trim()};
   DB.set('rdvs',rdvs); selectedDay=date;
   closeModal('overlay-rdv');
   if(currentView==='semaine') buildPlanning(); else buildMonth();
