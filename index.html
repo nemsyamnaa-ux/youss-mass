@@ -33,6 +33,14 @@
     .stat { flex: 1; background: var(--white); border-radius: 12px; padding: 10px 6px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
     .stat-val { font-size: 1.25rem; color: var(--rose); font-weight: 700; }
     .stat-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--warm); margin-top: 2px; }
+    .stats-pay { display: flex; gap: 8px; padding: 0 14px 10px; }
+    .stat-pay { flex: 1; border-radius: 12px; padding: 8px 6px; text-align: center; }
+    .stat-pay.especes { background: #eaf3eb; }
+    .stat-pay.virement { background: #e6eef8; }
+    .stat-pay-val { font-size: 1.05rem; font-weight: 700; }
+    .stat-pay.especes .stat-pay-val { color: var(--green); }
+    .stat-pay.virement .stat-pay-val { color: #5b8ac9; }
+    .stat-pay-lbl { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warm); margin-top: 1px; }
     .days-strip { display: flex; overflow-x: auto; gap: 7px; padding: 10px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     .days-strip::-webkit-scrollbar { display: none; }
     .day-pill { flex-shrink: 0; background: var(--white); border-radius: 14px; padding: 8px 12px; text-align: center; cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 8px rgba(59,42,42,0.06); min-width: 54px; transition: all 0.15s; }
@@ -175,9 +183,13 @@
     </div>
   </div>
   <div class="stats">
-    <div class="stat"><div class="stat-val" id="s-rdv">0</div><div class="stat-lbl">RDV semaine</div></div>
-    <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Recettes</div></div>
+    <div class="stat"><div class="stat-val" id="s-rdv">0</div><div class="stat-lbl">RDV</div></div>
+    <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Total</div></div>
     <div class="stat"><div class="stat-val" id="s-h">0h</div><div class="stat-lbl">Heures</div></div>
+  </div>
+  <div class="stats-pay">
+    <div class="stat-pay especes"><div class="stat-pay-val" id="s-especes">0€</div><div class="stat-pay-lbl">💵 Espèces</div></div>
+    <div class="stat-pay virement"><div class="stat-pay-val" id="s-virement">0€</div><div class="stat-pay-lbl">🏦 Virement</div></div>
   </div>
   <div id="notif-banner-wrap"></div>
   <div id="view-semaine">
@@ -240,7 +252,21 @@
         </optgroup>
       </select>
     </div>
-    <div class="form-group"><label>Déplacement</label><select id="f-dep"><option value="0">Non</option><option value="10">Oui +10€</option></select></div>
+    <div class="form-group">
+      <label>Déplacement</label>
+      <select id="f-dep" onchange="toggleKmField()">
+        <option value="0">Non</option>
+        <option value="1">Oui</option>
+      </select>
+    </div>
+    <div class="form-group" id="km-group" style="display:none">
+      <label>Distance du déplacement</label>
+      <select id="f-km">
+        <option value="10">Jusqu'à 30km — +10€</option>
+        <option value="15">30 à 40km — +15€</option>
+        <option value="20">Plus de 40km — +20€</option>
+      </select>
+    </div>
     <div class="form-group">
       <label>Supplément</label>
       <label class="checkbox-group">
@@ -337,6 +363,14 @@ function setPayment(mode) {
   document.getElementById('pay-especes').classList.toggle('active', mode === 'especes');
   document.getElementById('pay-virement').classList.toggle('active', mode === 'virement');
 }
+function toggleKmField() {
+  const dep = document.getElementById('f-dep').value;
+  document.getElementById('km-group').style.display = dep === '1' ? 'block' : 'none';
+}
+function depPrix(r) {
+  if (!r.dep) return 0;
+  return r.km ? parseFloat(r.km) : 10;
+}
 
 function getBlockedSlots(rdvs) {
   const blocked = new Set();
@@ -419,7 +453,18 @@ function switchTab(tab) {
 }
 
 function calcTotal(r, p) {
-  return p.prix + (r.dep?10:0) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0);
+  return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0);
+}
+
+function updatePaymentStats(allRdvs) {
+  let especes = 0, virement = 0;
+  allRdvs.forEach(r => {
+    const p = PRESTATIONS[r.prestation]||{prix:40};
+    const total = calcTotal(r, p);
+    if (r.payment === 'virement') virement += total; else especes += total;
+  });
+  document.getElementById('s-especes').textContent = especes + '€';
+  document.getElementById('s-virement').textContent = virement + '€';
 }
 
 function buildPlanning() {
@@ -463,7 +508,7 @@ function buildPlanning() {
       const total=calcTotal(r,p);
       const payBadge = r.payment === 'virement' ? '<span class="pay-badge virement">🏦 Virement</span>' : '<span class="pay-badge especes">💵 Espèces</span>';
       const tipBadge = r.pourboire && parseFloat(r.pourboire) > 0 ? `<span class="tip-badge">💰 +${r.pourboire}€</span>` : '';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
     } else if (cng) {
@@ -481,11 +526,13 @@ function buildPlanning() {
     item.appendChild(timeEl); item.appendChild(area); list.appendChild(item);
   });
   let count=0,ca=0,mins=0;
-  dates.forEach(d=>{HOURS.forEach(h=>{const r=DB.get('rdvs')[rdvKey(fmtDate(d),h)];if(r){const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);}});});
+  const weekRdvs = [];
+  dates.forEach(d=>{HOURS.forEach(h=>{const r=DB.get('rdvs')[rdvKey(fmtDate(d),h)];if(r){const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);weekRdvs.push(r);}});});
   document.getElementById('s-rdv').textContent=count;
   document.getElementById('s-ca').textContent=ca+'€';
   const hh=Math.floor(mins/60),mm=mins%60;
   document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
+  updatePaymentStats(weekRdvs);
 }
 
 function buildMonth() {
@@ -531,17 +578,19 @@ function buildMonth() {
       const payBadge = r.payment === 'virement' ? '<span class="pay-badge virement">🏦 Virement</span>' : '<span class="pay-badge especes">💵 Espèces</span>';
       const tipBadge = r.pourboire && parseFloat(r.pourboire) > 0 ? `<span class="tip-badge">💰 +${r.pourboire}€</span>` : '';
       const item=document.createElement('div'); item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗':''}${r.prolongation?' · ⏱+20min':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
   }
   let count=0,ca=0,mins=0;
-  Object.values(rdvs).forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);});
+  const allRdvs = Object.values(rdvs);
+  allRdvs.forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);});
   document.getElementById('s-rdv').textContent=count;
   document.getElementById('s-ca').textContent=ca+'€';
   const hh=Math.floor(mins/60),mm=mins%60;
   document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
+  updatePaymentStats(allRdvs);
 }
 
 function openRdvModal(key, defaultHour) {
@@ -559,14 +608,16 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-date').value=key.split('_')[0];
     document.getElementById('f-time').value=r.time||key.split('_')[1];
     document.getElementById('f-prestation').value=r.prestation||'classic_60';
-    document.getElementById('f-dep').value=r.dep?'10':'0';
+    document.getElementById('f-dep').value=r.dep?'1':'0';
+    document.getElementById('f-km').value=r.km||'10';
+    toggleKmField();
     document.getElementById('f-prolongation').checked=r.prolongation||false;
     document.getElementById('f-pourboire').value=r.pourboire||'';
     setPayment(r.payment||'especes');
     document.getElementById('f-note').value=r.note||'';
     if(r.tel) document.getElementById('btn-wa-rappel').style.display='flex';
   } else {
-    document.getElementById('f-name').value=''; document.getElementById('f-tel').value=''; document.getElementById('f-date').value=selectedDay; document.getElementById('f-time').value=defaultHour||'10:00'; document.getElementById('f-prestation').value='classic_60'; document.getElementById('f-dep').value='0'; document.getElementById('f-prolongation').checked=false; document.getElementById('f-pourboire').value=''; setPayment('especes'); document.getElementById('f-note').value='';
+    document.getElementById('f-name').value=''; document.getElementById('f-tel').value=''; document.getElementById('f-date').value=selectedDay; document.getElementById('f-time').value=defaultHour||'10:00'; document.getElementById('f-prestation').value='classic_60'; document.getElementById('f-dep').value='0'; document.getElementById('f-km').value='10'; toggleKmField(); document.getElementById('f-prolongation').checked=false; document.getElementById('f-pourboire').value=''; setPayment('especes'); document.getElementById('f-note').value='';
   }
   openModal('overlay-rdv');
   setTimeout(()=>document.getElementById('f-name').focus(),300);
@@ -577,7 +628,8 @@ function saveRdv() {
   const date=document.getElementById('f-date').value||selectedDay, time=document.getElementById('f-time').value;
   const newKey=rdvKey(date,time), rdvs=DB.get('rdvs');
   if(editingRdvKey&&editingRdvKey!==newKey) delete rdvs[editingRdvKey];
-  rdvs[newKey]={name,tel:document.getElementById('f-tel').value.trim(),time,prestation:document.getElementById('f-prestation').value,dep:document.getElementById('f-dep').value==='10',prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment,note:document.getElementById('f-note').value.trim()};
+  const depOn = document.getElementById('f-dep').value==='1';
+  rdvs[newKey]={name,tel:document.getElementById('f-tel').value.trim(),time,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment,note:document.getElementById('f-note').value.trim()};
   DB.set('rdvs',rdvs); selectedDay=date;
   closeModal('overlay-rdv');
   if(currentView==='semaine') buildPlanning(); else buildMonth();
