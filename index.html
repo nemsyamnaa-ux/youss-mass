@@ -163,6 +163,7 @@
     .pay-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 4px; }
     .pay-badge.especes { background: #eaf3eb; color: var(--green); }
     .pay-badge.virement { background: #e6eef8; color: #5b8ac9; }
+    .auto-badge { background: #fdf3e3; color: var(--gold); font-size: 0.6rem; padding: 2px 6px; border-radius: 6px; font-weight: 700; margin-left: 6px; }
   </style>
 </head>
 <body>
@@ -227,8 +228,8 @@
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title"><span id="rdv-modal-title">Nouveau RDV</span><button class="close-btn" onclick="closeModal('overlay-rdv')">✕</button></div>
-    <div class="form-group"><label>Prénom de la cliente</label><input type="text" id="f-name" placeholder="Ex : Sophie"/></div>
-    <div class="form-group"><label>📞 Téléphone de la cliente</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX"/></div>
+    <div class="form-group"><label>Prénom de la cliente</label><input type="text" id="f-name" placeholder="Ex : Sophie" oninput="autoFillFromCliente()"/></div>
+    <div class="form-group"><label>📞 Téléphone</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX"/></div>
     <div class="form-row">
       <div class="form-group"><label>Date</label><input type="date" id="f-date"/></div>
       <div class="form-group"><label>Heure</label><input type="time" id="f-time" value="10:00"/></div>
@@ -252,21 +253,17 @@
         </optgroup>
       </select>
     </div>
-    <div class="form-group">
-      <label>Déplacement</label>
-      <select id="f-dep" onchange="toggleKmField()">
-        <option value="0">Non</option>
-        <option value="1">Oui</option>
-      </select>
-    </div>
+    <div class="form-group"><label>Déplacement</label><select id="f-dep" onchange="toggleKmField()"><option value="0">Non</option><option value="1">Oui</option></select></div>
     <div class="form-group" id="km-group" style="display:none">
-      <label>Distance du déplacement</label>
+      <label>Distance</label>
       <select id="f-km">
         <option value="10">Jusqu'à 30km — +10€</option>
         <option value="15">30 à 40km — +15€</option>
         <option value="20">Plus de 40km — +20€</option>
       </select>
     </div>
+    <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="f-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
+    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="f-details" placeholder="2ème étage, code 1234, sonner 2 fois..."/></div>
     <div class="form-group">
       <label>Supplément</label>
       <label class="checkbox-group">
@@ -288,7 +285,6 @@
         </div>
       </div>
     </div>
-    <div class="form-group"><label>📍 Adresse / Infos</label><input type="text" id="f-note" placeholder="Adresse, infos importantes..."/></div>
     <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
     <button class="btn-whatsapp" id="btn-wa-rappel" onclick="sendWaRappel()" style="display:none">📲 Envoyer rappel WhatsApp</button>
     <button class="btn-danger" id="btn-delete-rdv" onclick="deleteRdv()" style="display:none">🗑 Supprimer ce RDV</button>
@@ -302,12 +298,14 @@
       <div class="form-group"><label>Prénom</label><input type="text" id="c-prenom" placeholder="Sophie"/></div>
       <div class="form-group"><label>Nom</label><input type="text" id="c-nom" placeholder="Martin"/></div>
     </div>
-    <div class="form-group"><label>Téléphone</label><input type="tel" id="c-tel" placeholder="06 XX XX XX XX"/></div>
+    <div class="form-group"><label>📞 Téléphone</label><input type="tel" id="c-tel" placeholder="06 XX XX XX XX"/></div>
+    <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="c-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
+    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="c-details" placeholder="2ème étage, code 1234, sonner 2 fois..."/></div>
     <div class="form-row">
       <div class="form-group"><label>Comment trouvée ?</label><select id="c-source"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Bouche à oreille">Bouche à oreille</option><option value="WhatsApp">WhatsApp</option><option value="Autre">Autre</option></select></div>
       <div class="form-group"><label>Séances total</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
     </div>
-    <div class="form-group"><label>Préférences / Notes</label><textarea id="c-notes" placeholder="Préférences de massage, adresse, infos importantes..."></textarea></div>
+    <div class="form-group"><label>Préférences / Notes</label><textarea id="c-notes" placeholder="Préférences de massage, infos importantes..."></textarea></div>
     <button class="btn-primary" onclick="saveCliente()">✔ Enregistrer</button>
     <button class="btn-danger" id="btn-delete-cliente" onclick="deleteCliente()" style="display:none">🗑 Supprimer cette cliente</button>
   </div>
@@ -364,17 +362,43 @@ function setPayment(mode) {
   document.getElementById('pay-virement').classList.toggle('active', mode === 'virement');
 }
 function toggleKmField() {
-  const dep = document.getElementById('f-dep').value;
-  document.getElementById('km-group').style.display = dep === '1' ? 'block' : 'none';
+  document.getElementById('km-group').style.display = document.getElementById('f-dep').value === '1' ? 'block' : 'none';
 }
-function depPrix(r) {
-  if (!r.dep) return 0;
-  return r.km ? parseFloat(r.km) : 10;
+function depPrix(r) { return r.dep ? (parseFloat(r.km)||10) : 0; }
+function calcTotal(r, p) { return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0); }
+
+// Auto-remplissage depuis le carnet clientes
+function autoFillFromCliente() {
+  const name = document.getElementById('f-name').value.trim().toLowerCase();
+  if (!name) return;
+  const clientes = DB.get('clientes');
+  const match = clientes.find(c => c.prenom.toLowerCase() === name);
+  if (match) {
+    if (match.tel && !document.getElementById('f-tel').value) document.getElementById('f-tel').value = match.tel;
+    if (match.adresse && !document.getElementById('f-adresse').value) document.getElementById('f-adresse').value = match.adresse;
+    if (match.details && !document.getElementById('f-details').value) document.getElementById('f-details').value = match.details;
+  }
+}
+
+// Mise à jour automatique du carnet clientes depuis un RDV
+function syncClienteFromRdv(name, tel, adresse, details) {
+  if (!name) return;
+  const clientes = DB.get('clientes');
+  const idx = clientes.findIndex(c => c.prenom.toLowerCase() === name.toLowerCase());
+  if (idx >= 0) {
+    if (tel) clientes[idx].tel = tel;
+    if (adresse) clientes[idx].adresse = adresse;
+    if (details) clientes[idx].details = details;
+    clientes[idx].seances = (clientes[idx].seances || 0) + (editingRdvKey ? 0 : 1);
+    DB.set('clientes', clientes);
+  } else {
+    clientes.push({ id: Date.now().toString(), prenom: name, nom: '', tel: tel||'', adresse: adresse||'', details: details||'', source: 'Planning', seances: 1, notes: '' });
+    DB.set('clientes', clientes);
+  }
 }
 
 function getBlockedSlots(rdvs) {
-  const blocked = new Set();
-  const travel = new Set();
+  const blocked = new Set(), travel = new Set();
   Object.entries(rdvs).forEach(([key,r]) => {
     const [date,time] = key.split('_');
     const p = PRESTATIONS[r.prestation]||{duree:60};
@@ -383,12 +407,9 @@ function getBlockedSlots(rdvs) {
     const slots = Math.ceil(total/30);
     for (let i=1; i<slots; i++) blocked.add(date+'_'+minsToTime(start+i*30));
     if (r.dep) {
-      for (let i=1; i<=2; i++) {
-        const t = minsToTime(start - i*30);
-        if (start - i*30 >= 0) travel.add(date+'_'+t);
-      }
-      const endSlot = start + slots*30;
-      for (let i=0; i<2; i++) travel.add(date+'_'+minsToTime(endSlot+i*30));
+      for (let i=1; i<=2; i++) { const t=minsToTime(start-i*30); if(start-i*30>=0) travel.add(date+'_'+t); }
+      const end = start+slots*30;
+      for (let i=0; i<2; i++) travel.add(date+'_'+minsToTime(end+i*30));
     }
   });
   return { blocked, travel };
@@ -398,135 +419,99 @@ function sendWaRappel() {
   if (!currentRdvForWa) return;
   const r = currentRdvForWa;
   const tel = r.tel ? r.tel.replace(/\s/g,'').replace(/^0/,'+33') : '';
-  if (!tel) { alert('Pas de numéro de téléphone pour cette cliente !'); return; }
+  if (!tel) { alert('Pas de numéro de téléphone !'); return; }
   const p = PRESTATIONS[r.prestation]||{label:'massage'};
-  const msg = `Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain à ${r.time} pour un ${p.label}.\n\nMerci de confirmer votre présence en répondant à ce message 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom`;
+  const msg = `Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain à ${r.time} pour un ${p.label}.\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom`;
   window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg), '_blank');
 }
-function sendWaFromCard(key) {
-  const r = DB.get('rdvs')[key];
-  if (!r || !r.tel) return;
-  currentRdvForWa = r;
-  sendWaRappel();
-}
+function sendWaFromCard(key) { const r=DB.get('rdvs')[key]; if(!r||!r.tel) return; currentRdvForWa=r; sendWaRappel(); }
 
 function showNotifBanner() {
   const wrap = document.getElementById('notif-banner-wrap');
   if (!('Notification' in window)) { wrap.innerHTML=''; return; }
-  if (Notification.permission==='granted') wrap.innerHTML='<div class="notif-banner ok">🔔 Notifications activées — prévenue 1h avant chaque RDV</div>';
-  else if (Notification.permission==='denied') wrap.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées — active-les dans Réglages</div>';
-  else wrap.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Appuie ici pour activer les notifications 👆</div>';
+  if (Notification.permission==='granted') wrap.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';
+  else if (Notification.permission==='denied') wrap.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';
+  else wrap.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications RDV 👆</div>';
 }
 async function askNotif() { await Notification.requestPermission(); showNotifBanner(); scheduleAllNotifs(); }
 function scheduleAllNotifs() {
   if (Notification.permission!=='granted') return;
-  const rdvs = DB.get('rdvs'), now = Date.now();
+  const rdvs=DB.get('rdvs'), now=Date.now();
   Object.entries(rdvs).forEach(([key,r]) => {
-    const [date,time] = key.split('_');
-    const delay = new Date(date+'T'+time+':00').getTime()-60*60*1000-now;
-    if (delay>0 && delay<7*24*60*60*1000) {
-      setTimeout(() => {
-        const p = PRESTATIONS[r.prestation];
-        new Notification('🌸 RDV dans 1h — Youss Mass', { body: `💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.note?' · 📍 '+r.note:''}` });
-      }, delay);
-    }
+    const [date,time]=key.split('_');
+    const delay=new Date(date+'T'+time+':00').getTime()-60*60*1000-now;
+    if(delay>0&&delay<7*24*60*60*1000) setTimeout(()=>{const p=PRESTATIONS[r.prestation]; new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.adresse?' · 📍 '+r.adresse:''}`});},delay);
   });
 }
 
 function setView(v) {
-  currentView = v;
-  document.getElementById('view-semaine').style.display = v==='semaine'?'block':'none';
-  document.getElementById('view-mois').style.display = v==='mois'?'block':'none';
-  document.getElementById('btn-semaine').classList.toggle('active', v==='semaine');
-  document.getElementById('btn-mois').classList.toggle('active', v==='mois');
-  if (v==='semaine') buildPlanning(); else buildMonth();
+  currentView=v;
+  document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';
+  document.getElementById('view-mois').style.display=v==='mois'?'block':'none';
+  document.getElementById('btn-semaine').classList.toggle('active',v==='semaine');
+  document.getElementById('btn-mois').classList.toggle('active',v==='mois');
+  if(v==='semaine') buildPlanning(); else buildMonth();
 }
-function navPrev() { if (currentView==='semaine') { weekOffset--; buildPlanning(); } else { monthOffset--; buildMonth(); } }
-function navNext() { if (currentView==='semaine') { weekOffset++; buildPlanning(); } else { monthOffset++; buildMonth(); } }
-function goToday() { weekOffset=0; monthOffset=0; selectedDay=fmtDate(new Date()); if (currentView==='semaine') buildPlanning(); else buildMonth(); }
+function navPrev() { if(currentView==='semaine'){weekOffset--;buildPlanning();}else{monthOffset--;buildMonth();} }
+function navNext() { if(currentView==='semaine'){weekOffset++;buildPlanning();}else{monthOffset++;buildMonth();} }
+function goToday() { weekOffset=0;monthOffset=0;selectedDay=fmtDate(new Date());if(currentView==='semaine')buildPlanning();else buildMonth(); }
 function switchTab(tab) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+tab).classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
-  if (tab==='clientes') renderClientes();
+  if(tab==='clientes') renderClientes();
 }
-
-function calcTotal(r, p) {
-  return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0);
-}
-
 function updatePaymentStats(allRdvs) {
-  let especes = 0, virement = 0;
-  allRdvs.forEach(r => {
-    const p = PRESTATIONS[r.prestation]||{prix:40};
-    const total = calcTotal(r, p);
-    if (r.payment === 'virement') virement += total; else especes += total;
-  });
-  document.getElementById('s-especes').textContent = especes + '€';
-  document.getElementById('s-virement').textContent = virement + '€';
+  let esp=0,vir=0;
+  allRdvs.forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40};const t=calcTotal(r,p);if(r.payment==='virement')vir+=t;else esp+=t;});
+  document.getElementById('s-especes').textContent=esp+'€';
+  document.getElementById('s-virement').textContent=vir+'€';
 }
 
 function buildPlanning() {
-  const dates = getWeekDates(weekOffset), today = fmtDate(new Date());
-  const s=dates[0], e=dates[6];
-  document.getElementById('week-label').textContent = s.getDate()+' '+MONTHS[s.getMonth()]+' – '+e.getDate()+' '+MONTHS[e.getMonth()];
-  const strip = document.getElementById('days-strip');
-  strip.innerHTML='';
-  dates.forEach((d,i) => {
-    const ds=fmtDate(d), pill=document.createElement('div');
-    const cng = isConge(ds);
+  const dates=getWeekDates(weekOffset), today=fmtDate(new Date());
+  const s=dates[0],e=dates[6];
+  document.getElementById('week-label').textContent=s.getDate()+' '+MONTHS[s.getMonth()]+' – '+e.getDate()+' '+MONTHS[e.getMonth()];
+  const strip=document.getElementById('days-strip'); strip.innerHTML='';
+  dates.forEach((d,i)=>{
+    const ds=fmtDate(d),pill=document.createElement('div');
+    const cng=isConge(ds);
     pill.className='day-pill'+(ds===selectedDay?' active':'')+(ds===today?' today':'')+(cng?' conge':'');
     const count=Object.keys(DB.get('rdvs')).filter(k=>k.startsWith(ds+'_')).length;
-    pill.innerHTML=`<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count||'🏖'}</div>`;
+    pill.innerHTML=`<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count}</div>`;
     pill.onclick=()=>{selectedDay=ds;buildPlanning();};
     strip.appendChild(pill);
   });
-  const sel=new Date(selectedDay+'T12:00:00'), di=(sel.getDay()+6)%7;
-  const cng = isConge(selectedDay);
-  const titleLabel = DAYS_LONG[di]+' '+sel.getDate()+' '+MONTHS[sel.getMonth()];
-  const btnLabel = cng ? '🏖 Congé — Retirer' : '🏖 Bloquer congé';
-  const btnClass = cng ? 'btn-conge on' : 'btn-conge off';
-  document.getElementById('day-title-wrap').innerHTML = `<span>${titleLabel}</span><button class="${btnClass}" onclick="toggleConge('${selectedDay}')">${btnLabel}</button>`;
-
-  const congeBanner = document.getElementById('conge-banner-wrap');
-  congeBanner.innerHTML = cng ? '<div class="conge-banner">🏖 Jour de congé — aucune réservation possible</div>' : '';
-
+  const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7;
+  const cng=isConge(selectedDay);
+  document.getElementById('day-title-wrap').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
+  document.getElementById('conge-banner-wrap').innerHTML=cng?'<div class="conge-banner">🏖 Jour de congé</div>':'';
   const rdvs=DB.get('rdvs');
-  const { blocked, travel } = getBlockedSlots(rdvs);
-  const list=document.getElementById('slots-list');
-  list.innerHTML='';
-  HOURS.forEach(h => {
-    const key=rdvKey(selectedDay,h), item=document.createElement('div');
+  const {blocked,travel}=getBlockedSlots(rdvs);
+  const list=document.getElementById('slots-list'); list.innerHTML='';
+  HOURS.forEach(h=>{
+    const key=rdvKey(selectedDay,h),item=document.createElement('div');
     item.className='slot-item';
     const timeEl=document.createElement('div'); timeEl.className='slot-time'; timeEl.textContent=h;
     const area=document.createElement('div'); area.className='slot-area';
-    if (rdvs[key]) {
-      const r=rdvs[key], p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
+    if(rdvs[key]){
+      const r=rdvs[key],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
       area.className+=' has-rdv';
       const card=document.createElement('div'); card.className='rdv-card '+p.color;
       const total=calcTotal(r,p);
-      const payBadge = r.payment === 'virement' ? '<span class="pay-badge virement">🏦 Virement</span>' : '<span class="pay-badge especes">💵 Espèces</span>';
-      const tipBadge = r.pourboire && parseFloat(r.pourboire) > 0 ? `<span class="tip-badge">💰 +${r.pourboire}€</span>` : '';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
+      const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
+      const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.adresse?' · 📍 '+r.adresse:''}</div>${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
-    } else if (cng) {
-      area.className+=' conge-slot';
-    } else if (blocked.has(key)) {
-      area.className+=' blocked';
-    } else if (travel.has(key)) {
-      area.className+=' travel';
-      area.innerHTML='<div class="travel-label">🚗 Trajet</div>';
-    } else {
-      area.className+=' empty';
-      area.innerHTML='<span class="slot-add">＋</span>';
-      area.onclick=()=>openRdvModal(null,h);
-    }
-    item.appendChild(timeEl); item.appendChild(area); list.appendChild(item);
+    } else if(cng){area.className+=' conge-slot';}
+    else if(blocked.has(key)){area.className+=' blocked';}
+    else if(travel.has(key)){area.className+=' travel';area.innerHTML='<div class="travel-label">🚗 Trajet</div>';}
+    else{area.className+=' empty';area.innerHTML='<span class="slot-add">＋</span>';area.onclick=()=>openRdvModal(null,h);}
+    item.appendChild(timeEl);item.appendChild(area);list.appendChild(item);
   });
-  let count=0,ca=0,mins=0;
-  const weekRdvs = [];
+  let count=0,ca=0,mins=0;const weekRdvs=[];
   dates.forEach(d=>{HOURS.forEach(h=>{const r=DB.get('rdvs')[rdvKey(fmtDate(d),h)];if(r){const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);weekRdvs.push(r);}});});
   document.getElementById('s-rdv').textContent=count;
   document.getElementById('s-ca').textContent=ca+'€';
@@ -536,18 +521,18 @@ function buildPlanning() {
 }
 
 function buildMonth() {
-  const now=new Date(), year=now.getFullYear(), month=now.getMonth()+monthOffset;
+  const now=new Date(),year=now.getFullYear(),month=now.getMonth()+monthOffset;
   const d=new Date(year,month,1);
   const mName=MONTHS[d.getMonth()]+' '+d.getFullYear();
   document.getElementById('week-label').textContent=mName.charAt(0).toUpperCase()+mName.slice(1);
   const firstDay=new Date(d.getFullYear(),d.getMonth(),1);
   const lastDay=new Date(d.getFullYear(),d.getMonth()+1,0);
-  let startDow=firstDay.getDay(); if(startDow===0) startDow=7;
-  const cells=document.getElementById('month-cells'); cells.innerHTML='';
-  const rdvs=DB.get('rdvs'), today=fmtDate(new Date());
+  let startDow=firstDay.getDay();if(startDow===0)startDow=7;
+  const cells=document.getElementById('month-cells');cells.innerHTML='';
+  const rdvs=DB.get('rdvs'),today=fmtDate(new Date());
   for(let i=1;i<startDow;i++){const prev=new Date(d.getFullYear(),d.getMonth(),1-(startDow-i));const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${prev.getDate()}</div>`;cells.appendChild(cell);}
   for(let day=1;day<=lastDay.getDate();day++){
-    const dd=new Date(d.getFullYear(),d.getMonth(),day), ds=fmtDate(dd);
+    const dd=new Date(d.getFullYear(),d.getMonth(),day),ds=fmtDate(dd);
     const cng=isConge(ds);
     const cell=document.createElement('div');
     cell.className='month-cell'+(ds===today?' today':'')+(ds===selectedDay?' selected':'')+(cng?' conge':'');
@@ -559,32 +544,27 @@ function buildMonth() {
   }
   const remaining=(7-cells.children.length%7)%7;
   for(let i=1;i<=remaining;i++){const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${i}</div>`;cells.appendChild(cell);}
-  const sel=new Date(selectedDay+'T12:00:00'), di=(sel.getDay()+6)%7;
+  const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7;
   const cng=isConge(selectedDay);
-  const titleLabel=DAYS_LONG[di]+' '+sel.getDate()+' '+MONTHS[sel.getMonth()];
-  const btnLabel=cng?'🏖 Congé — Retirer':'🏖 Bloquer congé';
-  const btnClass=cng?'btn-conge on':'btn-conge off';
-  document.getElementById('month-selected-day').innerHTML=`<span>${titleLabel}</span><button class="${btnClass}" onclick="toggleConge('${selectedDay}')">${btnLabel}</button>`;
-  const congeBanner=document.getElementById('month-conge-banner');
-  congeBanner.innerHTML = cng ? '<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>' : '';
+  document.getElementById('month-selected-day').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
+  document.getElementById('month-conge-banner').innerHTML=cng?'<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>':'';
   const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
   const rdvList=document.getElementById('month-rdv-list');
-  if(dayRdvs.length===0){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour — appuie sur ＋ pour en ajouter</div>';}
+  if(dayRdvs.length===0){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}
   else{
     rdvList.innerHTML='';
     dayRdvs.forEach(([key,r])=>{
-      const time=key.split('_')[1], p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
+      const time=key.split('_')[1],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
       const total=calcTotal(r,p);
-      const payBadge = r.payment === 'virement' ? '<span class="pay-badge virement">🏦 Virement</span>' : '<span class="pay-badge especes">💵 Espèces</span>';
-      const tipBadge = r.pourboire && parseFloat(r.pourboire) > 0 ? `<span class="tip-badge">💰 +${r.pourboire}€</span>` : '';
-      const item=document.createElement('div'); item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}${r.note?' · 📍 '+r.note:''}</div><div style="margin-top:4px">${payBadge}${tipBadge}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WhatsApp</button></div>`:''}`;
+      const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
+      const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
+      const item=document.createElement('div');item.className='month-rdv-item';
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.adresse?' · 📍 '+r.adresse:''}</div>${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
   }
-  let count=0,ca=0,mins=0;
-  const allRdvs = Object.values(rdvs);
+  let count=0,ca=0,mins=0;const allRdvs=Object.values(rdvs);
   allRdvs.forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);});
   document.getElementById('s-rdv').textContent=count;
   document.getElementById('s-ca').textContent=ca+'€';
@@ -594,7 +574,7 @@ function buildMonth() {
 }
 
 function openRdvModal(key, defaultHour) {
-  if (isConge(selectedDay) && !key) { alert('Ce jour est bloqué en congé 🏖'); return; }
+  if(isConge(selectedDay)&&!key){alert('Jour de congé 🏖');return;}
   editingRdvKey=key||null;
   document.getElementById('rdv-modal-title').textContent=key?'✏️ Modifier le RDV':'➕ Nouveau RDV';
   document.getElementById('btn-delete-rdv').style.display=key?'block':'none';
@@ -611,70 +591,96 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-dep').value=r.dep?'1':'0';
     document.getElementById('f-km').value=r.km||'10';
     toggleKmField();
+    document.getElementById('f-adresse').value=r.adresse||'';
+    document.getElementById('f-details').value=r.details||'';
     document.getElementById('f-prolongation').checked=r.prolongation||false;
     document.getElementById('f-pourboire').value=r.pourboire||'';
     setPayment(r.payment||'especes');
-    document.getElementById('f-note').value=r.note||'';
     if(r.tel) document.getElementById('btn-wa-rappel').style.display='flex';
   } else {
-    document.getElementById('f-name').value=''; document.getElementById('f-tel').value=''; document.getElementById('f-date').value=selectedDay; document.getElementById('f-time').value=defaultHour||'10:00'; document.getElementById('f-prestation').value='classic_60'; document.getElementById('f-dep').value='0'; document.getElementById('f-km').value='10'; toggleKmField(); document.getElementById('f-prolongation').checked=false; document.getElementById('f-pourboire').value=''; setPayment('especes'); document.getElementById('f-note').value='';
+    document.getElementById('f-name').value='';
+    document.getElementById('f-tel').value='';
+    document.getElementById('f-date').value=selectedDay;
+    document.getElementById('f-time').value=defaultHour||'10:00';
+    document.getElementById('f-prestation').value='classic_60';
+    document.getElementById('f-dep').value='0';
+    document.getElementById('f-km').value='10';
+    toggleKmField();
+    document.getElementById('f-adresse').value='';
+    document.getElementById('f-details').value='';
+    document.getElementById('f-prolongation').checked=false;
+    document.getElementById('f-pourboire').value='';
+    setPayment('especes');
   }
   openModal('overlay-rdv');
   setTimeout(()=>document.getElementById('f-name').focus(),300);
 }
+
 function saveRdv() {
   const name=document.getElementById('f-name').value.trim();
   if(!name){document.getElementById('f-name').focus();return;}
-  const date=document.getElementById('f-date').value||selectedDay, time=document.getElementById('f-time').value;
-  const newKey=rdvKey(date,time), rdvs=DB.get('rdvs');
+  const date=document.getElementById('f-date').value||selectedDay,time=document.getElementById('f-time').value;
+  const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
   if(editingRdvKey&&editingRdvKey!==newKey) delete rdvs[editingRdvKey];
-  const depOn = document.getElementById('f-dep').value==='1';
-  rdvs[newKey]={name,tel:document.getElementById('f-tel').value.trim(),time,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment,note:document.getElementById('f-note').value.trim()};
-  DB.set('rdvs',rdvs); selectedDay=date;
+  const depOn=document.getElementById('f-dep').value==='1';
+  const adresse=document.getElementById('f-adresse').value.trim();
+  const details=document.getElementById('f-details').value.trim();
+  const tel=document.getElementById('f-tel').value.trim();
+  rdvs[newKey]={name,tel,time,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
+  DB.set('rdvs',rdvs);
+  syncClienteFromRdv(name,tel,adresse,details);
+  selectedDay=date;
   closeModal('overlay-rdv');
-  if(currentView==='semaine') buildPlanning(); else buildMonth();
+  if(currentView==='semaine')buildPlanning();else buildMonth();
   scheduleAllNotifs();
 }
+
 function deleteRdv() {
   if(!editingRdvKey) return;
-  const rdvs=DB.get('rdvs'); delete rdvs[editingRdvKey]; DB.set('rdvs',rdvs);
+  const rdvs=DB.get('rdvs');delete rdvs[editingRdvKey];DB.set('rdvs',rdvs);
   closeModal('overlay-rdv');
-  if(currentView==='semaine') buildPlanning(); else buildMonth();
+  if(currentView==='semaine')buildPlanning();else buildMonth();
 }
+
 function renderClientes(filter) {
   let clientes=DB.get('clientes');
   if(filter) clientes=clientes.filter(c=>(c.prenom+' '+c.nom).toLowerCase().includes(filter.toLowerCase()));
-  const list=document.getElementById('clientes-list'); list.innerHTML='';
-  if(clientes.length===0){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes\nAppuie sur + pour en ajouter une !'}</p></div>`;return;}
+  const list=document.getElementById('clientes-list');list.innerHTML='';
+  if(clientes.length===0){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
   clientes.forEach(c=>{
-    const card=document.createElement('div'); card.className='cliente-card';
-    card.innerHTML=`<div class="cliente-avatar">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}</div><div class="cliente-sub">${c.tel||''}${c.source?' · '+c.source:''}</div>${c.notes?`<div class="cliente-sub" style="margin-top:3px;font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}</div><div class="cliente-badge">${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>`;
-    card.onclick=()=>openClienteModal(c.id); list.appendChild(card);
+    const card=document.createElement('div');card.className='cliente-card';
+    card.innerHTML=`<div class="cliente-avatar">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}</div><div class="cliente-sub">${c.tel||''}${c.source?' · '+c.source:''}</div>${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''} ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''} ${c.notes?`<div class="cliente-sub" style="font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}</div><div class="cliente-badge">${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>`;
+    card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
   });
 }
+
 function filterClientes(){renderClientes(document.getElementById('search-input').value);}
+
 function openClienteModal(id){
   editingClienteId=id||null;
   document.getElementById('cliente-modal-title').textContent=id?'✏️ Modifier':'➕ Nouvelle cliente';
   document.getElementById('btn-delete-cliente').style.display=id?'block':'none';
-  if(id){const c=DB.get('clientes').find(x=>x.id===id);if(c){document.getElementById('c-prenom').value=c.prenom||'';document.getElementById('c-nom').value=c.nom||'';document.getElementById('c-tel').value=c.tel||'';document.getElementById('c-source').value=c.source||'Instagram';document.getElementById('c-seances').value=c.seances||0;document.getElementById('c-notes').value=c.notes||'';}}
-  else{document.getElementById('c-prenom').value='';document.getElementById('c-nom').value='';document.getElementById('c-tel').value='';document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';document.getElementById('c-notes').value='';}
+  if(id){const c=DB.get('clientes').find(x=>x.id===id);if(c){document.getElementById('c-prenom').value=c.prenom||'';document.getElementById('c-nom').value=c.nom||'';document.getElementById('c-tel').value=c.tel||'';document.getElementById('c-adresse').value=c.adresse||'';document.getElementById('c-details').value=c.details||'';document.getElementById('c-source').value=c.source||'Instagram';document.getElementById('c-seances').value=c.seances||0;document.getElementById('c-notes').value=c.notes||'';}}
+  else{document.getElementById('c-prenom').value='';document.getElementById('c-nom').value='';document.getElementById('c-tel').value='';document.getElementById('c-adresse').value='';document.getElementById('c-details').value='';document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';document.getElementById('c-notes').value='';}
   openModal('overlay-cliente');
   setTimeout(()=>document.getElementById('c-prenom').focus(),300);
 }
+
 function saveCliente(){
   const prenom=document.getElementById('c-prenom').value.trim();
   if(!prenom){document.getElementById('c-prenom').focus();return;}
   const clientes=DB.get('clientes');
-  const data={id:editingClienteId||Date.now().toString(),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),source:document.getElementById('c-source').value,seances:parseInt(document.getElementById('c-seances').value)||0,notes:document.getElementById('c-notes').value.trim()};
+  const data={id:editingClienteId||Date.now().toString(),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),adresse:document.getElementById('c-adresse').value.trim(),details:document.getElementById('c-details').value.trim(),source:document.getElementById('c-source').value,seances:parseInt(document.getElementById('c-seances').value)||0,notes:document.getElementById('c-notes').value.trim()};
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else{clientes.push(data);}
   DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
 }
+
 function deleteCliente(){
   if(!editingClienteId) return;
   DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));
   closeModal('overlay-cliente');renderClientes();
 }
+
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');editingRdvKey=null;editingClienteId=null;}
 document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
