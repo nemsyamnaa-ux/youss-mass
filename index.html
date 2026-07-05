@@ -81,14 +81,16 @@
     .rdv-card.c-purple { background: #f0e6f8; border-left: 3px solid #9b6bc9; }
     .rdv-name { font-weight: 700; font-size: 0.92rem; }
     .rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
-    .rdv-actions { display: flex; gap: 6px; margin-top: 6px; }
-    .btn-wa { background: #25d366; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 4px; }
+    .rdv-address { font-size: 0.7rem; color: #5b8ac9; margin-top: 3px; cursor: pointer; text-decoration: underline; }
+    .rdv-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+    .btn-wa { background: #25d366; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-waze { background: #1dacd6; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .fab { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); right: 18px; width: 54px; height: 54px; background: var(--rose); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 16px rgba(201,123,110,0.45); cursor: pointer; z-index: 150; border: none; color: white; }
     .month-grid { padding: 0 14px 14px; }
     .month-days-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
     .month-day-name { text-align: center; font-size: 0.6rem; text-transform: uppercase; color: var(--warm); font-weight: 700; padding: 4px 0; }
     .month-cells { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-    .month-cell { background: var(--white); border-radius: 10px; min-height: 52px; padding: 4px; cursor: pointer; border: 2px solid transparent; box-shadow: 0 1px 4px rgba(59,42,42,0.05); position: relative; transition: all 0.15s; }
+    .month-cell { background: var(--white); border-radius: 10px; min-height: 52px; padding: 4px; cursor: pointer; border: 2px solid transparent; box-shadow: 0 1px 4px rgba(59,42,42,0.05); transition: all 0.15s; }
     .month-cell.today { border-color: var(--rose); }
     .month-cell.selected { border-color: var(--gold); background: var(--deep); }
     .month-cell.other-month { opacity: 0.35; }
@@ -114,7 +116,7 @@
     .month-rdv-info { flex: 1; }
     .month-rdv-name { font-weight: 700; font-size: 0.9rem; }
     .month-rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
-    .month-rdv-actions { margin-top: 8px; }
+    .month-rdv-actions { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
     .month-empty { text-align: center; padding: 20px; color: var(--warm); font-size: 0.85rem; font-style: italic; }
     .clientes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
     .clientes-header .brand { margin-bottom: 10px; display: block; }
@@ -123,12 +125,16 @@
     .search-bar input::placeholder { color: var(--warm); }
     .search-bar span { color: var(--warm); font-size: 1rem; }
     .clientes-list { padding: 12px 14px; }
-    .cliente-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); cursor: pointer; border-left: 3px solid var(--gold); display: flex; align-items: center; gap: 12px; }
+    .cliente-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); cursor: pointer; border-left: 3px solid var(--gold); }
+    .cliente-card-top { display: flex; align-items: center; gap: 12px; }
     .cliente-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: var(--warm); flex-shrink: 0; }
     .cliente-info { flex: 1; }
     .cliente-name { font-weight: 700; font-size: 0.95rem; }
     .cliente-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
     .cliente-badge { background: var(--sand); color: var(--warm); font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
+    .cliente-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .btn-planning { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
+    .btn-waze-cliente { background: #1dacd6; color: white; border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .empty-state { text-align: center; padding: 50px 30px; color: var(--warm); }
     .empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
     .empty-state p { font-size: 0.9rem; line-height: 1.5; }
@@ -163,7 +169,6 @@
     .pay-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 4px; }
     .pay-badge.especes { background: #eaf3eb; color: var(--green); }
     .pay-badge.virement { background: #e6eef8; color: #5b8ac9; }
-    .auto-badge { background: #fdf3e3; color: var(--gold); font-size: 0.6rem; padding: 2px 6px; border-radius: 6px; font-weight: 700; margin-left: 6px; }
   </style>
 </head>
 <body>
@@ -263,7 +268,7 @@
       </select>
     </div>
     <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="f-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
-    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="f-details" placeholder="2ème étage, code 1234, sonner 2 fois..."/></div>
+    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="f-details" placeholder="2ème étage, code 1234..."/></div>
     <div class="form-group">
       <label>Supplément</label>
       <label class="checkbox-group">
@@ -300,7 +305,7 @@
     </div>
     <div class="form-group"><label>📞 Téléphone</label><input type="tel" id="c-tel" placeholder="06 XX XX XX XX"/></div>
     <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="c-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
-    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="c-details" placeholder="2ème étage, code 1234, sonner 2 fois..."/></div>
+    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="c-details" placeholder="2ème étage, code 1234..."/></div>
     <div class="form-row">
       <div class="form-group"><label>Comment trouvée ?</label><select id="c-source"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Bouche à oreille">Bouche à oreille</option><option value="WhatsApp">WhatsApp</option><option value="Autre">Autre</option></select></div>
       <div class="form-group"><label>Séances total</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
@@ -358,21 +363,27 @@ function toggleConge(date) {
 }
 function setPayment(mode) {
   currentPayment = mode;
-  document.getElementById('pay-especes').classList.toggle('active', mode === 'especes');
-  document.getElementById('pay-virement').classList.toggle('active', mode === 'virement');
+  document.getElementById('pay-especes').classList.toggle('active', mode==='especes');
+  document.getElementById('pay-virement').classList.toggle('active', mode==='virement');
 }
 function toggleKmField() {
-  document.getElementById('km-group').style.display = document.getElementById('f-dep').value === '1' ? 'block' : 'none';
+  document.getElementById('km-group').style.display = document.getElementById('f-dep').value==='1' ? 'block' : 'none';
 }
 function depPrix(r) { return r.dep ? (parseFloat(r.km)||10) : 0; }
 function calcTotal(r, p) { return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0); }
 
-// Auto-remplissage depuis le carnet clientes
+function openWaze(adresse) {
+  if (!adresse) return;
+  const url = `waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
+  const fallback = `https://waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`;
+  window.location.href = url;
+  setTimeout(() => { window.open(fallback, '_blank'); }, 1500);
+}
+
 function autoFillFromCliente() {
   const name = document.getElementById('f-name').value.trim().toLowerCase();
   if (!name) return;
-  const clientes = DB.get('clientes');
-  const match = clientes.find(c => c.prenom.toLowerCase() === name);
+  const match = DB.get('clientes').find(c => c.prenom.toLowerCase() === name);
   if (match) {
     if (match.tel && !document.getElementById('f-tel').value) document.getElementById('f-tel').value = match.tel;
     if (match.adresse && !document.getElementById('f-adresse').value) document.getElementById('f-adresse').value = match.adresse;
@@ -380,7 +391,21 @@ function autoFillFromCliente() {
   }
 }
 
-// Mise à jour automatique du carnet clientes depuis un RDV
+function addClienteToPlanning(clienteId) {
+  const c = DB.get('clientes').find(x => x.id === clienteId);
+  if (!c) return;
+  switchTab('planning');
+  setTimeout(() => {
+    openRdvModal(null, null);
+    setTimeout(() => {
+      document.getElementById('f-name').value = c.prenom;
+      if (c.tel) document.getElementById('f-tel').value = c.tel;
+      if (c.adresse) document.getElementById('f-adresse').value = c.adresse;
+      if (c.details) document.getElementById('f-details').value = c.details;
+    }, 350);
+  }, 200);
+}
+
 function syncClienteFromRdv(name, tel, adresse, details) {
   if (!name) return;
   const clientes = DB.get('clientes');
@@ -389,7 +414,7 @@ function syncClienteFromRdv(name, tel, adresse, details) {
     if (tel) clientes[idx].tel = tel;
     if (adresse) clientes[idx].adresse = adresse;
     if (details) clientes[idx].details = details;
-    clientes[idx].seances = (clientes[idx].seances || 0) + (editingRdvKey ? 0 : 1);
+    if (!editingRdvKey) clientes[idx].seances = (clientes[idx].seances||0) + 1;
     DB.set('clientes', clientes);
   } else {
     clientes.push({ id: Date.now().toString(), prenom: name, nom: '', tel: tel||'', adresse: adresse||'', details: details||'', source: 'Planning', seances: 1, notes: '' });
@@ -419,7 +444,7 @@ function sendWaRappel() {
   if (!currentRdvForWa) return;
   const r = currentRdvForWa;
   const tel = r.tel ? r.tel.replace(/\s/g,'').replace(/^0/,'+33') : '';
-  if (!tel) { alert('Pas de numéro de téléphone !'); return; }
+  if (!tel) { alert('Pas de numéro !'); return; }
   const p = PRESTATIONS[r.prestation]||{label:'massage'};
   const msg = `Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain à ${r.time} pour un ${p.label}.\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom`;
   window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg), '_blank');
@@ -431,7 +456,7 @@ function showNotifBanner() {
   if (!('Notification' in window)) { wrap.innerHTML=''; return; }
   if (Notification.permission==='granted') wrap.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';
   else if (Notification.permission==='denied') wrap.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';
-  else wrap.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications RDV 👆</div>';
+  else wrap.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications 👆</div>';
 }
 async function askNotif() { await Notification.requestPermission(); showNotifBanner(); scheduleAllNotifs(); }
 function scheduleAllNotifs() {
@@ -440,7 +465,7 @@ function scheduleAllNotifs() {
   Object.entries(rdvs).forEach(([key,r]) => {
     const [date,time]=key.split('_');
     const delay=new Date(date+'T'+time+':00').getTime()-60*60*1000-now;
-    if(delay>0&&delay<7*24*60*60*1000) setTimeout(()=>{const p=PRESTATIONS[r.prestation]; new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.tel?' · 📞 '+r.tel:''}${r.adresse?' · 📍 '+r.adresse:''}`});},delay);
+    if(delay>0&&delay<7*24*60*60*1000) setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.adresse?' · 📍 '+r.adresse:''}`});},delay);
   });
 }
 
@@ -502,7 +527,9 @@ function buildPlanning() {
       const total=calcTotal(r,p);
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.adresse?' · 📍 '+r.adresse:''}</div>${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      const adresseLink = r.adresse ? `<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>` : '';
+      const detailsLine = r.details ? `<div class="rdv-detail">📝 ${r.details}</div>` : '';
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${detailsLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
     } else if(cng){area.className+=' conge-slot';}
@@ -559,7 +586,8 @@ function buildMonth() {
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
       const item=document.createElement('div');item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.adresse?' · 📍 '+r.adresse:''}</div>${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}${r.tel?' · 📞 '+r.tel:''}</div><div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
@@ -649,7 +677,23 @@ function renderClientes(filter) {
   if(clientes.length===0){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
   clientes.forEach(c=>{
     const card=document.createElement('div');card.className='cliente-card';
-    card.innerHTML=`<div class="cliente-avatar">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}</div><div class="cliente-sub">${c.tel||''}${c.source?' · '+c.source:''}</div>${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''} ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''} ${c.notes?`<div class="cliente-sub" style="font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}</div><div class="cliente-badge">${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>`;
+    card.innerHTML=`
+      <div class="cliente-card-top">
+        <div class="cliente-avatar">${initials(c.prenom,c.nom)}</div>
+        <div class="cliente-info">
+          <div class="cliente-name">${c.prenom} ${c.nom||''}</div>
+          <div class="cliente-sub">${c.tel||''}${c.source?' · '+c.source:''}</div>
+          ${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}
+          ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''}
+          ${c.notes?`<div class="cliente-sub" style="font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}
+        </div>
+        <div class="cliente-badge">${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>
+      </div>
+      <div class="cliente-actions">
+        <button class="btn-planning" onclick="event.stopPropagation();addClienteToPlanning('${c.id}')">📅 Ajouter au planning</button>
+        ${c.adresse?`<button class="btn-waze-cliente" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️ Waze</button>`:''}
+      </div>
+    `;
     card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
   });
 }
