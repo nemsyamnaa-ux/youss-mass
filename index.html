@@ -83,9 +83,9 @@
     .rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
     .rdv-address { font-size: 0.7rem; color: #5b8ac9; margin-top: 3px; cursor: pointer; text-decoration: underline; }
     .rdv-phone { font-size: 0.7rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
+    .rdv-code { font-size: 0.62rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 6px; border-radius: 6px; display: inline-block; margin-top: 2px; }
     .rdv-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
     .btn-wa { background: #25d366; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
-    .btn-waze { background: #1dacd6; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .fab { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); right: 18px; width: 54px; height: 54px; background: var(--rose); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 16px rgba(201,123,110,0.45); cursor: pointer; z-index: 150; border: none; color: white; }
     .month-grid { padding: 0 14px 14px; }
     .month-days-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
@@ -131,10 +131,11 @@
     .cliente-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: var(--warm); flex-shrink: 0; }
     .cliente-info { flex: 1; }
     .cliente-name { font-weight: 700; font-size: 0.95rem; }
+    .cliente-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 7px; border-radius: 6px; display: inline-block; margin-left: 6px; }
     .cliente-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
     .cliente-tel { font-size: 0.72rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
-    .cliente-badge { background: var(--sand); color: var(--warm); font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
-    .cliente-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .cliente-badge { background: var(--sand); color: var(--warm); font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+    .cliente-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
     .btn-planning { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
     .btn-call { background: var(--green); color: white; border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-waze-cliente { background: #1dacd6; color: white; border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
@@ -172,6 +173,12 @@
     .pay-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 4px; }
     .pay-badge.especes { background: #eaf3eb; color: var(--green); }
     .pay-badge.virement { background: #e6eef8; color: #5b8ac9; }
+    .tel-input-wrap { position: relative; }
+    .tel-suggestions { position: absolute; top: 100%; left: 0; right: 0; background: var(--white); border: 1.5px solid var(--sand); border-radius: 12px; z-index: 50; box-shadow: 0 4px 16px rgba(59,42,42,0.1); max-height: 200px; overflow-y: auto; }
+    .tel-suggestion-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--sand); font-size: 0.9rem; }
+    .tel-suggestion-item:last-child { border-bottom: none; }
+    .tel-suggestion-item:active { background: var(--cream); }
+    .tel-suggestion-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-left: 6px; }
   </style>
 </head>
 <body>
@@ -223,7 +230,7 @@
 <div class="page" id="page-clientes">
   <div class="clientes-header">
     <span class="brand">👩 Mes Clientes</span>
-    <div class="search-bar"><span>🔍</span><input type="text" id="search-input" placeholder="Rechercher une cliente..." oninput="filterClientes()"/></div>
+    <div class="search-bar"><span>🔍</span><input type="text" id="search-input" placeholder="Rechercher par nom, tel ou code YM..." oninput="filterClientes()"/></div>
   </div>
   <div class="clientes-list" id="clientes-list"></div>
   <button class="fab" onclick="openClienteModal()">＋</button>
@@ -236,8 +243,14 @@
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title"><span id="rdv-modal-title">Nouveau RDV</span><button class="close-btn" onclick="closeModal('overlay-rdv')">✕</button></div>
-    <div class="form-group"><label>Prénom de la cliente</label><input type="text" id="f-name" placeholder="Ex : Sophie" oninput="autoFillFromCliente()"/></div>
-    <div class="form-group"><label>📞 Téléphone</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX"/></div>
+    <div class="form-group">
+      <label>📞 Téléphone de la cliente</label>
+      <div class="tel-input-wrap">
+        <input type="tel" id="f-tel" placeholder="06 XX XX XX XX" oninput="onTelInput()" autocomplete="off"/>
+        <div class="tel-suggestions" id="tel-suggestions" style="display:none"></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Prénom de la cliente</label><input type="text" id="f-name" placeholder="Ex : Sophie"/></div>
     <div class="form-row">
       <div class="form-group"><label>Date</label><input type="date" id="f-date"/></div>
       <div class="form-group"><label>Heure</label><input type="time" id="f-time" value="10:00"/></div>
@@ -302,6 +315,7 @@
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title"><span id="cliente-modal-title">Nouvelle cliente</span><button class="close-btn" onclick="closeModal('overlay-cliente')">✕</button></div>
+    <div id="c-code-display" style="text-align:center;margin-bottom:12px;font-size:0.8rem;color:var(--gold);font-weight:700;display:none"></div>
     <div class="form-row">
       <div class="form-group"><label>Prénom</label><input type="text" id="c-prenom" placeholder="Sophie"/></div>
       <div class="form-group"><label>Nom</label><input type="text" id="c-nom" placeholder="Martin"/></div>
@@ -357,6 +371,52 @@ function initials(prenom, nom) { return ((prenom||'?')[0]+(nom||'')[0]).toUpperC
 function timeToMins(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
 function minsToTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
 function isConge(date) { return DB.get('conges').includes(date); }
+function normalizeTel(t) { return t ? t.replace(/\s/g,'') : ''; }
+
+// ── NUMÉRO CLIENT UNIQUE ──
+function generateClientCode() {
+  const clientes = DB.get('clientes');
+  const nums = clientes.map(c => {
+    const m = (c.code||'').match(/YM-(\d+)/);
+    return m ? parseInt(m[1]) : 0;
+  });
+  const next = nums.length > 0 ? Math.max(...nums) + 1 : 1;
+  return 'YM-' + String(next).padStart(3, '0');
+}
+
+// ── RECONNAISSANCE PAR TÉLÉPHONE ──
+function findClienteByTel(tel) {
+  if (!tel) return null;
+  const norm = normalizeTel(tel);
+  return DB.get('clientes').find(c => normalizeTel(c.tel) === norm) || null;
+}
+
+function onTelInput() {
+  const tel = document.getElementById('f-tel').value;
+  const sugg = document.getElementById('tel-suggestions');
+  if (tel.length < 4) { sugg.style.display='none'; return; }
+  const norm = normalizeTel(tel);
+  const matches = DB.get('clientes').filter(c => normalizeTel(c.tel).includes(norm));
+  if (matches.length === 0) { sugg.style.display='none'; return; }
+  sugg.innerHTML = matches.slice(0,5).map(c =>
+    `<div class="tel-suggestion-item" onclick="selectClienteSuggestion('${c.id}')">
+      ${c.prenom} ${c.nom||''} <span class="tel-suggestion-code">${c.code||''}</span>
+      <div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div>
+    </div>`
+  ).join('');
+  sugg.style.display = 'block';
+}
+
+function selectClienteSuggestion(id) {
+  const c = DB.get('clientes').find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('f-tel').value = c.tel || '';
+  document.getElementById('f-name').value = c.prenom || '';
+  document.getElementById('f-adresse').value = c.adresse || '';
+  document.getElementById('f-details').value = c.details || '';
+  document.getElementById('tel-suggestions').style.display = 'none';
+}
+
 function toggleConge(date) {
   const conges = DB.get('conges');
   const idx = conges.indexOf(date);
@@ -374,22 +434,31 @@ function toggleKmField() {
 }
 function depPrix(r) { return r.dep ? (parseFloat(r.km)||10) : 0; }
 function calcTotal(r, p) { return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0); }
-function callTel(tel) { window.location.href = 'tel:'+tel.replace(/\s/g,''); }
+function callTel(tel) { window.location.href = 'tel:'+normalizeTel(tel); }
 function openWaze(adresse) {
-  const url = `waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
-  window.location.href = url;
+  window.location.href = `waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
   setTimeout(() => window.open(`https://waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`, '_blank'), 1500);
 }
-function autoFillFromCliente() {
-  const name = document.getElementById('f-name').value.trim().toLowerCase();
+
+function syncClienteFromRdv(name, tel, adresse, details) {
   if (!name) return;
-  const match = DB.get('clientes').find(c => c.prenom.toLowerCase() === name);
-  if (match) {
-    if (match.tel && !document.getElementById('f-tel').value) document.getElementById('f-tel').value = match.tel;
-    if (match.adresse && !document.getElementById('f-adresse').value) document.getElementById('f-adresse').value = match.adresse;
-    if (match.details && !document.getElementById('f-details').value) document.getElementById('f-details').value = match.details;
+  const clientes = DB.get('clientes');
+  const normTel = normalizeTel(tel);
+  let idx = normTel ? clientes.findIndex(c => normalizeTel(c.tel) === normTel) : -1;
+  if (idx < 0) idx = clientes.findIndex(c => c.prenom.toLowerCase() === name.toLowerCase());
+  if (idx >= 0) {
+    if (tel) clientes[idx].tel = tel;
+    if (adresse) clientes[idx].adresse = adresse;
+    if (details) clientes[idx].details = details;
+    if (!clientes[idx].code) clientes[idx].code = generateClientCode();
+    if (!editingRdvKey) clientes[idx].seances = (clientes[idx].seances||0) + 1;
+    DB.set('clientes', clientes);
+  } else {
+    clientes.push({ id: Date.now().toString(), code: generateClientCode(), prenom: name, nom: '', tel: tel||'', adresse: adresse||'', details: details||'', source: 'Planning', seances: 1, notes: '' });
+    DB.set('clientes', clientes);
   }
 }
+
 function addClienteToPlanning(clienteId) {
   const c = DB.get('clientes').find(x => x.id === clienteId);
   if (!c) return;
@@ -397,28 +466,14 @@ function addClienteToPlanning(clienteId) {
   setTimeout(() => {
     openRdvModal(null, null);
     setTimeout(() => {
+      document.getElementById('f-tel').value = c.tel || '';
       document.getElementById('f-name').value = c.prenom;
-      if (c.tel) document.getElementById('f-tel').value = c.tel;
-      if (c.adresse) document.getElementById('f-adresse').value = c.adresse;
-      if (c.details) document.getElementById('f-details').value = c.details;
+      document.getElementById('f-adresse').value = c.adresse || '';
+      document.getElementById('f-details').value = c.details || '';
     }, 350);
   }, 200);
 }
-function syncClienteFromRdv(name, tel, adresse, details) {
-  if (!name) return;
-  const clientes = DB.get('clientes');
-  const idx = clientes.findIndex(c => c.prenom.toLowerCase() === name.toLowerCase());
-  if (idx >= 0) {
-    if (tel) clientes[idx].tel = tel;
-    if (adresse) clientes[idx].adresse = adresse;
-    if (details) clientes[idx].details = details;
-    if (!editingRdvKey) clientes[idx].seances = (clientes[idx].seances||0) + 1;
-    DB.set('clientes', clientes);
-  } else {
-    clientes.push({ id: Date.now().toString(), prenom: name, nom: '', tel: tel||'', adresse: adresse||'', details: details||'', source: 'Planning', seances: 1, notes: '' });
-    DB.set('clientes', clientes);
-  }
-}
+
 function getBlockedSlots(rdvs) {
   const blocked = new Set(), travel = new Set();
   Object.entries(rdvs).forEach(([key,r]) => {
@@ -436,16 +491,18 @@ function getBlockedSlots(rdvs) {
   });
   return { blocked, travel };
 }
+
 function sendWaRappel() {
   if (!currentRdvForWa) return;
   const r = currentRdvForWa;
-  const tel = r.tel ? r.tel.replace(/\s/g,'').replace(/^0/,'+33') : '';
+  const tel = r.tel ? normalizeTel(r.tel).replace(/^0/,'+33') : '';
   if (!tel) { alert('Pas de numéro !'); return; }
   const p = PRESTATIONS[r.prestation]||{label:'massage'};
   const msg = `Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain à ${r.time} pour un ${p.label}.\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom`;
   window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg), '_blank');
 }
 function sendWaFromCard(key) { const r=DB.get('rdvs')[key]; if(!r||!r.tel) return; currentRdvForWa=r; sendWaRappel(); }
+
 function showNotifBanner() {
   const wrap = document.getElementById('notif-banner-wrap');
   if (!('Notification' in window)) { wrap.innerHTML=''; return; }
@@ -463,6 +520,7 @@ function scheduleAllNotifs() {
     if(delay>0&&delay<7*24*60*60*1000) setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.adresse?' · 📍 '+r.adresse:''}`});},delay);
   });
 }
+
 function setView(v) {
   currentView=v;
   document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';
@@ -487,6 +545,7 @@ function updatePaymentStats(allRdvs) {
   document.getElementById('s-especes').textContent=esp+'€';
   document.getElementById('s-virement').textContent=vir+'€';
 }
+
 function buildPlanning() {
   const dates=getWeekDates(weekOffset), today=fmtDate(new Date());
   const s=dates[0],e=dates[6];
@@ -515,6 +574,7 @@ function buildPlanning() {
     const area=document.createElement('div'); area.className='slot-area';
     if(rdvs[key]){
       const r=rdvs[key],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
+      const c = r.tel ? findClienteByTel(r.tel) : null;
       area.className+=' has-rdv';
       const card=document.createElement('div'); card.className='rdv-card '+p.color;
       const total=calcTotal(r,p);
@@ -522,8 +582,8 @@ function buildPlanning() {
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
       const telLink=r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:'';
       const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
-      const detailsLine=r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:'';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${detailsLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
     } else if(cng){area.className+=' conge-slot';}
@@ -540,6 +600,7 @@ function buildPlanning() {
   document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
   updatePaymentStats(weekRdvs);
 }
+
 function buildMonth() {
   const now=new Date(),year=now.getFullYear(),month=now.getMonth()+monthOffset;
   const d=new Date(year,month,1);
@@ -575,13 +636,15 @@ function buildMonth() {
     rdvList.innerHTML='';
     dayRdvs.forEach(([key,r])=>{
       const time=key.split('_')[1],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
+      const c=r.tel?findClienteByTel(r.tel):null;
       const total=calcTotal(r,p);
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
       const telLink=r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:'';
       const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
+      const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
       const item=document.createElement('div');item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name}</div>${telLink}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
@@ -594,18 +657,20 @@ function buildMonth() {
   document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
   updatePaymentStats(allRdvs);
 }
+
 function openRdvModal(key, defaultHour) {
   if(isConge(selectedDay)&&!key){alert('Jour de congé 🏖');return;}
   editingRdvKey=key||null;
   document.getElementById('rdv-modal-title').textContent=key?'✏️ Modifier le RDV':'➕ Nouveau RDV';
   document.getElementById('btn-delete-rdv').style.display=key?'block':'none';
   document.getElementById('btn-wa-rappel').style.display='none';
+  document.getElementById('tel-suggestions').style.display='none';
   currentRdvForWa=null;
   if(key&&DB.get('rdvs')[key]){
     const r=DB.get('rdvs')[key];
     currentRdvForWa=r;
-    document.getElementById('f-name').value=r.name;
     document.getElementById('f-tel').value=r.tel||'';
+    document.getElementById('f-name').value=r.name;
     document.getElementById('f-date').value=key.split('_')[0];
     document.getElementById('f-time').value=r.time||key.split('_')[1];
     document.getElementById('f-prestation').value=r.prestation||'classic_60';
@@ -619,8 +684,8 @@ function openRdvModal(key, defaultHour) {
     setPayment(r.payment||'especes');
     if(r.tel) document.getElementById('btn-wa-rappel').style.display='flex';
   } else {
-    document.getElementById('f-name').value='';
     document.getElementById('f-tel').value='';
+    document.getElementById('f-name').value='';
     document.getElementById('f-date').value=selectedDay;
     document.getElementById('f-time').value=defaultHour||'10:00';
     document.getElementById('f-prestation').value='classic_60';
@@ -634,8 +699,9 @@ function openRdvModal(key, defaultHour) {
     setPayment('especes');
   }
   openModal('overlay-rdv');
-  setTimeout(()=>document.getElementById('f-name').focus(),300);
+  setTimeout(()=>document.getElementById('f-tel').focus(),300);
 }
+
 function saveRdv() {
   const name=document.getElementById('f-name').value.trim();
   if(!name){document.getElementById('f-name').focus();return;}
@@ -650,19 +716,22 @@ function saveRdv() {
   DB.set('rdvs',rdvs);
   syncClienteFromRdv(name,tel,adresse,details);
   selectedDay=date;
+  document.getElementById('tel-suggestions').style.display='none';
   closeModal('overlay-rdv');
   if(currentView==='semaine')buildPlanning();else buildMonth();
   scheduleAllNotifs();
 }
+
 function deleteRdv() {
   if(!editingRdvKey) return;
   const rdvs=DB.get('rdvs');delete rdvs[editingRdvKey];DB.set('rdvs',rdvs);
   closeModal('overlay-rdv');
   if(currentView==='semaine')buildPlanning();else buildMonth();
 }
+
 function renderClientes(filter) {
   let clientes=DB.get('clientes');
-  if(filter) clientes=clientes.filter(c=>(c.prenom+' '+c.nom).toLowerCase().includes(filter.toLowerCase()));
+  if(filter) clientes=clientes.filter(c=>(c.prenom+' '+c.nom+' '+(c.tel||'')+' '+(c.code||'')).toLowerCase().includes(filter.toLowerCase()));
   const list=document.getElementById('clientes-list');list.innerHTML='';
   if(clientes.length===0){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
   clientes.forEach(c=>{
@@ -671,7 +740,7 @@ function renderClientes(filter) {
       <div class="cliente-card-top">
         <div class="cliente-avatar">${initials(c.prenom,c.nom)}</div>
         <div class="cliente-info">
-          <div class="cliente-name">${c.prenom} ${c.nom||''}</div>
+          <div class="cliente-name">${c.prenom} ${c.nom||''}<span class="cliente-code">${c.code||''}</span></div>
           ${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}
           ${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}
           ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''}
@@ -688,32 +757,67 @@ function renderClientes(filter) {
     card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
   });
 }
+
 function filterClientes(){renderClientes(document.getElementById('search-input').value);}
+
 function openClienteModal(id){
   editingClienteId=id||null;
   document.getElementById('cliente-modal-title').textContent=id?'✏️ Modifier':'➕ Nouvelle cliente';
   document.getElementById('btn-delete-cliente').style.display=id?'block':'none';
-  if(id){const c=DB.get('clientes').find(x=>x.id===id);if(c){document.getElementById('c-prenom').value=c.prenom||'';document.getElementById('c-nom').value=c.nom||'';document.getElementById('c-tel').value=c.tel||'';document.getElementById('c-adresse').value=c.adresse||'';document.getElementById('c-details').value=c.details||'';document.getElementById('c-source').value=c.source||'Instagram';document.getElementById('c-seances').value=c.seances||0;document.getElementById('c-notes').value=c.notes||'';}}
-  else{document.getElementById('c-prenom').value='';document.getElementById('c-nom').value='';document.getElementById('c-tel').value='';document.getElementById('c-adresse').value='';document.getElementById('c-details').value='';document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';document.getElementById('c-notes').value='';}
+  const codeDisplay=document.getElementById('c-code-display');
+  if(id){
+    const c=DB.get('clientes').find(x=>x.id===id);
+    if(c){
+      document.getElementById('c-prenom').value=c.prenom||'';
+      document.getElementById('c-nom').value=c.nom||'';
+      document.getElementById('c-tel').value=c.tel||'';
+      document.getElementById('c-adresse').value=c.adresse||'';
+      document.getElementById('c-details').value=c.details||'';
+      document.getElementById('c-source').value=c.source||'Instagram';
+      document.getElementById('c-seances').value=c.seances||0;
+      document.getElementById('c-notes').value=c.notes||'';
+      if(c.code){codeDisplay.textContent='🏷️ Code cliente : '+c.code;codeDisplay.style.display='block';}
+      else codeDisplay.style.display='none';
+    }
+  } else {
+    document.getElementById('c-prenom').value='';document.getElementById('c-nom').value='';document.getElementById('c-tel').value='';document.getElementById('c-adresse').value='';document.getElementById('c-details').value='';document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';document.getElementById('c-notes').value='';
+    codeDisplay.style.display='none';
+  }
   openModal('overlay-cliente');
   setTimeout(()=>document.getElementById('c-prenom').focus(),300);
 }
+
 function saveCliente(){
   const prenom=document.getElementById('c-prenom').value.trim();
   if(!prenom){document.getElementById('c-prenom').focus();return;}
   const clientes=DB.get('clientes');
-  const data={id:editingClienteId||Date.now().toString(),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),adresse:document.getElementById('c-adresse').value.trim(),details:document.getElementById('c-details').value.trim(),source:document.getElementById('c-source').value,seances:parseInt(document.getElementById('c-seances').value)||0,notes:document.getElementById('c-notes').value.trim()};
+  const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;
+  const data={
+    id:editingClienteId||Date.now().toString(),
+    code:existing?.code||generateClientCode(),
+    prenom,
+    nom:document.getElementById('c-nom').value.trim(),
+    tel:document.getElementById('c-tel').value.trim(),
+    adresse:document.getElementById('c-adresse').value.trim(),
+    details:document.getElementById('c-details').value.trim(),
+    source:document.getElementById('c-source').value,
+    seances:parseInt(document.getElementById('c-seances').value)||0,
+    notes:document.getElementById('c-notes').value.trim()
+  };
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else{clientes.push(data);}
   DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
 }
+
 function deleteCliente(){
   if(!editingClienteId) return;
   DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));
   closeModal('overlay-cliente');renderClientes();
 }
+
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');editingRdvKey=null;editingClienteId=null;}
 document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
+document.addEventListener('click', e => { if(!e.target.closest('.tel-input-wrap')) document.getElementById('tel-suggestions').style.display='none'; });
 showNotifBanner();
 buildPlanning();
 </script>
