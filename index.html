@@ -31,16 +31,22 @@
     #week-label { font-size: 0.82rem; color: var(--sand); text-align: center; flex: 1; }
     .stats { display: flex; gap: 8px; padding: 12px 14px 6px; }
     .stat { flex: 1; background: var(--white); border-radius: 12px; padding: 10px 6px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
-    .stat-val { font-size: 1.25rem; color: var(--rose); font-weight: 700; }
-    .stat-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--warm); margin-top: 2px; }
-    .stats-pay { display: flex; gap: 8px; padding: 0 14px 10px; }
+    .stat-val { font-size: 1.1rem; color: var(--rose); font-weight: 700; }
+    .stat-lbl { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--warm); margin-top: 2px; }
+    .stats-pay { display: flex; gap: 8px; padding: 0 14px 6px; }
     .stat-pay { flex: 1; border-radius: 12px; padding: 8px 6px; text-align: center; }
     .stat-pay.especes { background: #eaf3eb; }
     .stat-pay.virement { background: #e6eef8; }
-    .stat-pay-val { font-size: 1.05rem; font-weight: 700; }
+    .stat-pay.net { background: #fdf3e3; }
+    .stat-pay-val { font-size: 1rem; font-weight: 700; }
     .stat-pay.especes .stat-pay-val { color: var(--green); }
     .stat-pay.virement .stat-pay-val { color: #5b8ac9; }
-    .stat-pay-lbl { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warm); margin-top: 1px; }
+    .stat-pay.net .stat-pay-val { color: var(--gold); }
+    .stat-pay-lbl { font-size: 0.56rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warm); margin-top: 1px; }
+    .stats-period { display: flex; gap: 8px; padding: 0 14px 10px; }
+    .stat-period { flex: 1; background: var(--white); border-radius: 12px; padding: 8px 6px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
+    .stat-period-val { font-size: 0.95rem; color: var(--deep); font-weight: 700; }
+    .stat-period-lbl { font-size: 0.56rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warm); margin-top: 2px; }
     .days-strip { display: flex; overflow-x: auto; gap: 7px; padding: 10px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     .days-strip::-webkit-scrollbar { display: none; }
     .day-pill { flex-shrink: 0; background: var(--white); border-radius: 14px; padding: 8px 12px; text-align: center; cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 8px rgba(59,42,42,0.06); min-width: 54px; transition: all 0.15s; }
@@ -84,6 +90,7 @@
     .rdv-address { font-size: 0.7rem; color: #5b8ac9; margin-top: 3px; cursor: pointer; text-decoration: underline; }
     .rdv-phone { font-size: 0.7rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
     .rdv-code { font-size: 0.62rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 6px; border-radius: 6px; display: inline-block; margin-top: 2px; }
+    .rdv-net { font-size: 0.68rem; color: var(--gold); font-weight: 700; margin-top: 3px; }
     .rdv-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
     .btn-wa { background: #25d366; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .fab { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); right: 18px; width: 54px; height: 54px; background: var(--rose); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 16px rgba(201,123,110,0.45); cursor: pointer; z-index: 150; border: none; color: white; }
@@ -127,14 +134,18 @@
     .search-bar span { color: var(--warm); font-size: 1rem; }
     .clientes-list { padding: 12px 14px; }
     .cliente-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); cursor: pointer; border-left: 3px solid var(--gold); }
+    .cliente-card.pending { border-left-color: var(--sand); opacity: 0.85; }
     .cliente-card-top { display: flex; align-items: center; gap: 12px; }
     .cliente-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: var(--warm); flex-shrink: 0; }
+    .cliente-avatar.fidele { background: var(--gold); color: var(--deep); }
     .cliente-info { flex: 1; }
     .cliente-name { font-weight: 700; font-size: 0.95rem; }
     .cliente-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 7px; border-radius: 6px; display: inline-block; margin-left: 6px; }
+    .cliente-pending-badge { font-size: 0.6rem; color: var(--warm); background: var(--sand); padding: 1px 7px; border-radius: 6px; display: inline-block; margin-left: 6px; }
     .cliente-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
     .cliente-tel { font-size: 0.72rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
     .cliente-badge { background: var(--sand); color: var(--warm); font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+    .cliente-badge.fidele { background: rgba(196,164,107,0.2); color: var(--gold); }
     .cliente-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
     .btn-planning { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
     .btn-call { background: var(--green); color: white; border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
@@ -179,6 +190,9 @@
     .tel-suggestion-item:last-child { border-bottom: none; }
     .tel-suggestion-item:active { background: var(--cream); }
     .tel-suggestion-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-left: 6px; }
+    .essence-banner { margin: 0 14px 8px; background: #fdf3e3; border: 1.5px solid var(--gold); border-radius: 12px; padding: 8px 14px; font-size: 0.78rem; color: var(--deep); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .km-input-rdv { margin-top: 8px; }
+    .net-preview { background: #fdf3e3; border-radius: 10px; padding: 8px 12px; font-size: 0.82rem; color: var(--deep); margin-top: 8px; font-weight: 600; text-align: center; }
   </style>
 </head>
 <body>
@@ -200,12 +214,20 @@
   </div>
   <div class="stats">
     <div class="stat"><div class="stat-val" id="s-rdv">0</div><div class="stat-lbl">RDV</div></div>
-    <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Total</div></div>
+    <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Brut</div></div>
+    <div class="stat"><div class="stat-val" id="s-net">0€</div><div class="stat-lbl">Net essence</div></div>
     <div class="stat"><div class="stat-val" id="s-h">0h</div><div class="stat-lbl">Heures</div></div>
   </div>
   <div class="stats-pay">
     <div class="stat-pay especes"><div class="stat-pay-val" id="s-especes">0€</div><div class="stat-pay-lbl">💵 Espèces</div></div>
     <div class="stat-pay virement"><div class="stat-pay-val" id="s-virement">0€</div><div class="stat-pay-lbl">🏦 Virement</div></div>
+  </div>
+  <div class="stats-period">
+    <div class="stat-period"><div class="stat-period-val" id="s-month">0€</div><div class="stat-period-lbl">📅 Ce mois</div></div>
+    <div class="stat-period"><div class="stat-period-val" id="s-total">0€</div><div class="stat-period-lbl">🏆 Total</div></div>
+  </div>
+  <div class="essence-banner" onclick="openEssenceSettings()">
+    ⛽ Paramètres essence — <span id="essence-info">Appuie pour configurer</span>
   </div>
   <div id="notif-banner-wrap"></div>
   <div id="view-semaine">
@@ -230,7 +252,7 @@
 <div class="page" id="page-clientes">
   <div class="clientes-header">
     <span class="brand">👩 Mes Clientes</span>
-    <div class="search-bar"><span>🔍</span><input type="text" id="search-input" placeholder="Rechercher par nom, tel ou code YM..." oninput="filterClientes()"/></div>
+    <div class="search-bar"><span>🔍</span><input type="text" id="search-input" placeholder="Nom, tel ou code YM..." oninput="filterClientes()"/></div>
   </div>
   <div class="clientes-list" id="clientes-list"></div>
   <button class="fab" onclick="openClienteModal()">＋</button>
@@ -239,6 +261,8 @@
   <div class="nav-tab active" id="tab-planning" onclick="switchTab('planning')"><span class="tab-icon">📅</span>Planning</div>
   <div class="nav-tab" id="tab-clientes" onclick="switchTab('clientes')"><span class="tab-icon">👩</span>Clientes</div>
 </nav>
+
+<!-- MODAL RDV -->
 <div class="overlay" id="overlay-rdv">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -250,7 +274,7 @@
         <div class="tel-suggestions" id="tel-suggestions" style="display:none"></div>
       </div>
     </div>
-    <div class="form-group"><label>Prénom de la cliente</label><input type="text" id="f-name" placeholder="Ex : Sophie"/></div>
+    <div class="form-group"><label>Prénom</label><input type="text" id="f-name" placeholder="Ex : Sophie"/></div>
     <div class="form-row">
       <div class="form-group"><label>Date</label><input type="date" id="f-date"/></div>
       <div class="form-group"><label>Heure</label><input type="time" id="f-time" value="10:00"/></div>
@@ -274,21 +298,28 @@
         </optgroup>
       </select>
     </div>
-    <div class="form-group"><label>Déplacement</label><select id="f-dep" onchange="toggleKmField()"><option value="0">Non</option><option value="1">Oui</option></select></div>
-    <div class="form-group" id="km-group" style="display:none">
-      <label>Distance</label>
-      <select id="f-km">
-        <option value="10">Jusqu'à 30km — +10€</option>
-        <option value="15">30 à 40km — +15€</option>
-        <option value="20">Plus de 40km — +20€</option>
-      </select>
+    <div class="form-group"><label>Déplacement</label><select id="f-dep" onchange="toggleDepFields()"><option value="0">Non</option><option value="1">Oui</option></select></div>
+    <div id="dep-group" style="display:none">
+      <div class="form-group">
+        <label>Tarif kilométrique</label>
+        <select id="f-km">
+          <option value="10">Jusqu'à 30km — +10€</option>
+          <option value="15">30 à 40km — +15€</option>
+          <option value="20">Plus de 40km — +20€</option>
+        </select>
+      </div>
+      <div class="form-group km-input-rdv">
+        <label>Distance aller (km)</label>
+        <input type="number" id="f-km-dist" placeholder="Ex: 15" min="0" step="1" oninput="updateNetPreview()"/>
+      </div>
+      <div id="net-preview" class="net-preview" style="display:none"></div>
     </div>
     <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="f-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
     <div class="form-group"><label>📝 Détails accès</label><input type="text" id="f-details" placeholder="2ème étage, code 1234..."/></div>
     <div class="form-group">
       <label>Supplément</label>
       <label class="checkbox-group">
-        <input type="checkbox" id="f-prolongation"/>
+        <input type="checkbox" id="f-prolongation" onchange="updateNetPreview()"/>
         <span>⏱ Prolongation +20 min</span>
         <span class="prix-sup">+15€</span>
       </label>
@@ -296,7 +327,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>💰 Pourboire</label>
-        <input type="number" id="f-pourboire" placeholder="0" min="0" step="1"/>
+        <input type="number" id="f-pourboire" placeholder="0" min="0" step="1" oninput="updateNetPreview()"/>
       </div>
       <div class="form-group">
         <label>💳 Paiement</label>
@@ -311,6 +342,8 @@
     <button class="btn-danger" id="btn-delete-rdv" onclick="deleteRdv()" style="display:none">🗑 Supprimer ce RDV</button>
   </div>
 </div>
+
+<!-- MODAL CLIENTE -->
 <div class="overlay" id="overlay-cliente">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -332,10 +365,34 @@
     <button class="btn-danger" id="btn-delete-cliente" onclick="deleteCliente()" style="display:none">🗑 Supprimer cette cliente</button>
   </div>
 </div>
+
+<!-- MODAL ESSENCE -->
+<div class="overlay" id="overlay-essence">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><span>⛽ Paramètres Essence</span><button class="close-btn" onclick="closeModal('overlay-essence')">✕</button></div>
+    <div class="form-group">
+      <label>Prix du litre SP95-E10 (€)</label>
+      <input type="number" id="e-prix" placeholder="Ex: 1.85" step="0.01" min="0"/>
+    </div>
+    <div class="form-group">
+      <label>Consommation aux 100km (L)</label>
+      <input type="number" id="e-conso" placeholder="Ex: 5.5" step="0.1" min="0" value="5.5"/>
+    </div>
+    <div style="background:var(--sand);border-radius:12px;padding:12px;font-size:0.8rem;color:var(--deep);margin-bottom:12px">
+      💡 Twingo 3 SP95-E10 ≈ 5,5L/100km<br>
+      Coût = distance A/R × conso/100 × prix litre
+    </div>
+    <button class="btn-primary" onclick="saveEssenceSettings()">✔ Enregistrer</button>
+  </div>
+</div>
+
 <script>
 const DB = {
-  get: (k) => JSON.parse(localStorage.getItem('youss-' + k) || (k === 'rdvs' ? '{}' : k === 'conges' ? '[]' : '[]')),
-  set: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v))
+  get: (k) => JSON.parse(localStorage.getItem('youss-' + k) || (k==='rdvs'?'{}':k==='conges'?'[]':'[]')),
+  set: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v)),
+  getObj: (k, def) => JSON.parse(localStorage.getItem('youss-' + k) || JSON.stringify(def)),
+  setObj: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v))
 };
 const PRESTATIONS = {
   classic_30:  { label: 'Massage 30min',            duree: 30,  prix: 25, color: 'c-rose' },
@@ -352,6 +409,8 @@ for (let h = 8; h <= 23; h++) { HOURS.push(`${String(h).padStart(2,'0')}:00`); i
 const DAYS_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const DAYS_LONG = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const FIDELITE_SEUIL = 3;
+
 let weekOffset = 0, monthOffset = 0;
 let selectedDay = fmtDate(new Date());
 let currentView = 'semaine';
@@ -372,25 +431,73 @@ function timeToMins(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
 function minsToTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
 function isConge(date) { return DB.get('conges').includes(date); }
 function normalizeTel(t) { return t ? t.replace(/\s/g,'') : ''; }
+function isFidele(c) { return (c.seances||0) >= FIDELITE_SEUIL; }
 
-// ── NUMÉRO CLIENT UNIQUE ──
+// ── ESSENCE ──
+function getEssence() { return DB.getObj('essence', { prix: 0, conso: 5.5 }); }
+function saveEssenceSettings() {
+  const prix = parseFloat(document.getElementById('e-prix').value) || 0;
+  const conso = parseFloat(document.getElementById('e-conso').value) || 5.5;
+  DB.setObj('essence', { prix, conso });
+  updateEssenceBanner();
+  closeModal('overlay-essence');
+  if (currentView==='semaine') buildPlanning(); else buildMonth();
+}
+function openEssenceSettings() {
+  const e = getEssence();
+  document.getElementById('e-prix').value = e.prix || '';
+  document.getElementById('e-conso').value = e.conso || 5.5;
+  openModal('overlay-essence');
+}
+function updateEssenceBanner() {
+  const e = getEssence();
+  const el = document.getElementById('essence-info');
+  if (e.prix > 0) el.textContent = `${e.prix}€/L · ${e.conso}L/100km`;
+  else el.textContent = 'Appuie pour configurer le prix du carburant';
+}
+function calcEssenceCost(kmAller) {
+  const e = getEssence();
+  if (!e.prix || !kmAller) return 0;
+  const kmAR = parseFloat(kmAller) * 2;
+  return Math.round(kmAR * e.conso / 100 * e.prix * 100) / 100;
+}
+function calcNetRdv(r, p) {
+  const brut = p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0);
+  const essence = r.dep && r.kmDist ? calcEssenceCost(r.kmDist) : 0;
+  return Math.round((brut - essence) * 100) / 100;
+}
+
+function updateNetPreview() {
+  const dep = document.getElementById('f-dep').value === '1';
+  const preview = document.getElementById('net-preview');
+  if (!dep) { preview.style.display='none'; return; }
+  const prest = document.getElementById('f-prestation').value;
+  const p = PRESTATIONS[prest]||{prix:40};
+  const km = parseFloat(document.getElementById('f-km').value)||10;
+  const kmDist = parseFloat(document.getElementById('f-km-dist').value)||0;
+  const prolongation = document.getElementById('f-prolongation').checked;
+  const pourboire = parseFloat(document.getElementById('f-pourboire').value)||0;
+  const brut = p.prix + km + (prolongation?15:0) + pourboire;
+  const essence = kmDist > 0 ? calcEssenceCost(kmDist) : 0;
+  const net = brut - essence;
+  preview.style.display = 'block';
+  preview.innerHTML = essence > 0
+    ? `💰 Brut : ${brut}€ — ⛽ Essence : -${essence}€ = <strong>Net : ${net.toFixed(2)}€</strong>`
+    : `💰 Brut : ${brut}€ — configure le prix essence pour voir le net`;
+}
+
+// ── CODE CLIENT ──
 function generateClientCode() {
   const clientes = DB.get('clientes');
-  const nums = clientes.map(c => {
-    const m = (c.code||'').match(/YM-(\d+)/);
-    return m ? parseInt(m[1]) : 0;
-  });
+  const nums = clientes.map(c => { const m=(c.code||'').match(/YM-(\d+)/); return m?parseInt(m[1]):0; });
   const next = nums.length > 0 ? Math.max(...nums) + 1 : 1;
   return 'YM-' + String(next).padStart(3, '0');
 }
-
-// ── RECONNAISSANCE PAR TÉLÉPHONE ──
 function findClienteByTel(tel) {
   if (!tel) return null;
   const norm = normalizeTel(tel);
   return DB.get('clientes').find(c => normalizeTel(c.tel) === norm) || null;
 }
-
 function onTelInput() {
   const tel = document.getElementById('f-tel').value;
   const sugg = document.getElementById('tel-suggestions');
@@ -400,13 +507,12 @@ function onTelInput() {
   if (matches.length === 0) { sugg.style.display='none'; return; }
   sugg.innerHTML = matches.slice(0,5).map(c =>
     `<div class="tel-suggestion-item" onclick="selectClienteSuggestion('${c.id}')">
-      ${c.prenom} ${c.nom||''} <span class="tel-suggestion-code">${c.code||''}</span>
+      ${c.prenom} ${c.nom||''} ${isFidele(c)?`<span class="tel-suggestion-code">${c.code||''}</span>`:'<span style="font-size:0.6rem;color:var(--warm)">(${c.seances||0}/3 RDV)</span>'}
       <div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div>
     </div>`
   ).join('');
   sugg.style.display = 'block';
 }
-
 function selectClienteSuggestion(id) {
   const c = DB.get('clientes').find(x => x.id === id);
   if (!c) return;
@@ -415,29 +521,6 @@ function selectClienteSuggestion(id) {
   document.getElementById('f-adresse').value = c.adresse || '';
   document.getElementById('f-details').value = c.details || '';
   document.getElementById('tel-suggestions').style.display = 'none';
-}
-
-function toggleConge(date) {
-  const conges = DB.get('conges');
-  const idx = conges.indexOf(date);
-  if (idx >= 0) conges.splice(idx, 1); else conges.push(date);
-  DB.set('conges', conges);
-  if (currentView === 'semaine') buildPlanning(); else buildMonth();
-}
-function setPayment(mode) {
-  currentPayment = mode;
-  document.getElementById('pay-especes').classList.toggle('active', mode==='especes');
-  document.getElementById('pay-virement').classList.toggle('active', mode==='virement');
-}
-function toggleKmField() {
-  document.getElementById('km-group').style.display = document.getElementById('f-dep').value==='1' ? 'block' : 'none';
-}
-function depPrix(r) { return r.dep ? (parseFloat(r.km)||10) : 0; }
-function calcTotal(r, p) { return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0); }
-function callTel(tel) { window.location.href = 'tel:'+normalizeTel(tel); }
-function openWaze(adresse) {
-  window.location.href = `waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
-  setTimeout(() => window.open(`https://waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`, '_blank'), 1500);
 }
 
 function syncClienteFromRdv(name, tel, adresse, details) {
@@ -450,11 +533,12 @@ function syncClienteFromRdv(name, tel, adresse, details) {
     if (tel) clientes[idx].tel = tel;
     if (adresse) clientes[idx].adresse = adresse;
     if (details) clientes[idx].details = details;
-    if (!clientes[idx].code) clientes[idx].code = generateClientCode();
     if (!editingRdvKey) clientes[idx].seances = (clientes[idx].seances||0) + 1;
+    // Attribuer code YM si seuil atteint
+    if (!clientes[idx].code && isFidele(clientes[idx])) clientes[idx].code = generateClientCode();
     DB.set('clientes', clientes);
   } else {
-    clientes.push({ id: Date.now().toString(), code: generateClientCode(), prenom: name, nom: '', tel: tel||'', adresse: adresse||'', details: details||'', source: 'Planning', seances: 1, notes: '' });
+    clientes.push({ id: Date.now().toString(), code: null, prenom: name, nom: '', tel: tel||'', adresse: adresse||'', details: details||'', source: 'Planning', seances: 1, notes: '' });
     DB.set('clientes', clientes);
   }
 }
@@ -490,6 +574,33 @@ function getBlockedSlots(rdvs) {
     }
   });
   return { blocked, travel };
+}
+
+function depPrix(r) { return r.dep ? (parseFloat(r.km)||10) : 0; }
+function calcTotal(r, p) { return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0); }
+
+function toggleDepFields() {
+  const dep = document.getElementById('f-dep').value === '1';
+  document.getElementById('dep-group').style.display = dep ? 'block' : 'none';
+  updateNetPreview();
+}
+
+function toggleConge(date) {
+  const conges = DB.get('conges');
+  const idx = conges.indexOf(date);
+  if (idx >= 0) conges.splice(idx, 1); else conges.push(date);
+  DB.set('conges', conges);
+  if (currentView === 'semaine') buildPlanning(); else buildMonth();
+}
+function setPayment(mode) {
+  currentPayment = mode;
+  document.getElementById('pay-especes').classList.toggle('active', mode==='especes');
+  document.getElementById('pay-virement').classList.toggle('active', mode==='virement');
+}
+function callTel(tel) { window.location.href = 'tel:'+normalizeTel(tel); }
+function openWaze(adresse) {
+  window.location.href = `waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
+  setTimeout(() => window.open(`https://waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`, '_blank'), 1500);
 }
 
 function sendWaRappel() {
@@ -539,11 +650,45 @@ function switchTab(tab) {
   document.getElementById('tab-'+tab).classList.add('active');
   if(tab==='clientes') renderClientes();
 }
-function updatePaymentStats(allRdvs) {
-  let esp=0,vir=0;
-  allRdvs.forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40};const t=calcTotal(r,p);if(r.payment==='virement')vir+=t;else esp+=t;});
-  document.getElementById('s-especes').textContent=esp+'€';
-  document.getElementById('s-virement').textContent=vir+'€';
+
+function calcAllStats(rdvsAll) {
+  const now = new Date();
+  const weekDates = getWeekDates(weekOffset);
+  const weekStart = fmtDate(weekDates[0]);
+  const weekEnd = fmtDate(weekDates[6]);
+  const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+  let wRdv=0,wCa=0,wNet=0,wMins=0,wEsp=0,wVir=0;
+  let mCa=0,totalCa=0;
+
+  Object.entries(rdvsAll).forEach(([key,r]) => {
+    const date = key.split('_')[0];
+    const p = PRESTATIONS[r.prestation]||{prix:40,duree:60};
+    const brut = calcTotal(r,p);
+    const essence = r.dep&&r.kmDist ? calcEssenceCost(r.kmDist) : 0;
+    const net = brut - essence;
+    totalCa += brut;
+    if (date.startsWith(monthStr)) mCa += brut;
+    if (date >= weekStart && date <= weekEnd) {
+      wRdv++; wCa+=brut; wNet+=net; wMins+=p.duree+(r.prolongation?20:0);
+      if (r.payment==='virement') wVir+=brut; else wEsp+=brut;
+    }
+  });
+  return { wRdv, wCa, wNet, wMins, wEsp, wVir, mCa, totalCa };
+}
+
+function updateStats() {
+  const rdvsAll = DB.get('rdvs');
+  const { wRdv, wCa, wNet, wMins, wEsp, wVir, mCa, totalCa } = calcAllStats(rdvsAll);
+  document.getElementById('s-rdv').textContent = wRdv;
+  document.getElementById('s-ca').textContent = wCa+'€';
+  document.getElementById('s-net').textContent = wNet.toFixed(0)+'€';
+  const hh=Math.floor(wMins/60),mm=wMins%60;
+  document.getElementById('s-h').textContent = hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
+  document.getElementById('s-especes').textContent = wEsp+'€';
+  document.getElementById('s-virement').textContent = wVir+'€';
+  document.getElementById('s-month').textContent = mCa+'€';
+  document.getElementById('s-total').textContent = totalCa+'€';
 }
 
 function buildPlanning() {
@@ -574,16 +719,19 @@ function buildPlanning() {
     const area=document.createElement('div'); area.className='slot-area';
     if(rdvs[key]){
       const r=rdvs[key],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
-      const c = r.tel ? findClienteByTel(r.tel) : null;
+      const c=r.tel?findClienteByTel(r.tel):null;
       area.className+=' has-rdv';
       const card=document.createElement('div'); card.className='rdv-card '+p.color;
       const total=calcTotal(r,p);
+      const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+      const net=total-essence;
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
       const telLink=r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:'';
       const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
       const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      const netLine=r.dep&&r.kmDist&&essence>0?`<div class="rdv-net">💰 Net après essence : ${net.toFixed(2)}€ (−${essence}€⛽)</div>`:'';
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
     } else if(cng){area.className+=' conge-slot';}
@@ -592,13 +740,7 @@ function buildPlanning() {
     else{area.className+=' empty';area.innerHTML='<span class="slot-add">＋</span>';area.onclick=()=>openRdvModal(null,h);}
     item.appendChild(timeEl);item.appendChild(area);list.appendChild(item);
   });
-  let count=0,ca=0,mins=0;const weekRdvs=[];
-  dates.forEach(d=>{HOURS.forEach(h=>{const r=DB.get('rdvs')[rdvKey(fmtDate(d),h)];if(r){const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);weekRdvs.push(r);}});});
-  document.getElementById('s-rdv').textContent=count;
-  document.getElementById('s-ca').textContent=ca+'€';
-  const hh=Math.floor(mins/60),mm=mins%60;
-  document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
-  updatePaymentStats(weekRdvs);
+  updateStats();
 }
 
 function buildMonth() {
@@ -638,24 +780,21 @@ function buildMonth() {
       const time=key.split('_')[1],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
       const c=r.tel?findClienteByTel(r.tel):null;
       const total=calcTotal(r,p);
+      const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+      const net=total-essence;
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
       const telLink=r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:'';
       const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
       const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
+      const netLine=r.dep&&r.kmDist&&essence>0?`<div class="rdv-net">💰 Net : ${net.toFixed(2)}€ (−${essence}€⛽)</div>`:'';
       const item=document.createElement('div');item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
   }
-  let count=0,ca=0,mins=0;const allRdvs=Object.values(rdvs);
-  allRdvs.forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};count++;ca+=calcTotal(r,p);mins+=p.duree+(r.prolongation?20:0);});
-  document.getElementById('s-rdv').textContent=count;
-  document.getElementById('s-ca').textContent=ca+'€';
-  const hh=Math.floor(mins/60),mm=mins%60;
-  document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
-  updatePaymentStats(allRdvs);
+  updateStats();
 }
 
 function openRdvModal(key, defaultHour) {
@@ -665,6 +804,7 @@ function openRdvModal(key, defaultHour) {
   document.getElementById('btn-delete-rdv').style.display=key?'block':'none';
   document.getElementById('btn-wa-rappel').style.display='none';
   document.getElementById('tel-suggestions').style.display='none';
+  document.getElementById('net-preview').style.display='none';
   currentRdvForWa=null;
   if(key&&DB.get('rdvs')[key]){
     const r=DB.get('rdvs')[key];
@@ -676,13 +816,15 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-prestation').value=r.prestation||'classic_60';
     document.getElementById('f-dep').value=r.dep?'1':'0';
     document.getElementById('f-km').value=r.km||'10';
-    toggleKmField();
+    document.getElementById('f-km-dist').value=r.kmDist||'';
+    toggleDepFields();
     document.getElementById('f-adresse').value=r.adresse||'';
     document.getElementById('f-details').value=r.details||'';
     document.getElementById('f-prolongation').checked=r.prolongation||false;
     document.getElementById('f-pourboire').value=r.pourboire||'';
     setPayment(r.payment||'especes');
     if(r.tel) document.getElementById('btn-wa-rappel').style.display='flex';
+    updateNetPreview();
   } else {
     document.getElementById('f-tel').value='';
     document.getElementById('f-name').value='';
@@ -691,7 +833,8 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-prestation').value='classic_60';
     document.getElementById('f-dep').value='0';
     document.getElementById('f-km').value='10';
-    toggleKmField();
+    document.getElementById('f-km-dist').value='';
+    document.getElementById('dep-group').style.display='none';
     document.getElementById('f-adresse').value='';
     document.getElementById('f-details').value='';
     document.getElementById('f-prolongation').checked=false;
@@ -712,7 +855,8 @@ function saveRdv() {
   const adresse=document.getElementById('f-adresse').value.trim();
   const details=document.getElementById('f-details').value.trim();
   const tel=document.getElementById('f-tel').value.trim();
-  rdvs[newKey]={name,tel,time,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
+  const kmDist=depOn?document.getElementById('f-km-dist').value:'';
+  rdvs[newKey]={name,tel,time,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist,adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
   DB.set('rdvs',rdvs);
   syncClienteFromRdv(name,tel,adresse,details);
   selectedDay=date;
@@ -735,21 +879,27 @@ function renderClientes(filter) {
   const list=document.getElementById('clientes-list');list.innerHTML='';
   if(clientes.length===0){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
   clientes.forEach(c=>{
-    const card=document.createElement('div');card.className='cliente-card';
+    const fidele = isFidele(c);
+    const card=document.createElement('div');
+    card.className='cliente-card'+(fidele?'':' pending');
+    const seancesLeft = fidele ? 0 : FIDELITE_SEUIL - (c.seances||0);
     card.innerHTML=`
       <div class="cliente-card-top">
-        <div class="cliente-avatar">${initials(c.prenom,c.nom)}</div>
+        <div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div>
         <div class="cliente-info">
-          <div class="cliente-name">${c.prenom} ${c.nom||''}<span class="cliente-code">${c.code||''}</span></div>
+          <div class="cliente-name">
+            ${c.prenom} ${c.nom||''}
+            ${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV pour fidélisation</span>`:''}
+          </div>
           ${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}
           ${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}
           ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''}
           ${c.notes?`<div class="cliente-sub" style="font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}
         </div>
-        <div class="cliente-badge">${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>
+        <div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐ ':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>
       </div>
       <div class="cliente-actions">
-        <button class="btn-planning" onclick="event.stopPropagation();addClienteToPlanning('${c.id}')">📅 Ajouter au planning</button>
+        <button class="btn-planning" onclick="event.stopPropagation();addClienteToPlanning('${c.id}')">📅 Planning</button>
         ${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞 Appeler</button>`:''}
         ${c.adresse?`<button class="btn-waze-cliente" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️ Waze</button>`:''}
       </div>
@@ -776,11 +926,14 @@ function openClienteModal(id){
       document.getElementById('c-source').value=c.source||'Instagram';
       document.getElementById('c-seances').value=c.seances||0;
       document.getElementById('c-notes').value=c.notes||'';
-      if(c.code){codeDisplay.textContent='🏷️ Code cliente : '+c.code;codeDisplay.style.display='block';}
+      if(c.code){codeDisplay.textContent='🏷️ Code cliente : '+c.code+' · ⭐ Cliente fidèle';codeDisplay.style.display='block';}
+      else if(c.seances>0){codeDisplay.textContent=`⏳ ${c.seances||0}/${FIDELITE_SEUIL} RDV — fidélisation après ${FIDELITE_SEUIL} séances`;codeDisplay.style.display='block';}
       else codeDisplay.style.display='none';
     }
   } else {
-    document.getElementById('c-prenom').value='';document.getElementById('c-nom').value='';document.getElementById('c-tel').value='';document.getElementById('c-adresse').value='';document.getElementById('c-details').value='';document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';document.getElementById('c-notes').value='';
+    ['c-prenom','c-nom','c-tel','c-adresse','c-details','c-notes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('c-source').value='Instagram';
+    document.getElementById('c-seances').value='0';
     codeDisplay.style.display='none';
   }
   openModal('overlay-cliente');
@@ -792,16 +945,18 @@ function saveCliente(){
   if(!prenom){document.getElementById('c-prenom').focus();return;}
   const clientes=DB.get('clientes');
   const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;
+  const seances=parseInt(document.getElementById('c-seances').value)||0;
+  const shouldGetCode = seances >= FIDELITE_SEUIL;
   const data={
     id:editingClienteId||Date.now().toString(),
-    code:existing?.code||generateClientCode(),
+    code:existing?.code||(shouldGetCode?generateClientCode():null),
     prenom,
     nom:document.getElementById('c-nom').value.trim(),
     tel:document.getElementById('c-tel').value.trim(),
     adresse:document.getElementById('c-adresse').value.trim(),
     details:document.getElementById('c-details').value.trim(),
     source:document.getElementById('c-source').value,
-    seances:parseInt(document.getElementById('c-seances').value)||0,
+    seances,
     notes:document.getElementById('c-notes').value.trim()
   };
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else{clientes.push(data);}
@@ -818,6 +973,7 @@ function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');editingRdvKey=null;editingClienteId=null;}
 document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
 document.addEventListener('click', e => { if(!e.target.closest('.tel-input-wrap')) document.getElementById('tel-suggestions').style.display='none'; });
+updateEssenceBanner();
 showNotifBanner();
 buildPlanning();
 </script>
