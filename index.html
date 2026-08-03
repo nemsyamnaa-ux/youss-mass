@@ -14,8 +14,8 @@
     html { font-size: 16px; -webkit-text-size-adjust: 100%; }
     body { background: var(--cream); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--deep); min-height: 100vh; padding-bottom: 90px; overscroll-behavior: none; }
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--deep); display: flex; border-top: 2px solid var(--gold); z-index: 200; padding-bottom: env(safe-area-inset-bottom); }
-    .nav-tab { flex: 1; padding: 12px 0 10px; text-align: center; cursor: pointer; color: var(--warm); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
-    .nav-tab .tab-icon { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+    .nav-tab { flex: 1; padding: 12px 0 10px; text-align: center; cursor: pointer; color: var(--warm); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
+    .nav-tab .tab-icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
     .nav-tab.active { color: var(--gold); }
     .page { display: none; } .page.active { display: block; }
     .header { background: var(--deep); padding: 14px 16px 12px; position: sticky; top: 0; z-index: 100; }
@@ -37,16 +37,11 @@
     .stat-pay { flex: 1; border-radius: 12px; padding: 8px 6px; text-align: center; }
     .stat-pay.especes { background: #eaf3eb; }
     .stat-pay.virement { background: #e6eef8; }
-    .stat-pay.net { background: #fdf3e3; }
     .stat-pay-val { font-size: 1rem; font-weight: 700; }
     .stat-pay.especes .stat-pay-val { color: var(--green); }
     .stat-pay.virement .stat-pay-val { color: #5b8ac9; }
-    .stat-pay.net .stat-pay-val { color: var(--gold); }
     .stat-pay-lbl { font-size: 0.56rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warm); margin-top: 1px; }
-    .stats-period { display: flex; gap: 8px; padding: 0 14px 10px; }
-    .stat-period { flex: 1; background: var(--white); border-radius: 12px; padding: 8px 6px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
-    .stat-period-val { font-size: 0.95rem; color: var(--deep); font-weight: 700; }
-    .stat-period-lbl { font-size: 0.56rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warm); margin-top: 2px; }
+    .essence-banner { margin: 0 14px 8px; background: #fdf3e3; border: 1.5px solid var(--gold); border-radius: 12px; padding: 8px 14px; font-size: 0.78rem; color: var(--deep); display: flex; align-items: center; gap: 8px; cursor: pointer; }
     .days-strip { display: flex; overflow-x: auto; gap: 7px; padding: 10px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     .days-strip::-webkit-scrollbar { display: none; }
     .day-pill { flex-shrink: 0; background: var(--white); border-radius: 14px; padding: 8px 12px; text-align: center; cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 8px rgba(59,42,42,0.06); min-width: 54px; transition: all 0.15s; }
@@ -89,7 +84,7 @@
     .rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
     .rdv-address { font-size: 0.7rem; color: #5b8ac9; margin-top: 3px; cursor: pointer; text-decoration: underline; }
     .rdv-phone { font-size: 0.7rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
-    .rdv-code { font-size: 0.62rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 6px; border-radius: 6px; display: inline-block; margin-top: 2px; }
+    .rdv-code { font-size: 0.62rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 6px; border-radius: 6px; display: inline-block; }
     .rdv-net { font-size: 0.68rem; color: var(--gold); font-weight: 700; margin-top: 3px; }
     .rdv-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
     .btn-wa { background: #25d366; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
@@ -126,6 +121,24 @@
     .month-rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
     .month-rdv-actions { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
     .month-empty { text-align: center; padding: 20px; color: var(--warm); font-size: 0.85rem; font-style: italic; }
+    /* STATS PAGE */
+    .stats-page-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
+    .stats-page-header .brand { display: block; margin-bottom: 4px; }
+    .stats-nav { display: flex; gap: 8px; padding: 12px 14px 0; }
+    .stats-nav-btn { flex: 1; padding: 8px; border-radius: 10px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
+    .stats-nav-btn.active { background: var(--deep); color: var(--gold); border-color: var(--deep); }
+    .stats-content { padding: 12px 14px; }
+    .month-stat-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); border-left: 3px solid var(--gold); }
+    .month-stat-title { font-weight: 700; font-size: 1rem; color: var(--deep); margin-bottom: 8px; }
+    .month-stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--warm); padding: 3px 0; }
+    .month-stat-row span:last-child { font-weight: 700; color: var(--deep); }
+    .month-stat-row.total { border-top: 1px solid var(--sand); margin-top: 6px; padding-top: 8px; }
+    .month-stat-row.total span { color: var(--rose); font-size: 0.95rem; }
+    .global-stat-card { background: var(--deep); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; }
+    .global-stat-title { font-weight: 700; font-size: 0.9rem; color: var(--gold); margin-bottom: 10px; }
+    .global-stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--sand); padding: 4px 0; }
+    .global-stat-row span:last-child { font-weight: 700; color: var(--cream); }
+    /* CLIENTES */
     .clientes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
     .clientes-header .brand { margin-bottom: 10px; display: block; }
     .search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px 14px; gap: 8px; }
@@ -134,7 +147,7 @@
     .search-bar span { color: var(--warm); font-size: 1rem; }
     .clientes-list { padding: 12px 14px; }
     .cliente-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); cursor: pointer; border-left: 3px solid var(--gold); }
-    .cliente-card.pending { border-left-color: var(--sand); opacity: 0.85; }
+    .cliente-card.pending { border-left-color: var(--sand); }
     .cliente-card-top { display: flex; align-items: center; gap: 12px; }
     .cliente-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: var(--warm); flex-shrink: 0; }
     .cliente-avatar.fidele { background: var(--gold); color: var(--deep); }
@@ -155,7 +168,7 @@
     .empty-state p { font-size: 0.9rem; line-height: 1.5; }
     .overlay { position: fixed; inset: 0; background: rgba(59,42,42,0.55); z-index: 300; display: none; align-items: flex-end; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
     .overlay.open { display: flex; }
-    .modal { background: var(--cream); border-radius: 24px 24px 0 0; padding: 20px 18px calc(24px + env(safe-area-inset-bottom)); width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.22s ease; }
+    .modal { background: var(--cream); border-radius: 24px 24px 0 0; padding: 20px 18px calc(24px + env(safe-area-inset-bottom)); width: 100%; max-height: 92vh; overflow-y: auto; animation: slideUp 0.22s ease; }
     @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .modal-handle { width: 38px; height: 4px; background: var(--sand); border-radius: 2px; margin: 0 auto 16px; }
     .modal-title { font-size: 1.15rem; font-weight: 700; color: var(--deep); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -188,14 +201,21 @@
     .tel-suggestions { position: absolute; top: 100%; left: 0; right: 0; background: var(--white); border: 1.5px solid var(--sand); border-radius: 12px; z-index: 50; box-shadow: 0 4px 16px rgba(59,42,42,0.1); max-height: 200px; overflow-y: auto; }
     .tel-suggestion-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--sand); font-size: 0.9rem; }
     .tel-suggestion-item:last-child { border-bottom: none; }
-    .tel-suggestion-item:active { background: var(--cream); }
     .tel-suggestion-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-left: 6px; }
-    .essence-banner { margin: 0 14px 8px; background: #fdf3e3; border: 1.5px solid var(--gold); border-radius: 12px; padding: 8px 14px; font-size: 0.78rem; color: var(--deep); display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .km-input-rdv { margin-top: 8px; }
     .net-preview { background: #fdf3e3; border-radius: 10px; padding: 8px 12px; font-size: 0.82rem; color: var(--deep); margin-top: 8px; font-weight: 600; text-align: center; }
+    /* MODAL CONFIRMATION */
+    .confirm-msg-box { background: var(--white); border-radius: 12px; padding: 14px; font-size: 0.85rem; color: var(--deep); line-height: 1.6; white-space: pre-wrap; border: 1.5px solid var(--sand); margin-bottom: 14px; max-height: 200px; overflow-y: auto; }
+    .send-btns { display: flex; flex-direction: column; gap: 10px; }
+    .btn-send-wa { background: #25d366; color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-send-sms { background: #5b8ac9; color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-send-copy { background: var(--deep); color: var(--gold); border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-send-rappel { background: var(--warm); color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; }
+    .msg-separator { text-align: center; font-size: 0.72rem; color: var(--warm); margin: 8px 0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
   </style>
 </head>
 <body>
+
+<!-- PAGE PLANNING -->
 <div class="page active" id="page-planning">
   <div class="header">
     <div class="header-row">
@@ -215,20 +235,14 @@
   <div class="stats">
     <div class="stat"><div class="stat-val" id="s-rdv">0</div><div class="stat-lbl">RDV</div></div>
     <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Brut</div></div>
-    <div class="stat"><div class="stat-val" id="s-net">0€</div><div class="stat-lbl">Net essence</div></div>
+    <div class="stat"><div class="stat-val" id="s-net">0€</div><div class="stat-lbl">Net</div></div>
     <div class="stat"><div class="stat-val" id="s-h">0h</div><div class="stat-lbl">Heures</div></div>
   </div>
   <div class="stats-pay">
     <div class="stat-pay especes"><div class="stat-pay-val" id="s-especes">0€</div><div class="stat-pay-lbl">💵 Espèces</div></div>
     <div class="stat-pay virement"><div class="stat-pay-val" id="s-virement">0€</div><div class="stat-pay-lbl">🏦 Virement</div></div>
   </div>
-  <div class="stats-period">
-    <div class="stat-period"><div class="stat-period-val" id="s-month">0€</div><div class="stat-period-lbl">📅 Ce mois</div></div>
-    <div class="stat-period"><div class="stat-period-val" id="s-total">0€</div><div class="stat-period-lbl">🏆 Total</div></div>
-  </div>
-  <div class="essence-banner" onclick="openEssenceSettings()">
-    ⛽ Paramètres essence — <span id="essence-info">Appuie pour configurer</span>
-  </div>
+  <div class="essence-banner" onclick="openEssenceSettings()">⛽ <span id="essence-info">Configurer le prix du carburant</span></div>
   <div id="notif-banner-wrap"></div>
   <div id="view-semaine">
     <div class="days-strip" id="days-strip"></div>
@@ -249,6 +263,20 @@
   </div>
   <button class="fab" onclick="openRdvModal()">＋</button>
 </div>
+
+<!-- PAGE STATS -->
+<div class="page" id="page-stats">
+  <div class="stats-page-header">
+    <span class="brand">📊 Mes Revenus</span>
+  </div>
+  <div class="stats-nav">
+    <button class="stats-nav-btn active" id="sn-mois" onclick="setStatsView('mois')">Par mois</button>
+    <button class="stats-nav-btn" id="sn-global" onclick="setStatsView('global')">Total global</button>
+  </div>
+  <div class="stats-content" id="stats-content"></div>
+</div>
+
+<!-- PAGE CLIENTES -->
 <div class="page" id="page-clientes">
   <div class="clientes-header">
     <span class="brand">👩 Mes Clientes</span>
@@ -257,8 +285,11 @@
   <div class="clientes-list" id="clientes-list"></div>
   <button class="fab" onclick="openClienteModal()">＋</button>
 </div>
+
+<!-- NAV BAS -->
 <nav class="bottom-nav">
   <div class="nav-tab active" id="tab-planning" onclick="switchTab('planning')"><span class="tab-icon">📅</span>Planning</div>
+  <div class="nav-tab" id="tab-stats" onclick="switchTab('stats')"><span class="tab-icon">📊</span>Revenus</div>
   <div class="nav-tab" id="tab-clientes" onclick="switchTab('clientes')"><span class="tab-icon">👩</span>Clientes</div>
 </nav>
 
@@ -281,7 +312,7 @@
     </div>
     <div class="form-group">
       <label>Prestation</label>
-      <select id="f-prestation">
+      <select id="f-prestation" onchange="updateNetPreview()">
         <optgroup label="💆 Massage Classique">
           <option value="classic_30">Massage 30 min — 25€</option>
           <option value="classic_60" selected>Massage 1h — 40€</option>
@@ -300,46 +331,45 @@
     </div>
     <div class="form-group"><label>Déplacement</label><select id="f-dep" onchange="toggleDepFields()"><option value="0">Non</option><option value="1">Oui</option></select></div>
     <div id="dep-group" style="display:none">
-      <div class="form-group">
-        <label>Tarif kilométrique</label>
-        <select id="f-km">
-          <option value="10">Jusqu'à 30km — +10€</option>
-          <option value="15">30 à 40km — +15€</option>
-          <option value="20">Plus de 40km — +20€</option>
-        </select>
-      </div>
-      <div class="form-group km-input-rdv">
-        <label>Distance aller (km)</label>
-        <input type="number" id="f-km-dist" placeholder="Ex: 15" min="0" step="1" oninput="updateNetPreview()"/>
-      </div>
+      <div class="form-group"><label>Tarif km</label><select id="f-km" onchange="updateNetPreview()"><option value="10">Jusqu'à 30km — +10€</option><option value="15">30 à 40km — +15€</option><option value="20">Plus de 40km — +20€</option></select></div>
+      <div class="form-group"><label>Distance aller (km)</label><input type="number" id="f-km-dist" placeholder="Ex: 15" min="0" step="1" oninput="updateNetPreview()"/></div>
       <div id="net-preview" class="net-preview" style="display:none"></div>
     </div>
     <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="f-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
     <div class="form-group"><label>📝 Détails accès</label><input type="text" id="f-details" placeholder="2ème étage, code 1234..."/></div>
     <div class="form-group">
       <label>Supplément</label>
-      <label class="checkbox-group">
-        <input type="checkbox" id="f-prolongation" onchange="updateNetPreview()"/>
-        <span>⏱ Prolongation +20 min</span>
-        <span class="prix-sup">+15€</span>
-      </label>
+      <label class="checkbox-group"><input type="checkbox" id="f-prolongation" onchange="updateNetPreview()"/><span>⏱ Prolongation +20 min</span><span class="prix-sup">+15€</span></label>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>💰 Pourboire</label>
-        <input type="number" id="f-pourboire" placeholder="0" min="0" step="1" oninput="updateNetPreview()"/>
-      </div>
-      <div class="form-group">
-        <label>💳 Paiement</label>
-        <div class="pay-toggle">
-          <button type="button" class="pay-btn active" id="pay-especes" onclick="setPayment('especes')">💵 Espèces</button>
-          <button type="button" class="pay-btn" id="pay-virement" onclick="setPayment('virement')">🏦 Virement</button>
-        </div>
-      </div>
+      <div class="form-group"><label>💰 Pourboire</label><input type="number" id="f-pourboire" placeholder="0" min="0" step="1" oninput="updateNetPreview()"/></div>
+      <div class="form-group"><label>💳 Paiement</label><div class="pay-toggle"><button type="button" class="pay-btn active" id="pay-especes" onclick="setPayment('especes')">💵 Espèces</button><button type="button" class="pay-btn" id="pay-virement" onclick="setPayment('virement')">🏦 Virement</button></div></div>
     </div>
     <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
     <button class="btn-whatsapp" id="btn-wa-rappel" onclick="sendWaRappel()" style="display:none">📲 Envoyer rappel WhatsApp</button>
     <button class="btn-danger" id="btn-delete-rdv" onclick="deleteRdv()" style="display:none">🗑 Supprimer ce RDV</button>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMATION RDV -->
+<div class="overlay" id="overlay-confirm">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><span>📩 Confirmation de réservation</span><button class="close-btn" onclick="closeModal('overlay-confirm')">✕</button></div>
+    <p style="font-size:0.82rem;color:var(--warm);margin-bottom:10px">Message de confirmation à envoyer à la cliente :</p>
+    <div class="confirm-msg-box" id="confirm-msg-box"></div>
+    <div class="send-btns">
+      <button class="btn-send-wa" onclick="sendConfirmWa()">📲 Envoyer via WhatsApp</button>
+      <button class="btn-send-sms" onclick="sendConfirmSms()">💬 Envoyer par SMS</button>
+      <button class="btn-send-copy" onclick="copyConfirmMsg()">📋 Copier (Instagram / autre)</button>
+    </div>
+    <div class="msg-separator">— Message de rappel veille —</div>
+    <div class="confirm-msg-box" id="rappel-msg-box"></div>
+    <div class="send-btns">
+      <button class="btn-send-rappel" onclick="sendRappelWa()">📲 Rappel WhatsApp (veille)</button>
+      <button class="btn-send-copy" onclick="copyRappelMsg()" style="background:var(--warm)">📋 Copier rappel</button>
+    </div>
+    <button class="btn-danger" onclick="closeModal('overlay-confirm')" style="margin-top:10px">Fermer</button>
   </div>
 </div>
 
@@ -360,9 +390,9 @@
       <div class="form-group"><label>Comment trouvée ?</label><select id="c-source"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Bouche à oreille">Bouche à oreille</option><option value="WhatsApp">WhatsApp</option><option value="Autre">Autre</option></select></div>
       <div class="form-group"><label>Séances total</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
     </div>
-    <div class="form-group"><label>Préférences / Notes</label><textarea id="c-notes" placeholder="Préférences de massage, infos importantes..."></textarea></div>
+    <div class="form-group"><label>Préférences / Notes</label><textarea id="c-notes" placeholder="Préférences de massage..."></textarea></div>
     <button class="btn-primary" onclick="saveCliente()">✔ Enregistrer</button>
-    <button class="btn-danger" id="btn-delete-cliente" onclick="deleteCliente()" style="display:none">🗑 Supprimer cette cliente</button>
+    <button class="btn-danger" id="btn-delete-cliente" onclick="deleteCliente()" style="display:none">🗑 Supprimer</button>
   </div>
 </div>
 
@@ -371,331 +401,436 @@
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title"><span>⛽ Paramètres Essence</span><button class="close-btn" onclick="closeModal('overlay-essence')">✕</button></div>
-    <div class="form-group">
-      <label>Prix du litre SP95-E10 (€)</label>
-      <input type="number" id="e-prix" placeholder="Ex: 1.85" step="0.01" min="0"/>
-    </div>
-    <div class="form-group">
-      <label>Consommation aux 100km (L)</label>
-      <input type="number" id="e-conso" placeholder="Ex: 5.5" step="0.1" min="0" value="5.5"/>
-    </div>
-    <div style="background:var(--sand);border-radius:12px;padding:12px;font-size:0.8rem;color:var(--deep);margin-bottom:12px">
-      💡 Twingo 3 SP95-E10 ≈ 5,5L/100km<br>
-      Coût = distance A/R × conso/100 × prix litre
-    </div>
+    <div class="form-group"><label>Prix du litre SP95-E10 (€)</label><input type="number" id="e-prix" placeholder="Ex: 1.85" step="0.01" min="0"/></div>
+    <div class="form-group"><label>Consommation aux 100km (L)</label><input type="number" id="e-conso" placeholder="5.5" step="0.1" min="0"/></div>
+    <div style="background:var(--sand);border-radius:12px;padding:12px;font-size:0.8rem;color:var(--deep);margin-bottom:12px">💡 Twingo 3 SP95-E10 ≈ 5,5L/100km<br>Coût = km A/R × conso/100 × prix litre</div>
     <button class="btn-primary" onclick="saveEssenceSettings()">✔ Enregistrer</button>
   </div>
 </div>
 
 <script>
 const DB = {
-  get: (k) => JSON.parse(localStorage.getItem('youss-' + k) || (k==='rdvs'?'{}':k==='conges'?'[]':'[]')),
-  set: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v)),
-  getObj: (k, def) => JSON.parse(localStorage.getItem('youss-' + k) || JSON.stringify(def)),
-  setObj: (k, v) => localStorage.setItem('youss-' + k, JSON.stringify(v))
+  get: (k) => JSON.parse(localStorage.getItem('youss-'+k)||(k==='rdvs'?'{}':k==='conges'?'[]':'[]')),
+  set: (k,v) => localStorage.setItem('youss-'+k, JSON.stringify(v)),
+  getObj: (k,def) => JSON.parse(localStorage.getItem('youss-'+k)||JSON.stringify(def)),
+  setObj: (k,v) => localStorage.setItem('youss-'+k, JSON.stringify(v))
 };
 const PRESTATIONS = {
-  classic_30:  { label: 'Massage 30min',            duree: 30,  prix: 25, color: 'c-rose' },
-  classic_60:  { label: 'Massage 1h',               duree: 60,  prix: 40, color: 'c-gold' },
-  classic_90:  { label: 'Massage 1h30',             duree: 90,  prix: 55, color: 'c-green' },
-  classic_120: { label: 'Massage 2h',               duree: 120, prix: 80, color: 'c-green' },
-  pierres_60:  { label: 'Pierres chaudes 1h',       duree: 60,  prix: 50, color: 'c-blue' },
-  pierres_90:  { label: 'Pierres chaudes 1h30',     duree: 90,  prix: 65, color: 'c-blue' },
-  drainage_30: { label: 'Drainage 1 zone 30min',    duree: 30,  prix: 35, color: 'c-purple' },
-  drainage_75: { label: 'Drainage corps 1h15',      duree: 75,  prix: 65, color: 'c-purple' },
+  classic_30:  {label:'Massage 30min',        duree:30,  prix:25, color:'c-rose'},
+  classic_60:  {label:'Massage 1h',           duree:60,  prix:40, color:'c-gold'},
+  classic_90:  {label:'Massage 1h30',         duree:90,  prix:55, color:'c-green'},
+  classic_120: {label:'Massage 2h',           duree:120, prix:80, color:'c-green'},
+  pierres_60:  {label:'Pierres chaudes 1h',   duree:60,  prix:50, color:'c-blue'},
+  pierres_90:  {label:'Pierres chaudes 1h30', duree:90,  prix:65, color:'c-blue'},
+  drainage_30: {label:'Drainage 1 zone 30min',duree:30,  prix:35, color:'c-purple'},
+  drainage_75: {label:'Drainage corps 1h15',  duree:75,  prix:65, color:'c-purple'},
 };
-const HOURS = [];
-for (let h = 8; h <= 23; h++) { HOURS.push(`${String(h).padStart(2,'0')}:00`); if (h < 23) HOURS.push(`${String(h).padStart(2,'0')}:30`); }
-const DAYS_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-const DAYS_LONG = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-const FIDELITE_SEUIL = 3;
+const HOURS=[];
+for(let h=8;h<=23;h++){HOURS.push(`${String(h).padStart(2,'0')}:00`);if(h<23)HOURS.push(`${String(h).padStart(2,'0')}:30`);}
+const DAYS_SHORT=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const DAYS_LONG=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const MONTHS_FR=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const MONTHS_SHORT=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
+const FIDELITE_SEUIL=3;
 
-let weekOffset = 0, monthOffset = 0;
-let selectedDay = fmtDate(new Date());
-let currentView = 'semaine';
-let editingRdvKey = null, editingClienteId = null;
-let currentRdvForWa = null;
-let currentPayment = 'especes';
+let weekOffset=0, monthOffset=0;
+let selectedDay=fmtDate(new Date());
+let currentView='semaine';
+let editingRdvKey=null, editingClienteId=null;
+let currentRdvForWa=null;
+let currentPayment='especes';
+let lastSavedRdv=null;
+let statsView='mois';
 
-function fmtDate(d) { return d.toISOString().split('T')[0]; }
-function getWeekDates(off) {
-  const now = new Date(), day = now.getDay();
-  const mon = new Date(now);
-  mon.setDate(now.getDate() - (day===0?6:day-1) + off*7);
-  return Array.from({length:7}, (_,i) => { const d=new Date(mon); d.setDate(mon.getDate()+i); return d; });
+function fmtDate(d){return d.toISOString().split('T')[0];}
+function getWeekDates(off){
+  const now=new Date(),day=now.getDay();
+  const mon=new Date(now);
+  mon.setDate(now.getDate()-(day===0?6:day-1)+off*7);
+  return Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d;});
 }
-function rdvKey(date, time) { return date+'_'+time; }
-function initials(prenom, nom) { return ((prenom||'?')[0]+(nom||'')[0]).toUpperCase(); }
-function timeToMins(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
-function minsToTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
-function isConge(date) { return DB.get('conges').includes(date); }
-function normalizeTel(t) { return t ? t.replace(/\s/g,'') : ''; }
-function isFidele(c) { return (c.seances||0) >= FIDELITE_SEUIL; }
+function rdvKey(date,time){return date+'_'+time;}
+function initials(prenom,nom){return((prenom||'?')[0]+(nom||'')[0]).toUpperCase();}
+function timeToMins(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+function minsToTime(m){return`${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
+function isConge(date){return DB.get('conges').includes(date);}
+function normalizeTel(t){return t?t.replace(/\s/g,''):'';}
+function isFidele(c){return(c.seances||0)>=FIDELITE_SEUIL;}
+
+function fmtDateFr(ds){
+  const d=new Date(ds+'T12:00:00');
+  const di=(d.getDay()+6)%7;
+  return DAYS_LONG[di]+' '+d.getDate()+' '+MONTHS_FR[d.getMonth()]+' '+d.getFullYear();
+}
 
 // ── ESSENCE ──
-function getEssence() { return DB.getObj('essence', { prix: 0, conso: 5.5 }); }
-function saveEssenceSettings() {
-  const prix = parseFloat(document.getElementById('e-prix').value) || 0;
-  const conso = parseFloat(document.getElementById('e-conso').value) || 5.5;
-  DB.setObj('essence', { prix, conso });
+function getEssence(){return DB.getObj('essence',{prix:0,conso:5.5});}
+function saveEssenceSettings(){
+  const prix=parseFloat(document.getElementById('e-prix').value)||0;
+  const conso=parseFloat(document.getElementById('e-conso').value)||5.5;
+  DB.setObj('essence',{prix,conso});
   updateEssenceBanner();
   closeModal('overlay-essence');
-  if (currentView==='semaine') buildPlanning(); else buildMonth();
+  if(currentView==='semaine')buildPlanning();else buildMonth();
 }
-function openEssenceSettings() {
-  const e = getEssence();
-  document.getElementById('e-prix').value = e.prix || '';
-  document.getElementById('e-conso').value = e.conso || 5.5;
+function openEssenceSettings(){
+  const e=getEssence();
+  document.getElementById('e-prix').value=e.prix||'';
+  document.getElementById('e-conso').value=e.conso||5.5;
   openModal('overlay-essence');
 }
-function updateEssenceBanner() {
-  const e = getEssence();
-  const el = document.getElementById('essence-info');
-  if (e.prix > 0) el.textContent = `${e.prix}€/L · ${e.conso}L/100km`;
-  else el.textContent = 'Appuie pour configurer le prix du carburant';
+function updateEssenceBanner(){
+  const e=getEssence();
+  document.getElementById('essence-info').textContent=e.prix>0?`${e.prix}€/L · ${e.conso}L/100km — Twingo 3`:'Configurer le prix du carburant';
 }
-function calcEssenceCost(kmAller) {
-  const e = getEssence();
-  if (!e.prix || !kmAller) return 0;
-  const kmAR = parseFloat(kmAller) * 2;
-  return Math.round(kmAR * e.conso / 100 * e.prix * 100) / 100;
+function calcEssenceCost(kmAller){
+  const e=getEssence();
+  if(!e.prix||!kmAller)return 0;
+  return Math.round(parseFloat(kmAller)*2*e.conso/100*e.prix*100)/100;
 }
-function calcNetRdv(r, p) {
-  const brut = p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0);
-  const essence = r.dep && r.kmDist ? calcEssenceCost(r.kmDist) : 0;
-  return Math.round((brut - essence) * 100) / 100;
+function depPrix(r){return r.dep?(parseFloat(r.km)||10):0;}
+function calcTotal(r,p){return p.prix+depPrix(r)+(r.prolongation?15:0)+(parseFloat(r.pourboire)||0);}
+function calcNetRdv(r,p){
+  const brut=calcTotal(r,p);
+  const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+  return Math.round((brut-essence)*100)/100;
 }
 
-function updateNetPreview() {
-  const dep = document.getElementById('f-dep').value === '1';
-  const preview = document.getElementById('net-preview');
-  if (!dep) { preview.style.display='none'; return; }
-  const prest = document.getElementById('f-prestation').value;
-  const p = PRESTATIONS[prest]||{prix:40};
-  const km = parseFloat(document.getElementById('f-km').value)||10;
-  const kmDist = parseFloat(document.getElementById('f-km-dist').value)||0;
-  const prolongation = document.getElementById('f-prolongation').checked;
-  const pourboire = parseFloat(document.getElementById('f-pourboire').value)||0;
-  const brut = p.prix + km + (prolongation?15:0) + pourboire;
-  const essence = kmDist > 0 ? calcEssenceCost(kmDist) : 0;
-  const net = brut - essence;
-  preview.style.display = 'block';
-  preview.innerHTML = essence > 0
-    ? `💰 Brut : ${brut}€ — ⛽ Essence : -${essence}€ = <strong>Net : ${net.toFixed(2)}€</strong>`
-    : `💰 Brut : ${brut}€ — configure le prix essence pour voir le net`;
+function updateNetPreview(){
+  const dep=document.getElementById('f-dep').value==='1';
+  const preview=document.getElementById('net-preview');
+  if(!dep){preview.style.display='none';return;}
+  const p=PRESTATIONS[document.getElementById('f-prestation').value]||{prix:40};
+  const km=parseFloat(document.getElementById('f-km').value)||10;
+  const kmDist=parseFloat(document.getElementById('f-km-dist').value)||0;
+  const prolongation=document.getElementById('f-prolongation').checked;
+  const pourboire=parseFloat(document.getElementById('f-pourboire').value)||0;
+  const brut=p.prix+km+(prolongation?15:0)+pourboire;
+  const essence=kmDist>0?calcEssenceCost(kmDist):0;
+  preview.style.display='block';
+  preview.innerHTML=essence>0?`💰 Brut : ${brut}€ — ⛽ −${essence}€ = <strong>Net : ${(brut-essence).toFixed(2)}€</strong>`:`💰 Brut : ${brut}€ — configure le prix essence pour voir le net`;
 }
+
+// ── CONFIRMATION MESSAGE ──
+function buildConfirmMsg(r){
+  const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
+  const total=calcTotal(r,p);
+  const dep=r.dep?`\n🚗 Déplacement inclus (+${depPrix(r)}€)`:'';
+  const prolongation=r.prolongation?'\n⏱ Prolongation +20 min (+15€)':'';
+  const adresse=r.adresse?`\n📍 Adresse : ${r.adresse}`:'';
+  return `Bonjour ${r.name} 🌸
+
+✅ Votre réservation est confirmée !
+
+📅 Date : ${fmtDateFr(r.date||selectedDay)}
+🕐 Heure : ${r.time}
+💆 Prestation : ${p.label}${dep}${prolongation}
+💰 Prix total : ${total}€
+
+${adresse}
+
+Un message de confirmation vous sera envoyé la veille du rendez-vous.
+
+Merci et à très bientôt ! 💛
+Youss Mass à Dom 🌸`;
+}
+
+function buildRappelMsg(r){
+  const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
+  return `Bonjour ${r.name} 🌸
+
+Je vous rappelle votre rendez-vous demain :
+
+📅 ${fmtDateFr(r.date||selectedDay)}
+🕐 à ${r.time}
+💆 ${p.label}
+
+Merci de confirmer votre présence en répondant à ce message 🙏
+
+À demain ! 💛
+Youss Mass à Dom 🌸`;
+}
+
+function openConfirmModal(rdvData){
+  lastSavedRdv=rdvData;
+  const confirmMsg=buildConfirmMsg(rdvData);
+  const rappelMsg=buildRappelMsg(rdvData);
+  document.getElementById('confirm-msg-box').textContent=confirmMsg;
+  document.getElementById('rappel-msg-box').textContent=rappelMsg;
+  openModal('overlay-confirm');
+}
+
+function sendConfirmWa(){
+  if(!lastSavedRdv||!lastSavedRdv.tel){alert('Pas de numéro de téléphone !');return;}
+  const tel=normalizeTel(lastSavedRdv.tel).replace(/^0/,'+33');
+  const msg=buildConfirmMsg(lastSavedRdv);
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+}
+function sendConfirmSms(){
+  if(!lastSavedRdv||!lastSavedRdv.tel){alert('Pas de numéro de téléphone !');return;}
+  const tel=normalizeTel(lastSavedRdv.tel);
+  const msg=buildConfirmMsg(lastSavedRdv);
+  window.location.href='sms:'+tel+'?body='+encodeURIComponent(msg);
+}
+function copyConfirmMsg(){
+  const msg=buildConfirmMsg(lastSavedRdv);
+  navigator.clipboard.writeText(msg).then(()=>alert('✅ Message copié ! Colle-le sur Instagram ou autre.')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Message copié !');
+  });
+}
+function sendRappelWa(){
+  if(!lastSavedRdv||!lastSavedRdv.tel){alert('Pas de numéro !');return;}
+  const tel=normalizeTel(lastSavedRdv.tel).replace(/^0/,'+33');
+  const msg=buildRappelMsg(lastSavedRdv);
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+}
+function copyRappelMsg(){
+  const msg=buildRappelMsg(lastSavedRdv);
+  navigator.clipboard.writeText(msg).then(()=>alert('✅ Message de rappel copié !')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copié !');
+  });
+}
+function sendWaRappel(){
+  if(!currentRdvForWa)return;
+  const r=currentRdvForWa;
+  const tel=r.tel?normalizeTel(r.tel).replace(/^0/,'+33'):'';
+  if(!tel){alert('Pas de numéro !');return;}
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(buildRappelMsg(r)),'_blank');
+}
+function sendWaFromCard(key){const r=DB.get('rdvs')[key];if(!r||!r.tel)return;currentRdvForWa=r;sendWaRappel();}
 
 // ── CODE CLIENT ──
-function generateClientCode() {
-  const clientes = DB.get('clientes');
-  const nums = clientes.map(c => { const m=(c.code||'').match(/YM-(\d+)/); return m?parseInt(m[1]):0; });
-  const next = nums.length > 0 ? Math.max(...nums) + 1 : 1;
-  return 'YM-' + String(next).padStart(3, '0');
+function generateClientCode(){
+  const clientes=DB.get('clientes');
+  const nums=clientes.map(c=>{const m=(c.code||'').match(/YM-(\d+)/);return m?parseInt(m[1]):0;});
+  const next=nums.length>0?Math.max(...nums)+1:1;
+  return 'YM-'+String(next).padStart(3,'0');
 }
-function findClienteByTel(tel) {
-  if (!tel) return null;
-  const norm = normalizeTel(tel);
-  return DB.get('clientes').find(c => normalizeTel(c.tel) === norm) || null;
+function findClienteByTel(tel){
+  if(!tel)return null;
+  const norm=normalizeTel(tel);
+  return DB.get('clientes').find(c=>normalizeTel(c.tel)===norm)||null;
 }
-function onTelInput() {
-  const tel = document.getElementById('f-tel').value;
-  const sugg = document.getElementById('tel-suggestions');
-  if (tel.length < 4) { sugg.style.display='none'; return; }
-  const norm = normalizeTel(tel);
-  const matches = DB.get('clientes').filter(c => normalizeTel(c.tel).includes(norm));
-  if (matches.length === 0) { sugg.style.display='none'; return; }
-  sugg.innerHTML = matches.slice(0,5).map(c =>
-    `<div class="tel-suggestion-item" onclick="selectClienteSuggestion('${c.id}')">
-      ${c.prenom} ${c.nom||''} ${isFidele(c)?`<span class="tel-suggestion-code">${c.code||''}</span>`:'<span style="font-size:0.6rem;color:var(--warm)">(${c.seances||0}/3 RDV)</span>'}
-      <div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div>
-    </div>`
-  ).join('');
-  sugg.style.display = 'block';
+function onTelInput(){
+  const tel=document.getElementById('f-tel').value;
+  const sugg=document.getElementById('tel-suggestions');
+  if(tel.length<4){sugg.style.display='none';return;}
+  const norm=normalizeTel(tel);
+  const matches=DB.get('clientes').filter(c=>normalizeTel(c.tel).includes(norm));
+  if(matches.length===0){sugg.style.display='none';return;}
+  sugg.innerHTML=matches.slice(0,5).map(c=>`<div class="tel-suggestion-item" onclick="selectClienteSuggestion('${c.id}')">${c.prenom} ${c.nom||''} ${isFidele(c)?`<span class="tel-suggestion-code">${c.code||''}</span>`:`<span style="font-size:0.6rem;color:var(--warm)">(${c.seances||0}/3)</span>`}<div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div></div>`).join('');
+  sugg.style.display='block';
 }
-function selectClienteSuggestion(id) {
-  const c = DB.get('clientes').find(x => x.id === id);
-  if (!c) return;
-  document.getElementById('f-tel').value = c.tel || '';
-  document.getElementById('f-name').value = c.prenom || '';
-  document.getElementById('f-adresse').value = c.adresse || '';
-  document.getElementById('f-details').value = c.details || '';
-  document.getElementById('tel-suggestions').style.display = 'none';
+function selectClienteSuggestion(id){
+  const c=DB.get('clientes').find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('f-tel').value=c.tel||'';
+  document.getElementById('f-name').value=c.prenom||'';
+  document.getElementById('f-adresse').value=c.adresse||'';
+  document.getElementById('f-details').value=c.details||'';
+  document.getElementById('tel-suggestions').style.display='none';
 }
-
-function syncClienteFromRdv(name, tel, adresse, details) {
-  if (!name) return;
-  const clientes = DB.get('clientes');
-  const normTel = normalizeTel(tel);
-  let idx = normTel ? clientes.findIndex(c => normalizeTel(c.tel) === normTel) : -1;
-  if (idx < 0) idx = clientes.findIndex(c => c.prenom.toLowerCase() === name.toLowerCase());
-  if (idx >= 0) {
-    if (tel) clientes[idx].tel = tel;
-    if (adresse) clientes[idx].adresse = adresse;
-    if (details) clientes[idx].details = details;
-    if (!editingRdvKey) clientes[idx].seances = (clientes[idx].seances||0) + 1;
-    // Attribuer code YM si seuil atteint
-    if (!clientes[idx].code && isFidele(clientes[idx])) clientes[idx].code = generateClientCode();
-    DB.set('clientes', clientes);
-  } else {
-    clientes.push({ id: Date.now().toString(), code: null, prenom: name, nom: '', tel: tel||'', adresse: adresse||'', details: details||'', source: 'Planning', seances: 1, notes: '' });
-    DB.set('clientes', clientes);
+function syncClienteFromRdv(name,tel,adresse,details){
+  if(!name)return;
+  const clientes=DB.get('clientes');
+  const normTel=normalizeTel(tel);
+  let idx=normTel?clientes.findIndex(c=>normalizeTel(c.tel)===normTel):-1;
+  if(idx<0)idx=clientes.findIndex(c=>c.prenom.toLowerCase()===name.toLowerCase());
+  if(idx>=0){
+    if(tel)clientes[idx].tel=tel;
+    if(adresse)clientes[idx].adresse=adresse;
+    if(details)clientes[idx].details=details;
+    if(!editingRdvKey)clientes[idx].seances=(clientes[idx].seances||0)+1;
+    if(!clientes[idx].code&&isFidele(clientes[idx]))clientes[idx].code=generateClientCode();
+    DB.set('clientes',clientes);
+  }else{
+    clientes.push({id:Date.now().toString(),code:null,prenom:name,nom:'',tel:tel||'',adresse:adresse||'',details:details||'',source:'Planning',seances:1,notes:''});
+    DB.set('clientes',clientes);
   }
 }
-
-function addClienteToPlanning(clienteId) {
-  const c = DB.get('clientes').find(x => x.id === clienteId);
-  if (!c) return;
+function addClienteToPlanning(clienteId){
+  const c=DB.get('clientes').find(x=>x.id===clienteId);
+  if(!c)return;
   switchTab('planning');
-  setTimeout(() => {
-    openRdvModal(null, null);
-    setTimeout(() => {
-      document.getElementById('f-tel').value = c.tel || '';
-      document.getElementById('f-name').value = c.prenom;
-      document.getElementById('f-adresse').value = c.adresse || '';
-      document.getElementById('f-details').value = c.details || '';
-    }, 350);
-  }, 200);
+  setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';},350);},200);
 }
 
-function getBlockedSlots(rdvs) {
-  const blocked = new Set(), travel = new Set();
-  Object.entries(rdvs).forEach(([key,r]) => {
-    const [date,time] = key.split('_');
-    const p = PRESTATIONS[r.prestation]||{duree:60};
-    const total = p.duree+(r.prolongation?20:0);
-    const start = timeToMins(time);
-    const slots = Math.ceil(total/30);
-    for (let i=1; i<slots; i++) blocked.add(date+'_'+minsToTime(start+i*30));
-    if (r.dep) {
-      for (let i=1; i<=2; i++) { const t=minsToTime(start-i*30); if(start-i*30>=0) travel.add(date+'_'+t); }
-      const end = start+slots*30;
-      for (let i=0; i<2; i++) travel.add(date+'_'+minsToTime(end+i*30));
+function getBlockedSlots(rdvs){
+  const blocked=new Set(),travel=new Set();
+  Object.entries(rdvs).forEach(([key,r])=>{
+    const[date,time]=key.split('_');
+    const p=PRESTATIONS[r.prestation]||{duree:60};
+    const total=p.duree+(r.prolongation?20:0);
+    const start=timeToMins(time);
+    const slots=Math.ceil(total/30);
+    for(let i=1;i<slots;i++)blocked.add(date+'_'+minsToTime(start+i*30));
+    if(r.dep){
+      for(let i=1;i<=2;i++){const t=minsToTime(start-i*30);if(start-i*30>=0)travel.add(date+'_'+t);}
+      const end=start+slots*30;
+      for(let i=0;i<2;i++)travel.add(date+'_'+minsToTime(end+i*30));
     }
   });
-  return { blocked, travel };
+  return{blocked,travel};
 }
 
-function depPrix(r) { return r.dep ? (parseFloat(r.km)||10) : 0; }
-function calcTotal(r, p) { return p.prix + depPrix(r) + (r.prolongation?15:0) + (parseFloat(r.pourboire)||0); }
-
-function toggleDepFields() {
-  const dep = document.getElementById('f-dep').value === '1';
-  document.getElementById('dep-group').style.display = dep ? 'block' : 'none';
+function toggleConge(date){
+  const conges=DB.get('conges');
+  const idx=conges.indexOf(date);
+  if(idx>=0)conges.splice(idx,1);else conges.push(date);
+  DB.set('conges',conges);
+  if(currentView==='semaine')buildPlanning();else buildMonth();
+}
+function setPayment(mode){
+  currentPayment=mode;
+  document.getElementById('pay-especes').classList.toggle('active',mode==='especes');
+  document.getElementById('pay-virement').classList.toggle('active',mode==='virement');
+}
+function toggleDepFields(){
+  const dep=document.getElementById('f-dep').value==='1';
+  document.getElementById('dep-group').style.display=dep?'block':'none';
   updateNetPreview();
 }
-
-function toggleConge(date) {
-  const conges = DB.get('conges');
-  const idx = conges.indexOf(date);
-  if (idx >= 0) conges.splice(idx, 1); else conges.push(date);
-  DB.set('conges', conges);
-  if (currentView === 'semaine') buildPlanning(); else buildMonth();
-}
-function setPayment(mode) {
-  currentPayment = mode;
-  document.getElementById('pay-especes').classList.toggle('active', mode==='especes');
-  document.getElementById('pay-virement').classList.toggle('active', mode==='virement');
-}
-function callTel(tel) { window.location.href = 'tel:'+normalizeTel(tel); }
-function openWaze(adresse) {
-  window.location.href = `waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
-  setTimeout(() => window.open(`https://waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`, '_blank'), 1500);
+function callTel(tel){window.location.href='tel:'+normalizeTel(tel);}
+function openWaze(adresse){
+  window.location.href=`waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
+  setTimeout(()=>window.open(`https://waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`,'_blank'),1500);
 }
 
-function sendWaRappel() {
-  if (!currentRdvForWa) return;
-  const r = currentRdvForWa;
-  const tel = r.tel ? normalizeTel(r.tel).replace(/^0/,'+33') : '';
-  if (!tel) { alert('Pas de numéro !'); return; }
-  const p = PRESTATIONS[r.prestation]||{label:'massage'};
-  const msg = `Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain à ${r.time} pour un ${p.label}.\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom`;
-  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg), '_blank');
-}
-function sendWaFromCard(key) { const r=DB.get('rdvs')[key]; if(!r||!r.tel) return; currentRdvForWa=r; sendWaRappel(); }
-
-function showNotifBanner() {
-  const wrap = document.getElementById('notif-banner-wrap');
-  if (!('Notification' in window)) { wrap.innerHTML=''; return; }
-  if (Notification.permission==='granted') wrap.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';
-  else if (Notification.permission==='denied') wrap.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';
+function showNotifBanner(){
+  const wrap=document.getElementById('notif-banner-wrap');
+  if(!('Notification'in window)){wrap.innerHTML='';return;}
+  if(Notification.permission==='granted')wrap.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';
+  else if(Notification.permission==='denied')wrap.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';
   else wrap.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications 👆</div>';
 }
-async function askNotif() { await Notification.requestPermission(); showNotifBanner(); scheduleAllNotifs(); }
-function scheduleAllNotifs() {
-  if (Notification.permission!=='granted') return;
-  const rdvs=DB.get('rdvs'), now=Date.now();
-  Object.entries(rdvs).forEach(([key,r]) => {
-    const [date,time]=key.split('_');
+async function askNotif(){await Notification.requestPermission();showNotifBanner();scheduleAllNotifs();}
+function scheduleAllNotifs(){
+  if(Notification.permission!=='granted')return;
+  const rdvs=DB.get('rdvs'),now=Date.now();
+  Object.entries(rdvs).forEach(([key,r])=>{
+    const[date,time]=key.split('_');
     const delay=new Date(date+'T'+time+':00').getTime()-60*60*1000-now;
-    if(delay>0&&delay<7*24*60*60*1000) setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.adresse?' · 📍 '+r.adresse:''}`});},delay);
+    if(delay>0&&delay<7*24*60*60*1000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.adresse?' · 📍 '+r.adresse:''}`});},delay);
   });
 }
 
-function setView(v) {
+function setView(v){
   currentView=v;
   document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';
   document.getElementById('view-mois').style.display=v==='mois'?'block':'none';
   document.getElementById('btn-semaine').classList.toggle('active',v==='semaine');
   document.getElementById('btn-mois').classList.toggle('active',v==='mois');
-  if(v==='semaine') buildPlanning(); else buildMonth();
+  if(v==='semaine')buildPlanning();else buildMonth();
 }
-function navPrev() { if(currentView==='semaine'){weekOffset--;buildPlanning();}else{monthOffset--;buildMonth();} }
-function navNext() { if(currentView==='semaine'){weekOffset++;buildPlanning();}else{monthOffset++;buildMonth();} }
-function goToday() { weekOffset=0;monthOffset=0;selectedDay=fmtDate(new Date());if(currentView==='semaine')buildPlanning();else buildMonth(); }
-function switchTab(tab) {
+function navPrev(){if(currentView==='semaine'){weekOffset--;buildPlanning();}else{monthOffset--;buildMonth();}}
+function navNext(){if(currentView==='semaine'){weekOffset++;buildPlanning();}else{monthOffset++;buildMonth();}}
+function goToday(){weekOffset=0;monthOffset=0;selectedDay=fmtDate(new Date());if(currentView==='semaine')buildPlanning();else buildMonth();}
+function switchTab(tab){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+tab).classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='clientes') renderClientes();
+  if(tab==='clientes')renderClientes();
+  if(tab==='stats')buildStats();
 }
 
-function calcAllStats(rdvsAll) {
-  const now = new Date();
-  const weekDates = getWeekDates(weekOffset);
-  const weekStart = fmtDate(weekDates[0]);
-  const weekEnd = fmtDate(weekDates[6]);
-  const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+// ── STATS ──
+function setStatsView(v){
+  statsView=v;
+  document.getElementById('sn-mois').classList.toggle('active',v==='mois');
+  document.getElementById('sn-global').classList.toggle('active',v==='global');
+  buildStats();
+}
 
+function buildStats(){
+  const rdvs=DB.get('rdvs');
+  const content=document.getElementById('stats-content');
+  if(statsView==='global'){
+    let totalRdv=0,totalBrut=0,totalNet=0,totalMins=0,totalEsp=0,totalVir=0;
+    Object.values(rdvs).forEach(r=>{
+      const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
+      const brut=calcTotal(r,p);
+      const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+      totalRdv++;totalBrut+=brut;totalNet+=brut-essence;totalMins+=p.duree+(r.prolongation?20:0);
+      if(r.payment==='virement')totalVir+=brut;else totalEsp+=brut;
+    });
+    const hh=Math.floor(totalMins/60),mm=totalMins%60;
+    const heures=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(totalMins+'min');
+    content.innerHTML=`
+      <div class="global-stat-card">
+        <div class="global-stat-title">🏆 Total depuis le début</div>
+        <div class="global-stat-row"><span>Nombre de RDV</span><span>${totalRdv}</span></div>
+        <div class="global-stat-row"><span>Heures de travail</span><span>${heures}</span></div>
+        <div class="global-stat-row"><span>Chiffre d'affaires brut</span><span>${totalBrut}€</span></div>
+        <div class="global-stat-row"><span>Net après essence</span><span>${totalNet.toFixed(2)}€</span></div>
+        <div class="global-stat-row"><span>💵 Espèces</span><span>${totalEsp}€</span></div>
+        <div class="global-stat-row"><span>🏦 Virement</span><span>${totalVir}€</span></div>
+        <div class="global-stat-row"><span>Nombre de clientes</span><span>${DB.get('clientes').length}</span></div>
+      </div>`;
+    return;
+  }
+  // Par mois
+  const byMonth={};
+  Object.entries(rdvs).forEach(([key,r])=>{
+    const date=key.split('_')[0];
+    const ym=date.substring(0,7);
+    if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,net:0,mins:0,esp:0,vir:0};
+    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
+    const brut=calcTotal(r,p);
+    const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+    byMonth[ym].rdv++;byMonth[ym].brut+=brut;byMonth[ym].net+=brut-essence;byMonth[ym].mins+=p.duree+(r.prolongation?20:0);
+    if(r.payment==='virement')byMonth[ym].vir+=brut;else byMonth[ym].esp+=brut;
+  });
+  const sorted=Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
+  if(sorted.length===0){content.innerHTML='<div class="empty-state"><div class="es-icon">📊</div><p>Aucun RDV enregistré</p></div>';return;}
+  content.innerHTML=sorted.map(ym=>{
+    const[y,m]=ym.split('-');
+    const mName=MONTHS_FR[parseInt(m)-1]+' '+y;
+    const d=byMonth[ym];
+    const hh=Math.floor(d.mins/60),mm2=d.mins%60;
+    const heures=hh>0?(mm2>0?`${hh}h${mm2}`:`${hh}h`):(d.mins+'min');
+    return`<div class="month-stat-card">
+      <div class="month-stat-title">📅 ${mName.charAt(0).toUpperCase()+mName.slice(1)}</div>
+      <div class="month-stat-row"><span>Nombre de RDV</span><span>${d.rdv}</span></div>
+      <div class="month-stat-row"><span>Heures travaillées</span><span>${heures}</span></div>
+      <div class="month-stat-row"><span>💵 Espèces</span><span>${d.esp}€</span></div>
+      <div class="month-stat-row"><span>🏦 Virement</span><span>${d.vir}€</span></div>
+      <div class="month-stat-row"><span>Brut total</span><span>${d.brut}€</span></div>
+      <div class="month-stat-row total"><span>Net après essence</span><span>${d.net.toFixed(2)}€</span></div>
+    </div>`;
+  }).join('');
+}
+
+function updateStats(){
+  const rdvsAll=DB.get('rdvs');
+  const now=new Date();
+  const weekDates=getWeekDates(weekOffset);
+  const weekStart=fmtDate(weekDates[0]),weekEnd=fmtDate(weekDates[6]);
   let wRdv=0,wCa=0,wNet=0,wMins=0,wEsp=0,wVir=0;
-  let mCa=0,totalCa=0;
-
-  Object.entries(rdvsAll).forEach(([key,r]) => {
-    const date = key.split('_')[0];
-    const p = PRESTATIONS[r.prestation]||{prix:40,duree:60};
-    const brut = calcTotal(r,p);
-    const essence = r.dep&&r.kmDist ? calcEssenceCost(r.kmDist) : 0;
-    const net = brut - essence;
-    totalCa += brut;
-    if (date.startsWith(monthStr)) mCa += brut;
-    if (date >= weekStart && date <= weekEnd) {
-      wRdv++; wCa+=brut; wNet+=net; wMins+=p.duree+(r.prolongation?20:0);
-      if (r.payment==='virement') wVir+=brut; else wEsp+=brut;
+  Object.entries(rdvsAll).forEach(([key,r])=>{
+    const date=key.split('_')[0];
+    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
+    const brut=calcTotal(r,p);
+    const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+    if(date>=weekStart&&date<=weekEnd){
+      wRdv++;wCa+=brut;wNet+=brut-essence;wMins+=p.duree+(r.prolongation?20:0);
+      if(r.payment==='virement')wVir+=brut;else wEsp+=brut;
     }
   });
-  return { wRdv, wCa, wNet, wMins, wEsp, wVir, mCa, totalCa };
-}
-
-function updateStats() {
-  const rdvsAll = DB.get('rdvs');
-  const { wRdv, wCa, wNet, wMins, wEsp, wVir, mCa, totalCa } = calcAllStats(rdvsAll);
-  document.getElementById('s-rdv').textContent = wRdv;
-  document.getElementById('s-ca').textContent = wCa+'€';
-  document.getElementById('s-net').textContent = wNet.toFixed(0)+'€';
+  document.getElementById('s-rdv').textContent=wRdv;
+  document.getElementById('s-ca').textContent=wCa+'€';
+  document.getElementById('s-net').textContent=wNet.toFixed(0)+'€';
   const hh=Math.floor(wMins/60),mm=wMins%60;
-  document.getElementById('s-h').textContent = hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mm+'min');
-  document.getElementById('s-especes').textContent = wEsp+'€';
-  document.getElementById('s-virement').textContent = wVir+'€';
-  document.getElementById('s-month').textContent = mCa+'€';
-  document.getElementById('s-total').textContent = totalCa+'€';
+  document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(wMins+'min');
+  document.getElementById('s-especes').textContent=wEsp+'€';
+  document.getElementById('s-virement').textContent=wVir+'€';
 }
 
-function buildPlanning() {
-  const dates=getWeekDates(weekOffset), today=fmtDate(new Date());
+function buildPlanning(){
+  const dates=getWeekDates(weekOffset),today=fmtDate(new Date());
   const s=dates[0],e=dates[6];
-  document.getElementById('week-label').textContent=s.getDate()+' '+MONTHS[s.getMonth()]+' – '+e.getDate()+' '+MONTHS[e.getMonth()];
-  const strip=document.getElementById('days-strip'); strip.innerHTML='';
+  document.getElementById('week-label').textContent=s.getDate()+' '+MONTHS_FR[s.getMonth()]+' – '+e.getDate()+' '+MONTHS_FR[e.getMonth()];
+  const strip=document.getElementById('days-strip');strip.innerHTML='';
   dates.forEach((d,i)=>{
     const ds=fmtDate(d),pill=document.createElement('div');
     const cng=isConge(ds);
@@ -707,21 +842,21 @@ function buildPlanning() {
   });
   const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7;
   const cng=isConge(selectedDay);
-  document.getElementById('day-title-wrap').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
+  document.getElementById('day-title-wrap').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS_FR[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
   document.getElementById('conge-banner-wrap').innerHTML=cng?'<div class="conge-banner">🏖 Jour de congé</div>':'';
   const rdvs=DB.get('rdvs');
-  const {blocked,travel}=getBlockedSlots(rdvs);
-  const list=document.getElementById('slots-list'); list.innerHTML='';
+  const{blocked,travel}=getBlockedSlots(rdvs);
+  const list=document.getElementById('slots-list');list.innerHTML='';
   HOURS.forEach(h=>{
     const key=rdvKey(selectedDay,h),item=document.createElement('div');
     item.className='slot-item';
-    const timeEl=document.createElement('div'); timeEl.className='slot-time'; timeEl.textContent=h;
-    const area=document.createElement('div'); area.className='slot-area';
+    const timeEl=document.createElement('div');timeEl.className='slot-time';timeEl.textContent=h;
+    const area=document.createElement('div');area.className='slot-area';
     if(rdvs[key]){
       const r=rdvs[key],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
       const c=r.tel?findClienteByTel(r.tel):null;
       area.className+=' has-rdv';
-      const card=document.createElement('div'); card.className='rdv-card '+p.color;
+      const card=document.createElement('div');card.className='rdv-card '+p.color;
       const total=calcTotal(r,p);
       const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
       const net=total-essence;
@@ -730,11 +865,11 @@ function buildPlanning() {
       const telLink=r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:'';
       const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
       const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
-      const netLine=r.dep&&r.kmDist&&essence>0?`<div class="rdv-net">💰 Net après essence : ${net.toFixed(2)}€ (−${essence}€⛽)</div>`:'';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      const netLine=r.dep&&r.kmDist&&essence>0?`<div class="rdv-net">💰 Net : ${net.toFixed(2)}€ (−${essence}€⛽)</div>`:'';
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
-    } else if(cng){area.className+=' conge-slot';}
+    }else if(cng){area.className+=' conge-slot';}
     else if(blocked.has(key)){area.className+=' blocked';}
     else if(travel.has(key)){area.className+=' travel';area.innerHTML='<div class="travel-label">🚗 Trajet</div>';}
     else{area.className+=' empty';area.innerHTML='<span class="slot-add">＋</span>';area.onclick=()=>openRdvModal(null,h);}
@@ -743,10 +878,10 @@ function buildPlanning() {
   updateStats();
 }
 
-function buildMonth() {
+function buildMonth(){
   const now=new Date(),year=now.getFullYear(),month=now.getMonth()+monthOffset;
   const d=new Date(year,month,1);
-  const mName=MONTHS[d.getMonth()]+' '+d.getFullYear();
+  const mName=MONTHS_FR[d.getMonth()]+' '+d.getFullYear();
   document.getElementById('week-label').textContent=mName.charAt(0).toUpperCase()+mName.slice(1);
   const firstDay=new Date(d.getFullYear(),d.getMonth(),1);
   const lastDay=new Date(d.getFullYear(),d.getMonth()+1,0);
@@ -769,7 +904,7 @@ function buildMonth() {
   for(let i=1;i<=remaining;i++){const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${i}</div>`;cells.appendChild(cell);}
   const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7;
   const cng=isConge(selectedDay);
-  document.getElementById('month-selected-day').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
+  document.getElementById('month-selected-day').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS_FR[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
   document.getElementById('month-conge-banner').innerHTML=cng?'<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>':'';
   const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
   const rdvList=document.getElementById('month-rdv-list');
@@ -789,7 +924,7 @@ function buildMonth() {
       const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
       const netLine=r.dep&&r.kmDist&&essence>0?`<div class="rdv-net">💰 Net : ${net.toFixed(2)}€ (−${essence}€⛽)</div>`:'';
       const item=document.createElement('div');item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div></div></div>${r.tel?`<div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();sendWaFromCard('${key}')">📲 Rappel WA</button></div>`:''}`;
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div></div></div><div class="month-rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
@@ -797,7 +932,7 @@ function buildMonth() {
   updateStats();
 }
 
-function openRdvModal(key, defaultHour) {
+function openRdvModal(key,defaultHour){
   if(isConge(selectedDay)&&!key){alert('Jour de congé 🏖');return;}
   editingRdvKey=key||null;
   document.getElementById('rdv-modal-title').textContent=key?'✏️ Modifier le RDV':'➕ Nouveau RDV';
@@ -823,9 +958,9 @@ function openRdvModal(key, defaultHour) {
     document.getElementById('f-prolongation').checked=r.prolongation||false;
     document.getElementById('f-pourboire').value=r.pourboire||'';
     setPayment(r.payment||'especes');
-    if(r.tel) document.getElementById('btn-wa-rappel').style.display='flex';
+    if(r.tel)document.getElementById('btn-wa-rappel').style.display='flex';
     updateNetPreview();
-  } else {
+  }else{
     document.getElementById('f-tel').value='';
     document.getElementById('f-name').value='';
     document.getElementById('f-date').value=selectedDay;
@@ -845,18 +980,20 @@ function openRdvModal(key, defaultHour) {
   setTimeout(()=>document.getElementById('f-tel').focus(),300);
 }
 
-function saveRdv() {
+function saveRdv(){
   const name=document.getElementById('f-name').value.trim();
   if(!name){document.getElementById('f-name').focus();return;}
-  const date=document.getElementById('f-date').value||selectedDay,time=document.getElementById('f-time').value;
+  const date=document.getElementById('f-date').value||selectedDay;
+  const time=document.getElementById('f-time').value;
   const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
-  if(editingRdvKey&&editingRdvKey!==newKey) delete rdvs[editingRdvKey];
+  if(editingRdvKey&&editingRdvKey!==newKey)delete rdvs[editingRdvKey];
   const depOn=document.getElementById('f-dep').value==='1';
   const adresse=document.getElementById('f-adresse').value.trim();
   const details=document.getElementById('f-details').value.trim();
   const tel=document.getElementById('f-tel').value.trim();
   const kmDist=depOn?document.getElementById('f-km-dist').value:'';
-  rdvs[newKey]={name,tel,time,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist,adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
+  const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist,adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
+  rdvs[newKey]=rdvData;
   DB.set('rdvs',rdvs);
   syncClienteFromRdv(name,tel,adresse,details);
   selectedDay=date;
@@ -864,33 +1001,31 @@ function saveRdv() {
   closeModal('overlay-rdv');
   if(currentView==='semaine')buildPlanning();else buildMonth();
   scheduleAllNotifs();
+  // Ouvrir modal de confirmation
+  openConfirmModal(rdvData);
 }
 
-function deleteRdv() {
-  if(!editingRdvKey) return;
+function deleteRdv(){
+  if(!editingRdvKey)return;
   const rdvs=DB.get('rdvs');delete rdvs[editingRdvKey];DB.set('rdvs',rdvs);
   closeModal('overlay-rdv');
   if(currentView==='semaine')buildPlanning();else buildMonth();
 }
 
-function renderClientes(filter) {
+function renderClientes(filter){
   let clientes=DB.get('clientes');
-  if(filter) clientes=clientes.filter(c=>(c.prenom+' '+c.nom+' '+(c.tel||'')+' '+(c.code||'')).toLowerCase().includes(filter.toLowerCase()));
+  if(filter)clientes=clientes.filter(c=>(c.prenom+' '+c.nom+' '+(c.tel||'')+' '+(c.code||'')).toLowerCase().includes(filter.toLowerCase()));
   const list=document.getElementById('clientes-list');list.innerHTML='';
   if(clientes.length===0){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
   clientes.forEach(c=>{
-    const fidele = isFidele(c);
-    const card=document.createElement('div');
-    card.className='cliente-card'+(fidele?'':' pending');
-    const seancesLeft = fidele ? 0 : FIDELITE_SEUIL - (c.seances||0);
+    const fidele=isFidele(c);
+    const card=document.createElement('div');card.className='cliente-card'+(fidele?'':' pending');
+    const seancesLeft=fidele?0:FIDELITE_SEUIL-(c.seances||0);
     card.innerHTML=`
       <div class="cliente-card-top">
         <div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div>
         <div class="cliente-info">
-          <div class="cliente-name">
-            ${c.prenom} ${c.nom||''}
-            ${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV pour fidélisation</span>`:''}
-          </div>
+          <div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>
           ${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}
           ${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}
           ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''}
@@ -907,7 +1042,6 @@ function renderClientes(filter) {
     card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
   });
 }
-
 function filterClientes(){renderClientes(document.getElementById('search-input').value);}
 
 function openClienteModal(id){
@@ -926,11 +1060,11 @@ function openClienteModal(id){
       document.getElementById('c-source').value=c.source||'Instagram';
       document.getElementById('c-seances').value=c.seances||0;
       document.getElementById('c-notes').value=c.notes||'';
-      if(c.code){codeDisplay.textContent='🏷️ Code cliente : '+c.code+' · ⭐ Cliente fidèle';codeDisplay.style.display='block';}
-      else if(c.seances>0){codeDisplay.textContent=`⏳ ${c.seances||0}/${FIDELITE_SEUIL} RDV — fidélisation après ${FIDELITE_SEUIL} séances`;codeDisplay.style.display='block';}
+      if(c.code){codeDisplay.textContent='🏷️ '+c.code+' · ⭐ Cliente fidèle';codeDisplay.style.display='block';}
+      else if(c.seances>0){codeDisplay.textContent=`⏳ ${c.seances||0}/${FIDELITE_SEUIL} RDV — fidélisation en cours`;codeDisplay.style.display='block';}
       else codeDisplay.style.display='none';
     }
-  } else {
+  }else{
     ['c-prenom','c-nom','c-tel','c-adresse','c-details','c-notes'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('c-source').value='Instagram';
     document.getElementById('c-seances').value='0';
@@ -946,25 +1080,12 @@ function saveCliente(){
   const clientes=DB.get('clientes');
   const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;
   const seances=parseInt(document.getElementById('c-seances').value)||0;
-  const shouldGetCode = seances >= FIDELITE_SEUIL;
-  const data={
-    id:editingClienteId||Date.now().toString(),
-    code:existing?.code||(shouldGetCode?generateClientCode():null),
-    prenom,
-    nom:document.getElementById('c-nom').value.trim(),
-    tel:document.getElementById('c-tel').value.trim(),
-    adresse:document.getElementById('c-adresse').value.trim(),
-    details:document.getElementById('c-details').value.trim(),
-    source:document.getElementById('c-source').value,
-    seances,
-    notes:document.getElementById('c-notes').value.trim()
-  };
+  const data={id:editingClienteId||Date.now().toString(),code:existing?.code||(seances>=FIDELITE_SEUIL?generateClientCode():null),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),adresse:document.getElementById('c-adresse').value.trim(),details:document.getElementById('c-details').value.trim(),source:document.getElementById('c-source').value,seances,notes:document.getElementById('c-notes').value.trim()};
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else{clientes.push(data);}
   DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
 }
-
 function deleteCliente(){
-  if(!editingClienteId) return;
+  if(!editingClienteId)return;
   DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));
   closeModal('overlay-cliente');renderClientes();
 }
@@ -972,7 +1093,7 @@ function deleteCliente(){
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');editingRdvKey=null;editingClienteId=null;}
 document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
-document.addEventListener('click', e => { if(!e.target.closest('.tel-input-wrap')) document.getElementById('tel-suggestions').style.display='none'; });
+document.addEventListener('click',e=>{if(!e.target.closest('.tel-input-wrap'))document.getElementById('tel-suggestions').style.display='none';});
 updateEssenceBanner();
 showNotifBanner();
 buildPlanning();
