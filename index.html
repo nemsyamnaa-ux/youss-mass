@@ -123,10 +123,10 @@
     .month-empty { text-align: center; padding: 20px; color: var(--warm); font-size: 0.85rem; font-style: italic; }
     /* STATS PAGE */
     .stats-page-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
-    .stats-page-header .brand { display: block; margin-bottom: 4px; }
-    .stats-nav { display: flex; gap: 8px; padding: 12px 14px 0; }
-    .stats-nav-btn { flex: 1; padding: 8px; border-radius: 10px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
-    .stats-nav-btn.active { background: var(--deep); color: var(--gold); border-color: var(--deep); }
+    .stats-page-header .brand { display: block; margin-bottom: 8px; }
+    .stats-nav { display: flex; gap: 6px; }
+    .stats-nav-btn { flex: 1; padding: 8px 4px; border-radius: 10px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.72rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
+    .stats-nav-btn.active { background: var(--gold); color: var(--deep); border-color: var(--gold); }
     .stats-content { padding: 12px 14px; }
     .month-stat-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); border-left: 3px solid var(--gold); }
     .month-stat-title { font-weight: 700; font-size: 1rem; color: var(--deep); margin-bottom: 8px; }
@@ -138,6 +138,18 @@
     .global-stat-title { font-weight: 700; font-size: 0.9rem; color: var(--gold); margin-bottom: 10px; }
     .global-stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--sand); padding: 4px 0; }
     .global-stat-row span:last-child { font-weight: 700; color: var(--cream); }
+    /* DEPENSES */
+    .depense-summary { background: #fbe8e6; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; border-left: 3px solid var(--rose); }
+    .depense-summary-title { font-weight: 700; font-size: 0.9rem; color: var(--rose); margin-bottom: 8px; }
+    .depense-summary-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--warm); padding: 2px 0; }
+    .depense-summary-row span:last-child { font-weight: 700; color: var(--rose); }
+    .depense-item { background: var(--white); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(59,42,42,0.06); display: flex; align-items: center; gap: 10px; }
+    .depense-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .depense-info { flex: 1; }
+    .depense-label { font-weight: 700; font-size: 0.9rem; }
+    .depense-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
+    .depense-prix { font-weight: 700; color: var(--rose); font-size: 0.95rem; flex-shrink: 0; }
+    .depense-del { background: none; border: none; color: var(--rose); font-size: 1.1rem; cursor: pointer; padding: 4px; flex-shrink: 0; }
     /* CLIENTES */
     .clientes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
     .clientes-header .brand { margin-bottom: 10px; display: block; }
@@ -163,6 +175,7 @@
     .btn-planning { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
     .btn-call { background: var(--green); color: white; border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-waze-cliente { background: #1dacd6; color: white; border: none; border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-delete-cliente-card { background: #fbe8e6; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .empty-state { text-align: center; padding: 50px 30px; color: var(--warm); }
     .empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
     .empty-state p { font-size: 0.9rem; line-height: 1.5; }
@@ -203,7 +216,6 @@
     .tel-suggestion-item:last-child { border-bottom: none; }
     .tel-suggestion-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-left: 6px; }
     .net-preview { background: #fdf3e3; border-radius: 10px; padding: 8px 12px; font-size: 0.82rem; color: var(--deep); margin-top: 8px; font-weight: 600; text-align: center; }
-    /* MODAL CONFIRMATION */
     .confirm-msg-box { background: var(--white); border-radius: 12px; padding: 14px; font-size: 0.85rem; color: var(--deep); line-height: 1.6; white-space: pre-wrap; border: 1.5px solid var(--sand); margin-bottom: 14px; max-height: 200px; overflow-y: auto; }
     .send-btns { display: flex; flex-direction: column; gap: 10px; }
     .btn-send-wa { background: #25d366; color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -211,6 +223,9 @@
     .btn-send-copy { background: var(--deep); color: var(--gold); border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .btn-send-rappel { background: var(--warm); color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; }
     .msg-separator { text-align: center; font-size: 0.72rem; color: var(--warm); margin: 8px 0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+    .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+    .cat-btn { padding: 10px 6px; border-radius: 12px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.78rem; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.15s; }
+    .cat-btn.selected { background: var(--deep); color: var(--gold); border-color: var(--deep); }
   </style>
 </head>
 <body>
@@ -267,11 +282,12 @@
 <!-- PAGE STATS -->
 <div class="page" id="page-stats">
   <div class="stats-page-header">
-    <span class="brand">📊 Mes Revenus</span>
-  </div>
-  <div class="stats-nav">
-    <button class="stats-nav-btn active" id="sn-mois" onclick="setStatsView('mois')">Par mois</button>
-    <button class="stats-nav-btn" id="sn-global" onclick="setStatsView('global')">Total global</button>
+    <span class="brand">📊 Revenus & Dépenses</span>
+    <div class="stats-nav">
+      <button class="stats-nav-btn active" id="sn-mois" onclick="setStatsView('mois')">📅 Par mois</button>
+      <button class="stats-nav-btn" id="sn-global" onclick="setStatsView('global')">🏆 Global</button>
+      <button class="stats-nav-btn" id="sn-depenses" onclick="setStatsView('depenses')">💸 Dépenses</button>
+    </div>
   </div>
   <div class="stats-content" id="stats-content"></div>
 </div>
@@ -286,7 +302,6 @@
   <button class="fab" onclick="openClienteModal()">＋</button>
 </div>
 
-<!-- NAV BAS -->
 <nav class="bottom-nav">
   <div class="nav-tab active" id="tab-planning" onclick="switchTab('planning')"><span class="tab-icon">📅</span>Planning</div>
   <div class="nav-tab" id="tab-stats" onclick="switchTab('stats')"><span class="tab-icon">📊</span>Revenus</div>
@@ -299,7 +314,7 @@
     <div class="modal-handle"></div>
     <div class="modal-title"><span id="rdv-modal-title">Nouveau RDV</span><button class="close-btn" onclick="closeModal('overlay-rdv')">✕</button></div>
     <div class="form-group">
-      <label>📞 Téléphone de la cliente</label>
+      <label>📞 Téléphone</label>
       <div class="tel-input-wrap">
         <input type="tel" id="f-tel" placeholder="06 XX XX XX XX" oninput="onTelInput()" autocomplete="off"/>
         <div class="tel-suggestions" id="tel-suggestions" style="display:none"></div>
@@ -337,39 +352,61 @@
     </div>
     <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="f-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
     <div class="form-group"><label>📝 Détails accès</label><input type="text" id="f-details" placeholder="2ème étage, code 1234..."/></div>
-    <div class="form-group">
-      <label>Supplément</label>
-      <label class="checkbox-group"><input type="checkbox" id="f-prolongation" onchange="updateNetPreview()"/><span>⏱ Prolongation +20 min</span><span class="prix-sup">+15€</span></label>
-    </div>
+    <div class="form-group"><label>Supplément</label><label class="checkbox-group"><input type="checkbox" id="f-prolongation" onchange="updateNetPreview()"/><span>⏱ Prolongation +20 min</span><span class="prix-sup">+15€</span></label></div>
     <div class="form-row">
       <div class="form-group"><label>💰 Pourboire</label><input type="number" id="f-pourboire" placeholder="0" min="0" step="1" oninput="updateNetPreview()"/></div>
       <div class="form-group"><label>💳 Paiement</label><div class="pay-toggle"><button type="button" class="pay-btn active" id="pay-especes" onclick="setPayment('especes')">💵 Espèces</button><button type="button" class="pay-btn" id="pay-virement" onclick="setPayment('virement')">🏦 Virement</button></div></div>
     </div>
     <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
-    <button class="btn-whatsapp" id="btn-wa-rappel" onclick="sendWaRappel()" style="display:none">📲 Envoyer rappel WhatsApp</button>
+    <button class="btn-whatsapp" id="btn-wa-rappel" onclick="sendWaRappel()" style="display:none">📲 Rappel WhatsApp</button>
     <button class="btn-danger" id="btn-delete-rdv" onclick="deleteRdv()" style="display:none">🗑 Supprimer ce RDV</button>
   </div>
 </div>
 
-<!-- MODAL CONFIRMATION RDV -->
+<!-- MODAL CONFIRMATION -->
 <div class="overlay" id="overlay-confirm">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title"><span>📩 Confirmation de réservation</span><button class="close-btn" onclick="closeModal('overlay-confirm')">✕</button></div>
-    <p style="font-size:0.82rem;color:var(--warm);margin-bottom:10px">Message de confirmation à envoyer à la cliente :</p>
+    <div class="modal-title"><span>📩 Confirmation réservation</span><button class="close-btn" onclick="closeModal('overlay-confirm')">✕</button></div>
+    <p style="font-size:0.82rem;color:var(--warm);margin-bottom:10px">Message à envoyer à la cliente :</p>
     <div class="confirm-msg-box" id="confirm-msg-box"></div>
     <div class="send-btns">
-      <button class="btn-send-wa" onclick="sendConfirmWa()">📲 Envoyer via WhatsApp</button>
-      <button class="btn-send-sms" onclick="sendConfirmSms()">💬 Envoyer par SMS</button>
-      <button class="btn-send-copy" onclick="copyConfirmMsg()">📋 Copier (Instagram / autre)</button>
+      <button class="btn-send-wa" onclick="sendConfirmWa()">📲 WhatsApp</button>
+      <button class="btn-send-sms" onclick="sendConfirmSms()">💬 SMS</button>
+      <button class="btn-send-copy" onclick="copyConfirmMsg()">📋 Copier (Instagram/autre)</button>
     </div>
     <div class="msg-separator">— Message de rappel veille —</div>
     <div class="confirm-msg-box" id="rappel-msg-box"></div>
     <div class="send-btns">
-      <button class="btn-send-rappel" onclick="sendRappelWa()">📲 Rappel WhatsApp (veille)</button>
+      <button class="btn-send-rappel" onclick="sendRappelWa()">📲 Rappel WhatsApp</button>
       <button class="btn-send-copy" onclick="copyRappelMsg()" style="background:var(--warm)">📋 Copier rappel</button>
     </div>
     <button class="btn-danger" onclick="closeModal('overlay-confirm')" style="margin-top:10px">Fermer</button>
+  </div>
+</div>
+
+<!-- MODAL DEPENSE -->
+<div class="overlay" id="overlay-depense">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><span>💸 Ajouter une dépense</span><button class="close-btn" onclick="closeModal('overlay-depense')">✕</button></div>
+    <div class="form-group">
+      <label>Catégorie</label>
+      <div class="cat-grid">
+        <button class="cat-btn selected" id="cat-huile" onclick="selectCat('huile')">🧴 Huile massage</button>
+        <button class="cat-btn" id="cat-serviette" onclick="selectCat('serviette')">🛁 Serviette</button>
+        <button class="cat-btn" id="cat-protection" onclick="selectCat('protection')">🛡️ Protection</button>
+        <button class="cat-btn" id="cat-bougie" onclick="selectCat('bougie')">🕯️ Bougie</button>
+        <button class="cat-btn" id="cat-transport" onclick="selectCat('transport')">🚗 Transport</button>
+        <button class="cat-btn" id="cat-autre" onclick="selectCat('autre')">📦 Autre</button>
+      </div>
+    </div>
+    <div class="form-group"><label>Description</label><input type="text" id="d-label" placeholder="Ex: Huile amande douce 500ml"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Montant (€)</label><input type="number" id="d-prix" placeholder="0" min="0" step="0.01"/></div>
+      <div class="form-group"><label>Date</label><input type="date" id="d-date"/></div>
+    </div>
+    <button class="btn-primary" onclick="saveDepense()">✔ Ajouter</button>
   </div>
 </div>
 
@@ -384,15 +421,15 @@
       <div class="form-group"><label>Nom</label><input type="text" id="c-nom" placeholder="Martin"/></div>
     </div>
     <div class="form-group"><label>📞 Téléphone</label><input type="tel" id="c-tel" placeholder="06 XX XX XX XX"/></div>
-    <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="c-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
+    <div class="form-group"><label>📍 Adresse</label><input type="text" id="c-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
     <div class="form-group"><label>📝 Détails accès</label><input type="text" id="c-details" placeholder="2ème étage, code 1234..."/></div>
     <div class="form-row">
       <div class="form-group"><label>Comment trouvée ?</label><select id="c-source"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Bouche à oreille">Bouche à oreille</option><option value="WhatsApp">WhatsApp</option><option value="Autre">Autre</option></select></div>
-      <div class="form-group"><label>Séances total</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
+      <div class="form-group"><label>Séances</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
     </div>
-    <div class="form-group"><label>Préférences / Notes</label><textarea id="c-notes" placeholder="Préférences de massage..."></textarea></div>
+    <div class="form-group"><label>Notes</label><textarea id="c-notes" placeholder="Préférences de massage..."></textarea></div>
     <button class="btn-primary" onclick="saveCliente()">✔ Enregistrer</button>
-    <button class="btn-danger" id="btn-delete-cliente" onclick="deleteCliente()" style="display:none">🗑 Supprimer</button>
+    <button class="btn-danger" id="btn-delete-cliente" onclick="confirmDeleteCliente()" style="display:none">🗑 Supprimer cette cliente</button>
   </div>
 </div>
 
@@ -403,7 +440,7 @@
     <div class="modal-title"><span>⛽ Paramètres Essence</span><button class="close-btn" onclick="closeModal('overlay-essence')">✕</button></div>
     <div class="form-group"><label>Prix du litre SP95-E10 (€)</label><input type="number" id="e-prix" placeholder="Ex: 1.85" step="0.01" min="0"/></div>
     <div class="form-group"><label>Consommation aux 100km (L)</label><input type="number" id="e-conso" placeholder="5.5" step="0.1" min="0"/></div>
-    <div style="background:var(--sand);border-radius:12px;padding:12px;font-size:0.8rem;color:var(--deep);margin-bottom:12px">💡 Twingo 3 SP95-E10 ≈ 5,5L/100km<br>Coût = km A/R × conso/100 × prix litre</div>
+    <div style="background:var(--sand);border-radius:12px;padding:12px;font-size:0.8rem;color:var(--deep);margin-bottom:12px">💡 Twingo 3 SP95-E10 ≈ 5,5L/100km</div>
     <button class="btn-primary" onclick="saveEssenceSettings()">✔ Enregistrer</button>
   </div>
 </div>
@@ -425,12 +462,13 @@ const PRESTATIONS = {
   drainage_30: {label:'Drainage 1 zone 30min',duree:30,  prix:35, color:'c-purple'},
   drainage_75: {label:'Drainage corps 1h15',  duree:75,  prix:65, color:'c-purple'},
 };
+const CAT_ICONS = {huile:'🧴',serviette:'🛁',protection:'🛡️',bougie:'🕯️',transport:'🚗',autre:'📦'};
+const CAT_LABELS = {huile:'Huile massage',serviette:'Serviette',protection:'Protection',bougie:'Bougie',transport:'Transport',autre:'Autre'};
 const HOURS=[];
 for(let h=8;h<=23;h++){HOURS.push(`${String(h).padStart(2,'0')}:00`);if(h<23)HOURS.push(`${String(h).padStart(2,'0')}:30`);}
 const DAYS_SHORT=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const DAYS_LONG=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const MONTHS_FR=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-const MONTHS_SHORT=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
 const FIDELITE_SEUIL=3;
 
 let weekOffset=0, monthOffset=0;
@@ -441,6 +479,7 @@ let currentRdvForWa=null;
 let currentPayment='especes';
 let lastSavedRdv=null;
 let statsView='mois';
+let selectedCat='huile';
 
 function fmtDate(d){return d.toISOString().split('T')[0];}
 function getWeekDates(off){
@@ -456,7 +495,6 @@ function minsToTime(m){return`${String(Math.floor(m/60)).padStart(2,'0')}:${Stri
 function isConge(date){return DB.get('conges').includes(date);}
 function normalizeTel(t){return t?t.replace(/\s/g,''):'';}
 function isFidele(c){return(c.seances||0)>=FIDELITE_SEUIL;}
-
 function fmtDateFr(ds){
   const d=new Date(ds+'T12:00:00');
   const di=(d.getDay()+6)%7;
@@ -466,11 +504,8 @@ function fmtDateFr(ds){
 // ── ESSENCE ──
 function getEssence(){return DB.getObj('essence',{prix:0,conso:5.5});}
 function saveEssenceSettings(){
-  const prix=parseFloat(document.getElementById('e-prix').value)||0;
-  const conso=parseFloat(document.getElementById('e-conso').value)||5.5;
-  DB.setObj('essence',{prix,conso});
-  updateEssenceBanner();
-  closeModal('overlay-essence');
+  DB.setObj('essence',{prix:parseFloat(document.getElementById('e-prix').value)||0,conso:parseFloat(document.getElementById('e-conso').value)||5.5});
+  updateEssenceBanner();closeModal('overlay-essence');
   if(currentView==='semaine')buildPlanning();else buildMonth();
 }
 function openEssenceSettings(){
@@ -481,7 +516,7 @@ function openEssenceSettings(){
 }
 function updateEssenceBanner(){
   const e=getEssence();
-  document.getElementById('essence-info').textContent=e.prix>0?`${e.prix}€/L · ${e.conso}L/100km — Twingo 3`:'Configurer le prix du carburant';
+  document.getElementById('essence-info').textContent=e.prix>0?`${e.prix}€/L · ${e.conso}L/100km`:'Configurer le prix du carburant';
 }
 function calcEssenceCost(kmAller){
   const e=getEssence();
@@ -490,11 +525,6 @@ function calcEssenceCost(kmAller){
 }
 function depPrix(r){return r.dep?(parseFloat(r.km)||10):0;}
 function calcTotal(r,p){return p.prix+depPrix(r)+(r.prolongation?15:0)+(parseFloat(r.pourboire)||0);}
-function calcNetRdv(r,p){
-  const brut=calcTotal(r,p);
-  const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
-  return Math.round((brut-essence)*100)/100;
-}
 
 function updateNetPreview(){
   const dep=document.getElementById('f-dep').value==='1';
@@ -503,103 +533,96 @@ function updateNetPreview(){
   const p=PRESTATIONS[document.getElementById('f-prestation').value]||{prix:40};
   const km=parseFloat(document.getElementById('f-km').value)||10;
   const kmDist=parseFloat(document.getElementById('f-km-dist').value)||0;
-  const prolongation=document.getElementById('f-prolongation').checked;
-  const pourboire=parseFloat(document.getElementById('f-pourboire').value)||0;
-  const brut=p.prix+km+(prolongation?15:0)+pourboire;
+  const brut=p.prix+km+(document.getElementById('f-prolongation').checked?15:0)+(parseFloat(document.getElementById('f-pourboire').value)||0);
   const essence=kmDist>0?calcEssenceCost(kmDist):0;
   preview.style.display='block';
-  preview.innerHTML=essence>0?`💰 Brut : ${brut}€ — ⛽ −${essence}€ = <strong>Net : ${(brut-essence).toFixed(2)}€</strong>`:`💰 Brut : ${brut}€ — configure le prix essence pour voir le net`;
+  preview.innerHTML=essence>0?`💰 Brut : ${brut}€ — ⛽ −${essence}€ = <strong>Net : ${(brut-essence).toFixed(2)}€</strong>`:`💰 Brut : ${brut}€`;
 }
 
-// ── CONFIRMATION MESSAGE ──
+// ── DEPENSES ──
+function selectCat(cat){
+  selectedCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('cat-'+cat).classList.add('selected');
+}
+function openDepenseModal(){
+  document.getElementById('d-label').value='';
+  document.getElementById('d-prix').value='';
+  document.getElementById('d-date').value=fmtDate(new Date());
+  selectCat('huile');
+  openModal('overlay-depense');
+}
+function saveDepense(){
+  const label=document.getElementById('d-label').value.trim();
+  const prix=parseFloat(document.getElementById('d-prix').value)||0;
+  const date=document.getElementById('d-date').value||fmtDate(new Date());
+  if(!prix){alert('Entrez un montant !');return;}
+  const depenses=DB.get('depenses')||[];
+  depenses.push({id:Date.now().toString(),cat:selectedCat,label:label||CAT_LABELS[selectedCat],prix,date});
+  DB.set('depenses',depenses);
+  closeModal('overlay-depense');
+  if(statsView==='depenses')buildStats();
+}
+function deleteDepense(id){
+  if(!confirm('Supprimer cette dépense ?'))return;
+  const depenses=(DB.get('depenses')||[]).filter(d=>d.id!==id);
+  DB.set('depenses',depenses);
+  buildStats();
+}
+function getTotalDepenses(){
+  return((DB.get('depenses')||[]).reduce((s,d)=>s+(d.prix||0),0));
+}
+
+// ── CONFIRMATION MSG ──
 function buildConfirmMsg(r){
   const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
   const total=calcTotal(r,p);
   const dep=r.dep?`\n🚗 Déplacement inclus (+${depPrix(r)}€)`:'';
-  const prolongation=r.prolongation?'\n⏱ Prolongation +20 min (+15€)':'';
-  const adresse=r.adresse?`\n📍 Adresse : ${r.adresse}`:'';
-  return `Bonjour ${r.name} 🌸
-
-✅ Votre réservation est confirmée !
-
-📅 Date : ${fmtDateFr(r.date||selectedDay)}
-🕐 Heure : ${r.time}
-💆 Prestation : ${p.label}${dep}${prolongation}
-💰 Prix total : ${total}€
-
-${adresse}
-
-Un message de confirmation vous sera envoyé la veille du rendez-vous.
-
-Merci et à très bientôt ! 💛
-Youss Mass à Dom 🌸`;
+  const prol=r.prolongation?'\n⏱ Prolongation +20 min (+15€)':'';
+  const adr=r.adresse?`\n📍 ${r.adresse}`:'';
+  return `Bonjour ${r.name} 🌸\n\n✅ Votre réservation est confirmée !\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 ${r.time}\n💆 ${p.label}${dep}${prol}\n💰 ${total}€${adr}\n\nUn message de confirmation vous sera envoyé la veille de votre rendez-vous.\n\nMerci et à très bientôt ! 💛\nYouss Mass à Dom 🌸`;
 }
-
 function buildRappelMsg(r){
-  const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
-  return `Bonjour ${r.name} 🌸
-
-Je vous rappelle votre rendez-vous demain :
-
-📅 ${fmtDateFr(r.date||selectedDay)}
-🕐 à ${r.time}
-💆 ${p.label}
-
-Merci de confirmer votre présence en répondant à ce message 🙏
-
-À demain ! 💛
-Youss Mass à Dom 🌸`;
+  const p=PRESTATIONS[r.prestation]||{label:'massage'};
+  return `Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain :\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 à ${r.time}\n💆 ${p.label}\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom 🌸`;
 }
-
 function openConfirmModal(rdvData){
   lastSavedRdv=rdvData;
-  const confirmMsg=buildConfirmMsg(rdvData);
-  const rappelMsg=buildRappelMsg(rdvData);
-  document.getElementById('confirm-msg-box').textContent=confirmMsg;
-  document.getElementById('rappel-msg-box').textContent=rappelMsg;
+  document.getElementById('confirm-msg-box').textContent=buildConfirmMsg(rdvData);
+  document.getElementById('rappel-msg-box').textContent=buildRappelMsg(rdvData);
   openModal('overlay-confirm');
 }
-
 function sendConfirmWa(){
-  if(!lastSavedRdv||!lastSavedRdv.tel){alert('Pas de numéro de téléphone !');return;}
+  if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
   const tel=normalizeTel(lastSavedRdv.tel).replace(/^0/,'+33');
-  const msg=buildConfirmMsg(lastSavedRdv);
-  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(buildConfirmMsg(lastSavedRdv)),'_blank');
 }
 function sendConfirmSms(){
-  if(!lastSavedRdv||!lastSavedRdv.tel){alert('Pas de numéro de téléphone !');return;}
-  const tel=normalizeTel(lastSavedRdv.tel);
-  const msg=buildConfirmMsg(lastSavedRdv);
-  window.location.href='sms:'+tel+'?body='+encodeURIComponent(msg);
+  if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
+  window.location.href='sms:'+normalizeTel(lastSavedRdv.tel)+'?body='+encodeURIComponent(buildConfirmMsg(lastSavedRdv));
 }
 function copyConfirmMsg(){
   const msg=buildConfirmMsg(lastSavedRdv);
-  navigator.clipboard.writeText(msg).then(()=>alert('✅ Message copié ! Colle-le sur Instagram ou autre.')).catch(()=>{
-    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Message copié !');
-  });
+  navigator.clipboard.writeText(msg).then(()=>alert('✅ Copié !')).catch(()=>{const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copié !');});
 }
 function sendRappelWa(){
-  if(!lastSavedRdv||!lastSavedRdv.tel){alert('Pas de numéro !');return;}
+  if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
   const tel=normalizeTel(lastSavedRdv.tel).replace(/^0/,'+33');
-  const msg=buildRappelMsg(lastSavedRdv);
-  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(buildRappelMsg(lastSavedRdv)),'_blank');
 }
 function copyRappelMsg(){
   const msg=buildRappelMsg(lastSavedRdv);
-  navigator.clipboard.writeText(msg).then(()=>alert('✅ Message de rappel copié !')).catch(()=>{
-    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copié !');
-  });
+  navigator.clipboard.writeText(msg).then(()=>alert('✅ Copié !')).catch(()=>{const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copié !');});
 }
 function sendWaRappel(){
   if(!currentRdvForWa)return;
-  const r=currentRdvForWa;
-  const tel=r.tel?normalizeTel(r.tel).replace(/^0/,'+33'):'';
+  const tel=currentRdvForWa.tel?normalizeTel(currentRdvForWa.tel).replace(/^0/,'+33'):'';
   if(!tel){alert('Pas de numéro !');return;}
-  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(buildRappelMsg(r)),'_blank');
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(buildRappelMsg(currentRdvForWa)),'_blank');
 }
 function sendWaFromCard(key){const r=DB.get('rdvs')[key];if(!r||!r.tel)return;currentRdvForWa=r;sendWaRappel();}
 
-// ── CODE CLIENT ──
+// ── CLIENTES ──
 function generateClientCode(){
   const clientes=DB.get('clientes');
   const nums=clientes.map(c=>{const m=(c.code||'').match(/YM-(\d+)/);return m?parseInt(m[1]):0;});
@@ -608,8 +631,7 @@ function generateClientCode(){
 }
 function findClienteByTel(tel){
   if(!tel)return null;
-  const norm=normalizeTel(tel);
-  return DB.get('clientes').find(c=>normalizeTel(c.tel)===norm)||null;
+  return DB.get('clientes').find(c=>normalizeTel(c.tel)===normalizeTel(tel))||null;
 }
 function onTelInput(){
   const tel=document.getElementById('f-tel').value;
@@ -617,7 +639,7 @@ function onTelInput(){
   if(tel.length<4){sugg.style.display='none';return;}
   const norm=normalizeTel(tel);
   const matches=DB.get('clientes').filter(c=>normalizeTel(c.tel).includes(norm));
-  if(matches.length===0){sugg.style.display='none';return;}
+  if(!matches.length){sugg.style.display='none';return;}
   sugg.innerHTML=matches.slice(0,5).map(c=>`<div class="tel-suggestion-item" onclick="selectClienteSuggestion('${c.id}')">${c.prenom} ${c.nom||''} ${isFidele(c)?`<span class="tel-suggestion-code">${c.code||''}</span>`:`<span style="font-size:0.6rem;color:var(--warm)">(${c.seances||0}/3)</span>`}<div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div></div>`).join('');
   sugg.style.display='block';
 }
@@ -654,6 +676,16 @@ function addClienteToPlanning(clienteId){
   switchTab('planning');
   setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';},350);},200);
 }
+function confirmDeleteCliente(){
+  if(!editingClienteId)return;
+  const c=DB.get('clientes').find(x=>x.id===editingClienteId);
+  const nom=c?`${c.prenom} ${c.nom||''}`:'cette cliente';
+  if(confirm(`Supprimer ${nom} du répertoire ? Cette action est irréversible.`)){
+    DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));
+    closeModal('overlay-cliente');
+    renderClientes();
+  }
+}
 
 function getBlockedSlots(rdvs){
   const blocked=new Set(),travel=new Set();
@@ -672,7 +704,6 @@ function getBlockedSlots(rdvs){
   });
   return{blocked,travel};
 }
-
 function toggleConge(date){
   const conges=DB.get('conges');
   const idx=conges.indexOf(date);
@@ -686,8 +717,7 @@ function setPayment(mode){
   document.getElementById('pay-virement').classList.toggle('active',mode==='virement');
 }
 function toggleDepFields(){
-  const dep=document.getElementById('f-dep').value==='1';
-  document.getElementById('dep-group').style.display=dep?'block':'none';
+  document.getElementById('dep-group').style.display=document.getElementById('f-dep').value==='1'?'block':'none';
   updateNetPreview();
 }
 function callTel(tel){window.location.href='tel:'+normalizeTel(tel);}
@@ -695,7 +725,6 @@ function openWaze(adresse){
   window.location.href=`waze://?q=${encodeURIComponent(adresse)}&navigate=yes`;
   setTimeout(()=>window.open(`https://waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`,'_blank'),1500);
 }
-
 function showNotifBanner(){
   const wrap=document.getElementById('notif-banner-wrap');
   if(!('Notification'in window)){wrap.innerHTML='';return;}
@@ -710,10 +739,9 @@ function scheduleAllNotifs(){
   Object.entries(rdvs).forEach(([key,r])=>{
     const[date,time]=key.split('_');
     const delay=new Date(date+'T'+time+':00').getTime()-60*60*1000-now;
-    if(delay>0&&delay<7*24*60*60*1000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}${r.adresse?' · 📍 '+r.adresse:''}`});},delay);
+    if(delay>0&&delay<7*24*60*60*1000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}`});},delay);
   });
 }
-
 function setView(v){
   currentView=v;
   document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';
@@ -737,77 +765,103 @@ function switchTab(tab){
 // ── STATS ──
 function setStatsView(v){
   statsView=v;
-  document.getElementById('sn-mois').classList.toggle('active',v==='mois');
-  document.getElementById('sn-global').classList.toggle('active',v==='global');
+  ['mois','global','depenses'].forEach(s=>document.getElementById('sn-'+s).classList.toggle('active',s===v));
   buildStats();
 }
 
 function buildStats(){
   const rdvs=DB.get('rdvs');
+  const depenses=DB.get('depenses')||[];
   const content=document.getElementById('stats-content');
+
+  if(statsView==='depenses'){
+    const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
+    const totalBrut=Object.values(rdvs).reduce((s,r)=>{const p=PRESTATIONS[r.prestation]||{prix:40};return s+calcTotal(r,p);},0);
+    const totalNet=totalBrut-totalDep;
+    content.innerHTML=`
+      <div class="depense-summary">
+        <div class="depense-summary-title">💸 Résumé des dépenses</div>
+        <div class="depense-summary-row"><span>Total dépenses</span><span>−${totalDep.toFixed(2)}€</span></div>
+        <div class="depense-summary-row"><span>Chiffre d'affaires brut</span><span>${totalBrut}€</span></div>
+        <div class="depense-summary-row"><span><strong>Bénéfice net réel</strong></span><span><strong>${totalNet.toFixed(2)}€</strong></span></div>
+      </div>
+      <button class="btn-primary" style="margin-bottom:12px" onclick="openDepenseModal()">＋ Ajouter une dépense</button>
+      ${depenses.length===0?'<div class="month-empty">Aucune dépense enregistrée</div>':depenses.slice().reverse().map(d=>`<div class="depense-item"><div class="depense-icon">${CAT_ICONS[d.cat]||'📦'}</div><div class="depense-info"><div class="depense-label">${d.label}</div><div class="depense-sub">${CAT_LABELS[d.cat]||'Autre'} · ${d.date}</div></div><div class="depense-prix">−${d.prix}€</div><button class="depense-del" onclick="deleteDepense('${d.id}')">🗑</button></div>`).join('')}
+    `;
+    return;
+  }
+
   if(statsView==='global'){
-    let totalRdv=0,totalBrut=0,totalNet=0,totalMins=0,totalEsp=0,totalVir=0;
+    let total=0,brut=0,net=0,mins=0,esp=0,vir=0;
+    const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
     Object.values(rdvs).forEach(r=>{
       const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
-      const brut=calcTotal(r,p);
-      const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
-      totalRdv++;totalBrut+=brut;totalNet+=brut-essence;totalMins+=p.duree+(r.prolongation?20:0);
-      if(r.payment==='virement')totalVir+=brut;else totalEsp+=brut;
+      const b=calcTotal(r,p);
+      const e=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+      total++;brut+=b;net+=b-e;mins+=p.duree+(r.prolongation?20:0);
+      if(r.payment==='virement')vir+=b;else esp+=b;
     });
-    const hh=Math.floor(totalMins/60),mm=totalMins%60;
-    const heures=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(totalMins+'min');
+    const hh=Math.floor(mins/60),mm=mins%60;
     content.innerHTML=`
       <div class="global-stat-card">
         <div class="global-stat-title">🏆 Total depuis le début</div>
-        <div class="global-stat-row"><span>Nombre de RDV</span><span>${totalRdv}</span></div>
-        <div class="global-stat-row"><span>Heures de travail</span><span>${heures}</span></div>
-        <div class="global-stat-row"><span>Chiffre d'affaires brut</span><span>${totalBrut}€</span></div>
-        <div class="global-stat-row"><span>Net après essence</span><span>${totalNet.toFixed(2)}€</span></div>
-        <div class="global-stat-row"><span>💵 Espèces</span><span>${totalEsp}€</span></div>
-        <div class="global-stat-row"><span>🏦 Virement</span><span>${totalVir}€</span></div>
-        <div class="global-stat-row"><span>Nombre de clientes</span><span>${DB.get('clientes').length}</span></div>
+        <div class="global-stat-row"><span>Nombre de RDV</span><span>${total}</span></div>
+        <div class="global-stat-row"><span>Heures travaillées</span><span>${hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mins+'min')}</span></div>
+        <div class="global-stat-row"><span>Brut total</span><span>${brut}€</span></div>
+        <div class="global-stat-row"><span>Net après essence</span><span>${net.toFixed(2)}€</span></div>
+        <div class="global-stat-row"><span>💸 Total dépenses</span><span>−${totalDep.toFixed(2)}€</span></div>
+        <div class="global-stat-row"><span>💰 Bénéfice réel</span><span>${(net-totalDep).toFixed(2)}€</span></div>
+        <div class="global-stat-row"><span>💵 Espèces</span><span>${esp}€</span></div>
+        <div class="global-stat-row"><span>🏦 Virement</span><span>${vir}€</span></div>
+        <div class="global-stat-row"><span>Clientes</span><span>${DB.get('clientes').length}</span></div>
       </div>`;
     return;
   }
+
   // Par mois
   const byMonth={};
   Object.entries(rdvs).forEach(([key,r])=>{
-    const date=key.split('_')[0];
-    const ym=date.substring(0,7);
-    if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,net:0,mins:0,esp:0,vir:0};
+    const ym=key.split('_')[0].substring(0,7);
+    if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,net:0,mins:0,esp:0,vir:0,dep:0};
     const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
-    const brut=calcTotal(r,p);
-    const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
-    byMonth[ym].rdv++;byMonth[ym].brut+=brut;byMonth[ym].net+=brut-essence;byMonth[ym].mins+=p.duree+(r.prolongation?20:0);
-    if(r.payment==='virement')byMonth[ym].vir+=brut;else byMonth[ym].esp+=brut;
+    const b=calcTotal(r,p);
+    const e=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
+    byMonth[ym].rdv++;byMonth[ym].brut+=b;byMonth[ym].net+=b-e;byMonth[ym].mins+=p.duree+(r.prolongation?20:0);
+    if(r.payment==='virement')byMonth[ym].vir+=b;else byMonth[ym].esp+=b;
+  });
+  depenses.forEach(d=>{
+    const ym=d.date?d.date.substring(0,7):'';
+    if(ym&&byMonth[ym])byMonth[ym].dep+=(d.prix||0);
   });
   const sorted=Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
-  if(sorted.length===0){content.innerHTML='<div class="empty-state"><div class="es-icon">📊</div><p>Aucun RDV enregistré</p></div>';return;}
+  if(!sorted.length){content.innerHTML='<div class="empty-state"><div class="es-icon">📊</div><p>Aucun RDV enregistré</p></div>';return;}
   content.innerHTML=sorted.map(ym=>{
     const[y,m]=ym.split('-');
     const mName=MONTHS_FR[parseInt(m)-1]+' '+y;
     const d=byMonth[ym];
     const hh=Math.floor(d.mins/60),mm2=d.mins%60;
     const heures=hh>0?(mm2>0?`${hh}h${mm2}`:`${hh}h`):(d.mins+'min');
+    const benefice=d.net-d.dep;
     return`<div class="month-stat-card">
       <div class="month-stat-title">📅 ${mName.charAt(0).toUpperCase()+mName.slice(1)}</div>
-      <div class="month-stat-row"><span>Nombre de RDV</span><span>${d.rdv}</span></div>
-      <div class="month-stat-row"><span>Heures travaillées</span><span>${heures}</span></div>
+      <div class="month-stat-row"><span>RDV</span><span>${d.rdv}</span></div>
+      <div class="month-stat-row"><span>Heures</span><span>${heures}</span></div>
       <div class="month-stat-row"><span>💵 Espèces</span><span>${d.esp}€</span></div>
       <div class="month-stat-row"><span>🏦 Virement</span><span>${d.vir}€</span></div>
-      <div class="month-stat-row"><span>Brut total</span><span>${d.brut}€</span></div>
-      <div class="month-stat-row total"><span>Net après essence</span><span>${d.net.toFixed(2)}€</span></div>
+      <div class="month-stat-row"><span>Brut</span><span>${d.brut}€</span></div>
+      <div class="month-stat-row"><span>Net après essence</span><span>${d.net.toFixed(2)}€</span></div>
+      ${d.dep>0?`<div class="month-stat-row"><span>💸 Dépenses</span><span>−${d.dep.toFixed(2)}€</span></div>`:''}
+      <div class="month-stat-row total"><span>Bénéfice réel</span><span>${benefice.toFixed(2)}€</span></div>
     </div>`;
   }).join('');
 }
 
 function updateStats(){
-  const rdvsAll=DB.get('rdvs');
-  const now=new Date();
+  const rdvs=DB.get('rdvs');
   const weekDates=getWeekDates(weekOffset);
   const weekStart=fmtDate(weekDates[0]),weekEnd=fmtDate(weekDates[6]);
   let wRdv=0,wCa=0,wNet=0,wMins=0,wEsp=0,wVir=0;
-  Object.entries(rdvsAll).forEach(([key,r])=>{
+  Object.entries(rdvs).forEach(([key,r])=>{
     const date=key.split('_')[0];
     const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
     const brut=calcTotal(r,p);
@@ -859,14 +913,13 @@ function buildPlanning(){
       const card=document.createElement('div');card.className='rdv-card '+p.color;
       const total=calcTotal(r,p);
       const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
-      const net=total-essence;
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
       const telLink=r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:'';
-      const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
+      const adrLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
       const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
-      const netLine=r.dep&&r.kmDist&&essence>0?`<div class="rdv-net">💰 Net : ${net.toFixed(2)}€ (−${essence}€⛽)</div>`:'';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adresseLink}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`:''}`;
+      const netLine=essence>0?`<div class="rdv-net">💰 Net : ${(total-essence).toFixed(2)}€ (−${essence}€⛽)</div>`:'';
+      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${adrLink}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`:''}`;
       card.onclick=()=>openRdvModal(key);
       area.appendChild(card);
     }else if(cng){area.className+=' conge-slot';}
@@ -908,7 +961,7 @@ function buildMonth(){
   document.getElementById('month-conge-banner').innerHTML=cng?'<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>':'';
   const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
   const rdvList=document.getElementById('month-rdv-list');
-  if(dayRdvs.length===0){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}
+  if(!dayRdvs.length){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}
   else{
     rdvList.innerHTML='';
     dayRdvs.forEach(([key,r])=>{
@@ -916,15 +969,12 @@ function buildMonth(){
       const c=r.tel?findClienteByTel(r.tel):null;
       const total=calcTotal(r,p);
       const essence=r.dep&&r.kmDist?calcEssenceCost(r.kmDist):0;
-      const net=total-essence;
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
-      const telLink=r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:'';
-      const adresseLink=r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:'';
       const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
-      const netLine=r.dep&&r.kmDist&&essence>0?`<div class="rdv-net">💰 Net : ${net.toFixed(2)}€ (−${essence}€⛽)</div>`:'';
+      const netLine=essence>0?`<div class="rdv-net">💰 Net : ${(total-essence).toFixed(2)}€ (−${essence}€⛽)</div>`:'';
       const item=document.createElement('div');item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${telLink}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${adresseLink}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div></div></div><div class="month-rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''} ${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div></div></div><div class="month-rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
@@ -961,19 +1011,14 @@ function openRdvModal(key,defaultHour){
     if(r.tel)document.getElementById('btn-wa-rappel').style.display='flex';
     updateNetPreview();
   }else{
-    document.getElementById('f-tel').value='';
-    document.getElementById('f-name').value='';
+    ['f-tel','f-name','f-adresse','f-details','f-km-dist','f-pourboire'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('f-date').value=selectedDay;
     document.getElementById('f-time').value=defaultHour||'10:00';
     document.getElementById('f-prestation').value='classic_60';
     document.getElementById('f-dep').value='0';
     document.getElementById('f-km').value='10';
-    document.getElementById('f-km-dist').value='';
     document.getElementById('dep-group').style.display='none';
-    document.getElementById('f-adresse').value='';
-    document.getElementById('f-details').value='';
     document.getElementById('f-prolongation').checked=false;
-    document.getElementById('f-pourboire').value='';
     setPayment('especes');
   }
   openModal('overlay-rdv');
@@ -988,11 +1033,10 @@ function saveRdv(){
   const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
   if(editingRdvKey&&editingRdvKey!==newKey)delete rdvs[editingRdvKey];
   const depOn=document.getElementById('f-dep').value==='1';
+  const tel=document.getElementById('f-tel').value.trim();
   const adresse=document.getElementById('f-adresse').value.trim();
   const details=document.getElementById('f-details').value.trim();
-  const tel=document.getElementById('f-tel').value.trim();
-  const kmDist=depOn?document.getElementById('f-km-dist').value:'';
-  const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist,adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
+  const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist:depOn?document.getElementById('f-km-dist').value:'',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
   rdvs[newKey]=rdvData;
   DB.set('rdvs',rdvs);
   syncClienteFromRdv(name,tel,adresse,details);
@@ -1001,7 +1045,6 @@ function saveRdv(){
   closeModal('overlay-rdv');
   if(currentView==='semaine')buildPlanning();else buildMonth();
   scheduleAllNotifs();
-  // Ouvrir modal de confirmation
   openConfirmModal(rdvData);
 }
 
@@ -1016,11 +1059,11 @@ function renderClientes(filter){
   let clientes=DB.get('clientes');
   if(filter)clientes=clientes.filter(c=>(c.prenom+' '+c.nom+' '+(c.tel||'')+' '+(c.code||'')).toLowerCase().includes(filter.toLowerCase()));
   const list=document.getElementById('clientes-list');list.innerHTML='';
-  if(clientes.length===0){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
+  if(!clientes.length){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
   clientes.forEach(c=>{
     const fidele=isFidele(c);
-    const card=document.createElement('div');card.className='cliente-card'+(fidele?'':' pending');
     const seancesLeft=fidele?0:FIDELITE_SEUIL-(c.seances||0);
+    const card=document.createElement('div');card.className='cliente-card'+(fidele?'':' pending');
     card.innerHTML=`
       <div class="cliente-card-top">
         <div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div>
@@ -1031,16 +1074,23 @@ function renderClientes(filter){
           ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''}
           ${c.notes?`<div class="cliente-sub" style="font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}
         </div>
-        <div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐ ':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>
+        <div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>
       </div>
       <div class="cliente-actions">
         <button class="btn-planning" onclick="event.stopPropagation();addClienteToPlanning('${c.id}')">📅 Planning</button>
         ${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞 Appeler</button>`:''}
         ${c.adresse?`<button class="btn-waze-cliente" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️ Waze</button>`:''}
+        <button class="btn-delete-cliente-card" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑 Supprimer</button>
       </div>
     `;
     card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
   });
+}
+function deleteClienteDirectly(id,nom){
+  if(confirm(`Supprimer ${nom.trim()} du répertoire ? Cette action est irréversible.`)){
+    DB.set('clientes',DB.get('clientes').filter(c=>c.id!==id));
+    renderClientes();
+  }
 }
 function filterClientes(){renderClientes(document.getElementById('search-input').value);}
 
@@ -1061,13 +1111,12 @@ function openClienteModal(id){
       document.getElementById('c-seances').value=c.seances||0;
       document.getElementById('c-notes').value=c.notes||'';
       if(c.code){codeDisplay.textContent='🏷️ '+c.code+' · ⭐ Cliente fidèle';codeDisplay.style.display='block';}
-      else if(c.seances>0){codeDisplay.textContent=`⏳ ${c.seances||0}/${FIDELITE_SEUIL} RDV — fidélisation en cours`;codeDisplay.style.display='block';}
+      else if(c.seances>0){codeDisplay.textContent=`⏳ ${c.seances}/${FIDELITE_SEUIL} RDV — fidélisation en cours`;codeDisplay.style.display='block';}
       else codeDisplay.style.display='none';
     }
   }else{
     ['c-prenom','c-nom','c-tel','c-adresse','c-details','c-notes'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('c-source').value='Instagram';
-    document.getElementById('c-seances').value='0';
+    document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';
     codeDisplay.style.display='none';
   }
   openModal('overlay-cliente');
@@ -1084,10 +1133,15 @@ function saveCliente(){
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else{clientes.push(data);}
   DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
 }
-function deleteCliente(){
+
+function confirmDeleteCliente(){
   if(!editingClienteId)return;
-  DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));
-  closeModal('overlay-cliente');renderClientes();
+  const c=DB.get('clientes').find(x=>x.id===editingClienteId);
+  const nom=c?`${c.prenom} ${c.nom||''}`:'cette cliente';
+  if(confirm(`Supprimer ${nom.trim()} du répertoire ? Cette action est irréversible.`)){
+    DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));
+    closeModal('overlay-cliente');renderClientes();
+  }
 }
 
 function openModal(id){document.getElementById(id).classList.add('open');}
