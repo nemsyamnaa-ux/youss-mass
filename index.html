@@ -82,14 +82,17 @@
     .rdv-card.c-green { background: #eaf3eb; border-left: 3px solid var(--green); }
     .rdv-card.c-blue { background: #e6eef8; border-left: 3px solid #5b8ac9; }
     .rdv-card.c-purple { background: #f0e6f8; border-left: 3px solid #9b6bc9; }
+    .rdv-card.groupe { border-left: 4px solid var(--gold); border-top: 2px solid var(--gold); }
     .rdv-name { font-weight: 700; font-size: 0.92rem; }
     .rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
     .rdv-address { font-size: 0.7rem; color: #5b8ac9; margin-top: 3px; cursor: pointer; text-decoration: underline; }
     .rdv-phone { font-size: 0.7rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
     .rdv-code { font-size: 0.62rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 6px; border-radius: 6px; display: inline-block; }
     .rdv-net { font-size: 0.68rem; color: var(--gold); font-weight: 700; margin-top: 3px; }
+    .rdv-groupe-badge { background: var(--gold); color: var(--deep); font-size: 0.62rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; display: inline-block; margin-bottom: 4px; }
     .rdv-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
     .btn-wa { background: #25d366; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-add-groupe { background: var(--gold); color: var(--deep); border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .fab { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); right: 18px; width: 54px; height: 54px; background: var(--rose); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 16px rgba(201,123,110,0.45); cursor: pointer; z-index: 150; border: none; color: white; }
     .month-grid { padding: 0 14px 14px; }
     .month-days-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
@@ -156,9 +159,8 @@
     .search-bar input { background: none; border: none; outline: none; color: var(--cream); font-size: 0.9rem; flex: 1; font-family: inherit; }
     .search-bar input::placeholder { color: var(--warm); }
     .search-bar span { color: var(--warm); font-size: 1rem; }
-    .ville-header { padding: 10px 14px 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); background: var(--sand); border-radius: 10px; margin: 6px 14px 4px; }
-    .clientes-list { padding: 6px 14px; }
-    .cliente-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); cursor: pointer; border-left: 3px solid var(--gold); }
+    .ville-header { padding: 8px 14px 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); background: var(--sand); border-radius: 10px; margin: 6px 14px 4px; }
+    .cliente-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin: 0 14px 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); cursor: pointer; border-left: 3px solid var(--gold); }
     .cliente-card.pending { border-left-color: var(--sand); }
     .cliente-card-top { display: flex; align-items: center; gap: 12px; }
     .cliente-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: var(--warm); flex-shrink: 0; }
@@ -175,10 +177,9 @@
     .btn-planning { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
     .btn-call { background: var(--green); color: white; border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-waze-cliente { background: #1dacd6; color: white; border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
-    .btn-delete-cliente-card { background: #fbe8e6; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-delete-c { background: #fbe8e6; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .empty-state { text-align: center; padding: 50px 30px; color: var(--warm); }
     .empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
-    .empty-state p { font-size: 0.9rem; line-height: 1.5; }
     .overlay { position: fixed; inset: 0; background: rgba(59,42,42,0.55); z-index: 300; display: none; align-items: flex-end; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
     .overlay.open { display: flex; }
     .modal { background: var(--cream); border-radius: 24px 24px 0 0; padding: 20px 18px calc(24px + env(safe-area-inset-bottom)); width: 100%; max-height: 92vh; overflow-y: auto; animation: slideUp 0.22s ease; }
@@ -194,6 +195,7 @@
     .form-row { display: flex; gap: 10px; }
     .form-row .form-group { flex: 1; }
     .btn-primary { width: 100%; background: var(--deep); color: var(--gold); border: none; border-radius: 13px; padding: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 6px; font-family: inherit; }
+    .btn-secondary { width: 100%; background: var(--gold); color: var(--deep); border: none; border-radius: 13px; padding: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 8px; font-family: inherit; }
     .btn-danger { width: 100%; background: none; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 13px; padding: 11px; font-size: 0.9rem; cursor: pointer; margin-top: 8px; font-family: inherit; }
     .btn-whatsapp { width: 100%; background: #25d366; color: white; border: none; border-radius: 13px; padding: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 8px; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .checkbox-group { display: flex; align-items: center; gap: 10px; background: var(--white); border: 1.5px solid var(--sand); border-radius: 12px; padding: 11px 14px; }
@@ -216,6 +218,11 @@
     .tel-suggestion-item:last-child { border-bottom: none; }
     .tel-suggestion-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-left: 6px; }
     .net-preview { background: #fdf3e3; border-radius: 10px; padding: 8px 12px; font-size: 0.82rem; color: var(--deep); margin-top: 8px; font-weight: 600; text-align: center; }
+    .groupe-info { background: #fdf3e3; border: 1.5px solid var(--gold); border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; font-size: 0.82rem; color: var(--deep); }
+    .groupe-info strong { color: var(--gold); }
+    .groupe-membres { margin-top: 6px; }
+    .groupe-membre-item { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; font-size: 0.8rem; color: var(--warm); border-bottom: 1px solid var(--sand); }
+    .groupe-membre-item:last-child { border-bottom: none; }
     .confirm-msg-box { background: var(--white); border-radius: 12px; padding: 14px; font-size: 0.85rem; color: var(--deep); line-height: 1.6; white-space: pre-wrap; border: 1.5px solid var(--sand); margin-bottom: 14px; max-height: 200px; overflow-y: auto; }
     .send-btns { display: flex; flex-direction: column; gap: 10px; }
     .btn-send-wa { background: #25d366; color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -226,6 +233,11 @@
     .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
     .cat-btn { padding: 10px 6px; border-radius: 12px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.78rem; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.15s; }
     .cat-btn.selected { background: var(--deep); color: var(--gold); border-color: var(--deep); }
+    .groupe-clients-list { margin-top: 8px; }
+    .groupe-client-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--sand); }
+    .groupe-client-row:last-child { border-bottom: none; }
+    .groupe-client-name { flex: 1; font-size: 0.85rem; font-weight: 600; }
+    .groupe-client-time { font-size: 0.75rem; color: var(--warm); }
   </style>
 </head>
 <body>
@@ -255,7 +267,7 @@
   <div class="stats-pay">
     <div class="stat-pay especes"><div class="stat-pay-val" id="s-especes">0€</div><div class="stat-pay-lbl">💵 Espèces</div></div>
     <div class="stat-pay virement"><div class="stat-pay-val" id="s-virement">0€</div><div class="stat-pay-lbl">🏦 Virement</div></div>
-    <div class="stat-pay essence"><div class="stat-pay-val" id="s-essence-week">0€</div><div class="stat-pay-lbl">⛽ Essence sem.</div></div>
+    <div class="stat-pay essence"><div class="stat-pay-val" id="s-essence-week">0€</div><div class="stat-pay-lbl">⛽ Essence</div></div>
   </div>
   <div class="essence-banner" onclick="openEssenceSettings()">⛽ <span id="essence-info">Configurer le prix du carburant</span></div>
   <div id="notif-banner-wrap"></div>
@@ -306,10 +318,15 @@
   <div class="nav-tab" id="tab-clientes" onclick="switchTab('clientes')"><span class="tab-icon">👩</span>Clientes</div>
 </nav>
 
+<!-- MODAL RDV -->
 <div class="overlay" id="overlay-rdv">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title"><span id="rdv-modal-title">Nouveau RDV</span><button class="close-btn" onclick="closeModal('overlay-rdv')">✕</button></div>
+    <div id="groupe-info-box" class="groupe-info" style="display:none">
+      <strong>👥 Session groupée</strong> — même adresse, frais de déplacement communs
+      <div class="groupe-membres" id="groupe-membres-list"></div>
+    </div>
     <div class="form-group">
       <label>📞 Téléphone</label>
       <div class="tel-input-wrap">
@@ -355,16 +372,19 @@
       <div class="form-group"><label>💳 Paiement</label><div class="pay-toggle"><button type="button" class="pay-btn active" id="pay-especes" onclick="setPayment('especes')">💵 Espèces</button><button type="button" class="pay-btn" id="pay-virement" onclick="setPayment('virement')">🏦 Virement</button></div></div>
     </div>
     <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
+    <button class="btn-secondary" id="btn-ajouter-groupe" onclick="saveRdvAndAddGroupe()" style="display:none">👥 Enregistrer et ajouter une cliente au groupe</button>
     <button class="btn-whatsapp" id="btn-wa-rappel" onclick="sendWaRappel()" style="display:none">📲 Rappel WhatsApp</button>
     <button class="btn-danger" id="btn-delete-rdv" onclick="deleteRdv()" style="display:none">🗑 Supprimer ce RDV</button>
   </div>
 </div>
 
+<!-- MODAL CONFIRMATION -->
 <div class="overlay" id="overlay-confirm">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title"><span>📩 Confirmation réservation</span><button class="close-btn" onclick="closeModal('overlay-confirm')">✕</button></div>
-    <p style="font-size:0.82rem;color:var(--warm);margin-bottom:10px">Message à envoyer à la cliente :</p>
+    <div class="modal-title"><span id="confirm-modal-title">📩 Confirmation réservation</span><button class="close-btn" onclick="closeModal('overlay-confirm')">✕</button></div>
+    <p style="font-size:0.82rem;color:var(--warm);margin-bottom:10px" id="confirm-subtitle">Message à envoyer à la cliente :</p>
+    <div id="groupe-confirm-nav" style="display:none;margin-bottom:10px"></div>
     <div class="confirm-msg-box" id="confirm-msg-box"></div>
     <div class="send-btns">
       <button class="btn-send-wa" onclick="sendConfirmWa()">📲 WhatsApp</button>
@@ -381,6 +401,7 @@
   </div>
 </div>
 
+<!-- MODAL DEPENSE -->
 <div class="overlay" id="overlay-depense">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -405,6 +426,7 @@
   </div>
 </div>
 
+<!-- MODAL CLIENTE -->
 <div class="overlay" id="overlay-cliente">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -427,6 +449,7 @@
   </div>
 </div>
 
+<!-- MODAL ESSENCE -->
 <div class="overlay" id="overlay-essence">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -466,6 +489,11 @@ const FIDELITE_SEUIL=3;
 let weekOffset=0,monthOffset=0,selectedDay=fmtDate(new Date()),currentView='semaine';
 let editingRdvKey=null,editingClienteId=null,currentRdvForWa=null,currentPayment='especes';
 let lastSavedRdv=null,statsView='mois',selectedCat='huile';
+// Groupe session
+let currentGroupeId=null; // ID du groupe en cours de création
+let currentGroupeRdvs=[]; // liste des rdv du groupe en cours
+let lastSavedGroupeRdvs=[]; // pour la confirmation
+let confirmGroupeIdx=0; // index du message affiché
 
 function fmtDate(d){return d.toISOString().split('T')[0];}
 function getWeekDates(off){
@@ -487,9 +515,7 @@ function fmtDateFr(ds){
 function extractVille(adresse){
   if(!adresse)return'Sans adresse';
   const parts=adresse.split(',');
-  const last=parts[parts.length-1].trim();
-  // Enlever le code postal si présent
-  return last.replace(/\d{5}/,'').trim()||last;
+  return parts[parts.length-1].trim().replace(/\d{5}/,'').trim()||parts[parts.length-1].trim();
 }
 
 // ── ESSENCE ──
@@ -530,60 +556,143 @@ function updateNetPreview(){
   preview.innerHTML=ess>0?`💰 Brut : ${brut}€ — ⛽ −${ess}€ = <strong>Net : ${(brut-ess).toFixed(2)}€</strong>`:`💰 Brut : ${brut}€`;
 }
 
-// ── DEPENSES ──
-function selectCat(cat){
-  selectedCat=cat;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('cat-'+cat).classList.add('selected');
+// ── GROUPE SESSION ──
+function isGroupeLeader(rdv){return rdv.groupeId&&rdv.groupeLeader;}
+function getGroupeMembers(groupeId){
+  const rdvs=DB.get('rdvs');
+  return Object.entries(rdvs).filter(([,r])=>r.groupeId===groupeId).sort((a,b)=>a[0].localeCompare(b[0]));
 }
-function openDepenseModal(){
-  document.getElementById('d-label').value='';
-  document.getElementById('d-prix').value='';
-  document.getElementById('d-date').value=fmtDate(new Date());
-  selectCat('huile');
-  openModal('overlay-depense');
+
+function updateGroupeInfoBox(){
+  const box=document.getElementById('groupe-info-box');
+  const membersList=document.getElementById('groupe-membres-list');
+  const btnGroupe=document.getElementById('btn-ajouter-groupe');
+  if(currentGroupeRdvs.length>0){
+    box.style.display='block';
+    btnGroupe.style.display='block';
+    membersList.innerHTML=currentGroupeRdvs.map(r=>`<div class="groupe-membre-item"><span>💆‍♀️ ${r.name}</span><span>${r.time} · ${PRESTATIONS[r.prestation]?PRESTATIONS[r.prestation].label:'Massage'} · ${calcTotal(r,PRESTATIONS[r.prestation]||{prix:40})}€</span></div>`).join('');
+  }else{
+    box.style.display='none';
+    btnGroupe.style.display='none';
+  }
 }
-function saveDepense(){
-  const prix=parseFloat(document.getElementById('d-prix').value)||0;
-  if(!prix){alert('Entrez un montant !');return;}
-  const depenses=DB.get('depenses')||[];
-  depenses.push({id:Date.now().toString(),cat:selectedCat,label:document.getElementById('d-label').value.trim()||CAT_LABELS[selectedCat],prix,date:document.getElementById('d-date').value||fmtDate(new Date())});
-  DB.set('depenses',depenses);
-  closeModal('overlay-depense');
-  if(statsView==='depenses')buildStats();
-}
-function deleteDepense(id){
-  if(!confirm('Supprimer cette dépense ?'))return;
-  DB.set('depenses',(DB.get('depenses')||[]).filter(d=>d.id!==id));
-  buildStats();
+
+function saveRdvAndAddGroupe(){
+  // Sauvegarder le RDV actuel dans le groupe et ouvrir un nouveau formulaire pour la cliente suivante
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){document.getElementById('f-name').focus();return;}
+  const date=document.getElementById('f-date').value||selectedDay;
+  const time=document.getElementById('f-time').value;
+  const newKey=rdvKey(date,time);
+  const rdvs=DB.get('rdvs');
+  if(editingRdvKey&&editingRdvKey!==newKey)delete rdvs[editingRdvKey];
+  const depOn=document.getElementById('f-dep').value==='1';
+  const tel=document.getElementById('f-tel').value.trim();
+  const adresse=document.getElementById('f-adresse').value.trim();
+  const details=document.getElementById('f-details').value.trim();
+  // Générer un ID de groupe si premier RDV
+  if(!currentGroupeId)currentGroupeId='grp-'+Date.now();
+  const isLeader=currentGroupeRdvs.length===0;
+  const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn&&isLeader,km:depOn&&isLeader?document.getElementById('f-km').value:'10',kmDist:depOn&&isLeader?document.getElementById('f-km-dist').value:'',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment,groupeId:currentGroupeId,groupeLeader:isLeader};
+  rdvs[newKey]=rdvData;
+  DB.set('rdvs',rdvs);
+  syncCliente(name,tel,adresse,details);
+  currentGroupeRdvs.push({...rdvData,key:newKey});
+  selectedDay=date;
+  // Préparer le formulaire pour la cliente suivante (même adresse, même déplacement)
+  // Calculer la prochaine heure disponible
+  const p=PRESTATIONS[rdvData.prestation]||{duree:60};
+  const duree=p.duree+(rdvData.prolongation?20:0);
+  const nextMins=timeToMins(time)+duree;
+  const nextTime=minsToTime(nextMins);
+  // Vider les champs client mais garder adresse/déplacement
+  document.getElementById('f-tel').value='';
+  document.getElementById('f-name').value='';
+  document.getElementById('f-time').value=nextTime;
+  document.getElementById('f-prestation').value='classic_60';
+  document.getElementById('f-prolongation').checked=false;
+  document.getElementById('f-pourboire').value='';
+  document.getElementById('f-dep').value='0'; // Pas de frais pour les suivantes
+  document.getElementById('dep-group').style.display='none';
+  document.getElementById('net-preview').style.display='none';
+  setPayment('especes');
+  editingRdvKey=null;
+  updateGroupeInfoBox();
+  if(currentView==='semaine')buildPlanning();else buildMonth();
+  document.getElementById('f-tel').focus();
 }
 
 // ── MESSAGES ──
-function buildConfirmMsg(r){
+function buildConfirmMsg(r,groupeMembers){
   const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
   const total=calcTotal(r,p);
-  return`Bonjour ${r.name} 🌸\n\n✅ Votre réservation est confirmée !\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 ${r.time}\n💆 ${p.label}${r.dep?`\n🚗 Déplacement inclus (+${depPrix(r)}€)`:''}${r.prolongation?'\n⏱ Prolongation +20 min (+15€)':''}\n💰 ${total}€${r.adresse?`\n📍 ${r.adresse}`:''}\n\nUn message de confirmation vous sera envoyé la veille de votre rendez-vous.\n\nMerci et à très bientôt ! 💛\nYouss Mass à Dom 🌸`;
+  let groupeInfo='';
+  if(r.groupeId&&groupeMembers&&groupeMembers.length>1){
+    const noms=groupeMembers.filter(([,m])=>m.name!==r.name).map(([,m])=>m.name).join(', ');
+    groupeInfo=`\n\n👥 Session groupée avec : ${noms}\n📍 Même adresse — frais de déplacement (${depPrix(groupeMembers.find(([,m])=>m.groupeLeader)?.[1]||r)}€) à partager entre vous selon votre arrangement.`;
+  }
+  return`Bonjour ${r.name} 🌸\n\n✅ Votre réservation est confirmée !\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 ${r.time}\n💆 ${p.label}${r.prolongation?'\n⏱ Prolongation +20 min (+15€)':''}\n💰 ${total}€${r.adresse?`\n📍 ${r.adresse}`:''}${groupeInfo}\n\nUn rappel vous sera envoyé la veille du rendez-vous.\n\nMerci et à très bientôt ! 💛\nYouss Mass à Dom 🌸`;
 }
 function buildRappelMsg(r){
   const p=PRESTATIONS[r.prestation]||{label:'massage'};
   return`Bonjour ${r.name} 🌸\n\nJe vous rappelle votre rendez-vous demain :\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 à ${r.time}\n💆 ${p.label}\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom 🌸`;
 }
-function openConfirmModal(rdvData){
+
+function openConfirmModal(rdvData,groupeRdvsList){
   lastSavedRdv=rdvData;
-  document.getElementById('confirm-msg-box').textContent=buildConfirmMsg(rdvData);
-  document.getElementById('rappel-msg-box').textContent=buildRappelMsg(rdvData);
+  lastSavedGroupeRdvs=groupeRdvsList||[rdvData];
+  confirmGroupeIdx=0;
+  const isGroupe=lastSavedGroupeRdvs.length>1;
+  document.getElementById('confirm-modal-title').textContent=isGroupe?'📩 Confirmations session groupée':'📩 Confirmation réservation';
+  document.getElementById('confirm-subtitle').textContent=isGroupe?`Message 1/${lastSavedGroupeRdvs.length} — ${lastSavedGroupeRdvs[0].name} :`:'Message à envoyer à la cliente :';
+  // Navigation groupe
+  const nav=document.getElementById('groupe-confirm-nav');
+  if(isGroupe){
+    nav.style.display='flex';
+    nav.style.gap='8px';
+    nav.style.flexWrap='wrap';
+    renderGroupeConfirmNav();
+  }else{
+    nav.style.display='none';
+  }
+  showConfirmForIdx(0);
   openModal('overlay-confirm');
 }
+function renderGroupeConfirmNav(){
+  const nav=document.getElementById('groupe-confirm-nav');
+  nav.innerHTML=lastSavedGroupeRdvs.map((r,i)=>`<button onclick="showConfirmForIdx(${i})" style="flex:1;padding:8px;border-radius:10px;border:1.5px solid ${i===confirmGroupeIdx?'var(--gold)':'var(--sand)'};background:${i===confirmGroupeIdx?'var(--deep)':'var(--white)'};color:${i===confirmGroupeIdx?'var(--gold)':'var(--warm)'};font-size:0.75rem;font-weight:700;cursor:pointer;font-family:inherit">${r.name}</button>`).join('');
+}
+function showConfirmForIdx(idx){
+  confirmGroupeIdx=idx;
+  const r=lastSavedGroupeRdvs[idx];
+  lastSavedRdv=r;
+  const groupeMembers=r.groupeId?getGroupeMembers(r.groupeId):null;
+  document.getElementById('confirm-msg-box').textContent=buildConfirmMsg(r,groupeMembers);
+  document.getElementById('rappel-msg-box').textContent=buildRappelMsg(r);
+  if(lastSavedGroupeRdvs.length>1){
+    document.getElementById('confirm-subtitle').textContent=`Message ${idx+1}/${lastSavedGroupeRdvs.length} — ${r.name} :`;
+    renderGroupeConfirmNav();
+  }
+}
+
 function sendConfirmWa(){
   if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
-  window.open('https://wa.me/'+normTel(lastSavedRdv.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildConfirmMsg(lastSavedRdv)),'_blank');
+  const r=lastSavedRdv;
+  const groupeMembers=r.groupeId?getGroupeMembers(r.groupeId):null;
+  window.open('https://wa.me/'+normTel(r.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildConfirmMsg(r,groupeMembers)),'_blank');
 }
 function sendConfirmSms(){
   if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
-  window.location.href='sms:'+normTel(lastSavedRdv.tel)+'?body='+encodeURIComponent(buildConfirmMsg(lastSavedRdv));
+  const r=lastSavedRdv;
+  const groupeMembers=r.groupeId?getGroupeMembers(r.groupeId):null;
+  window.location.href='sms:'+normTel(r.tel)+'?body='+encodeURIComponent(buildConfirmMsg(r,groupeMembers));
 }
 function copyMsg(msg){navigator.clipboard.writeText(msg).then(()=>alert('✅ Copié !')).catch(()=>{const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copié !');});}
-function copyConfirmMsg(){copyMsg(buildConfirmMsg(lastSavedRdv));}
+function copyConfirmMsg(){
+  const r=lastSavedRdv;
+  const groupeMembers=r.groupeId?getGroupeMembers(r.groupeId):null;
+  copyMsg(buildConfirmMsg(r,groupeMembers));
+}
 function sendRappelWa(){
   if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
   window.open('https://wa.me/'+normTel(lastSavedRdv.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildRappelMsg(lastSavedRdv)),'_blank');
@@ -655,6 +764,28 @@ function confirmDeleteCliente(){
   }
 }
 
+// ── DEPENSES ──
+function selectCat(cat){
+  selectedCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('cat-'+cat).classList.add('selected');
+}
+function openDepenseModal(){
+  document.getElementById('d-label').value='';document.getElementById('d-prix').value='';
+  document.getElementById('d-date').value=fmtDate(new Date());selectCat('huile');openModal('overlay-depense');
+}
+function saveDepense(){
+  const prix=parseFloat(document.getElementById('d-prix').value)||0;
+  if(!prix){alert('Entrez un montant !');return;}
+  const depenses=DB.get('depenses')||[];
+  depenses.push({id:Date.now().toString(),cat:selectedCat,label:document.getElementById('d-label').value.trim()||CAT_LABELS[selectedCat],prix,date:document.getElementById('d-date').value||fmtDate(new Date())});
+  DB.set('depenses',depenses);closeModal('overlay-depense');if(statsView==='depenses')buildStats();
+}
+function deleteDepense(id){
+  if(!confirm('Supprimer cette dépense ?'))return;
+  DB.set('depenses',(DB.get('depenses')||[]).filter(d=>d.id!==id));buildStats();
+}
+
 function getBlockedSlots(rdvs){
   const blocked=new Set(),travel=new Set();
   Object.entries(rdvs).forEach(([key,r])=>{
@@ -663,8 +794,7 @@ function getBlockedSlots(rdvs){
     for(let i=1;i<slots;i++)blocked.add(date+'_'+minsToTime(start+i*30));
     if(r.dep){
       for(let i=1;i<=2;i++){const t=minsToTime(start-i*30);if(start-i*30>=0)travel.add(date+'_'+t);}
-      const end=start+slots*30;
-      for(let i=0;i<2;i++)travel.add(date+'_'+minsToTime(end+i*30));
+      const end=start+slots*30;for(let i=0;i<2;i++)travel.add(date+'_'+minsToTime(end+i*30));
     }
   });
   return{blocked,travel};
@@ -672,8 +802,7 @@ function getBlockedSlots(rdvs){
 function toggleConge(date){
   const c=DB.get('conges'),idx=c.indexOf(date);
   if(idx>=0)c.splice(idx,1);else c.push(date);
-  DB.set('conges',c);
-  if(currentView==='semaine')buildPlanning();else buildMonth();
+  DB.set('conges',c);if(currentView==='semaine')buildPlanning();else buildMonth();
 }
 function setPayment(mode){
   currentPayment=mode;
@@ -722,7 +851,6 @@ function switchTab(tab){
   if(tab==='stats')buildStats();
 }
 
-// ── STATS ──
 function setStatsView(v){
   statsView=v;
   ['mois','global','depenses'].forEach(s=>document.getElementById('sn-'+s).classList.toggle('active',s===v));
@@ -732,57 +860,45 @@ function setStatsView(v){
 function buildStats(){
   const rdvs=DB.get('rdvs'),depenses=DB.get('depenses')||[];
   const c=document.getElementById('stats-content');
+  // Pour éviter de compter l'essence plusieurs fois dans un groupe, on garde track des groupeId
+  const groupesCompted=new Set();
 
   if(statsView==='depenses'){
     const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
     const totalBrut=Object.values(rdvs).reduce((s,r)=>{const p=PRESTATIONS[r.prestation]||{prix:40};return s+calcTotal(r,p);},0);
-    const totalEss=Object.values(rdvs).reduce((s,r)=>s+(r.dep&&r.kmDist?calcEssence(r.kmDist):0),0);
-    c.innerHTML=`
-      <div class="depense-summary">
-        <div class="depense-summary-title">💸 Résumé</div>
-        <div class="depense-summary-row"><span>CA brut</span><span>${totalBrut}€</span></div>
-        <div class="depense-summary-row"><span>⛽ Total essence</span><span>−${totalEss.toFixed(2)}€</span></div>
-        <div class="depense-summary-row"><span>💸 Total dépenses</span><span>−${totalDep.toFixed(2)}€</span></div>
-        <div class="depense-summary-row"><span><strong>Bénéfice net réel</strong></span><span><strong>${(totalBrut-totalEss-totalDep).toFixed(2)}€</strong></span></div>
-      </div>
-      <button class="btn-primary" style="margin-bottom:12px" onclick="openDepenseModal()">＋ Ajouter une dépense</button>
-      ${!depenses.length?'<div class="month-empty">Aucune dépense enregistrée</div>':depenses.slice().reverse().map(d=>`<div class="depense-item"><div class="depense-icon">${CAT_ICONS[d.cat]||'📦'}</div><div class="depense-info"><div class="depense-label">${d.label}</div><div class="depense-sub">${CAT_LABELS[d.cat]||'Autre'} · ${d.date}</div></div><div class="depense-prix">−${d.prix}€</div><button class="depense-del" onclick="deleteDepense('${d.id}')">🗑</button></div>`).join('')}`;
+    const totalEss=Object.values(rdvs).reduce((s,r)=>{
+      if(r.groupeId){if(r.groupeLeader&&!groupesCompted.has(r.groupeId)){groupesCompted.add(r.groupeId);return s+(r.dep&&r.kmDist?calcEssence(r.kmDist):0);}return s;}
+      return s+(r.dep&&r.kmDist?calcEssence(r.kmDist):0);
+    },0);
+    c.innerHTML=`<div class="depense-summary"><div class="depense-summary-title">💸 Résumé</div><div class="depense-summary-row"><span>CA brut</span><span>${totalBrut}€</span></div><div class="depense-summary-row"><span>⛽ Total essence</span><span>−${totalEss.toFixed(2)}€</span></div><div class="depense-summary-row"><span>💸 Total dépenses</span><span>−${totalDep.toFixed(2)}€</span></div><div class="depense-summary-row"><span><strong>Bénéfice net réel</strong></span><span><strong>${(totalBrut-totalEss-totalDep).toFixed(2)}€</strong></span></div></div><button class="btn-primary" style="margin-bottom:12px" onclick="openDepenseModal()">＋ Ajouter une dépense</button>${!depenses.length?'<div class="month-empty">Aucune dépense</div>':depenses.slice().reverse().map(d=>`<div class="depense-item"><div class="depense-icon">${CAT_ICONS[d.cat]||'📦'}</div><div class="depense-info"><div class="depense-label">${d.label}</div><div class="depense-sub">${CAT_LABELS[d.cat]||'Autre'} · ${d.date}</div></div><div class="depense-prix">−${d.prix}€</div><button class="depense-del" onclick="deleteDepense('${d.id}')">🗑</button></div>`).join('')}`;
     return;
   }
-
   if(statsView==='global'){
     let total=0,brut=0,net=0,mins=0,esp=0,vir=0,ess=0;
     const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
+    const gC=new Set();
     Object.values(rdvs).forEach(r=>{
-      const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
-      const b=calcTotal(r,p),e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
+      const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},b=calcTotal(r,p);
+      let e=0;
+      if(r.groupeId){if(r.groupeLeader&&!gC.has(r.groupeId)){gC.add(r.groupeId);e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}
+      else{e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
       total++;brut+=b;net+=b-e;ess+=e;mins+=p.duree+(r.prolongation?20:0);
       if(r.payment==='virement')vir+=b;else esp+=b;
     });
     const hh=Math.floor(mins/60),mm=mins%60;
-    c.innerHTML=`<div class="global-stat-card">
-      <div class="global-stat-title">🏆 Total depuis le début</div>
-      <div class="global-stat-row"><span>Nombre de RDV</span><span>${total}</span></div>
-      <div class="global-stat-row"><span>Heures travaillées</span><span>${hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mins+'min')}</span></div>
-      <div class="global-stat-row"><span>CA brut</span><span>${brut}€</span></div>
-      <div class="global-stat-row"><span>⛽ Total essence</span><span>−${ess.toFixed(2)}€</span></div>
-      <div class="global-stat-row"><span>Net après essence</span><span>${net.toFixed(2)}€</span></div>
-      <div class="global-stat-row"><span>💸 Dépenses pro</span><span>−${totalDep.toFixed(2)}€</span></div>
-      <div class="global-stat-row"><span>💰 Bénéfice réel</span><span>${(net-totalDep).toFixed(2)}€</span></div>
-      <div class="global-stat-row"><span>💵 Espèces</span><span>${esp}€</span></div>
-      <div class="global-stat-row"><span>🏦 Virement</span><span>${vir}€</span></div>
-      <div class="global-stat-row"><span>Clientes</span><span>${DB.get('clientes').length}</span></div>
-    </div>`;
+    c.innerHTML=`<div class="global-stat-card"><div class="global-stat-title">🏆 Total depuis le début</div><div class="global-stat-row"><span>Nombre de RDV</span><span>${total}</span></div><div class="global-stat-row"><span>Heures travaillées</span><span>${hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mins+'min')}</span></div><div class="global-stat-row"><span>CA brut</span><span>${brut}€</span></div><div class="global-stat-row"><span>⛽ Total essence</span><span>−${ess.toFixed(2)}€</span></div><div class="global-stat-row"><span>Net après essence</span><span>${net.toFixed(2)}€</span></div><div class="global-stat-row"><span>💸 Dépenses pro</span><span>−${totalDep.toFixed(2)}€</span></div><div class="global-stat-row"><span>💰 Bénéfice réel</span><span>${(net-totalDep).toFixed(2)}€</span></div><div class="global-stat-row"><span>💵 Espèces</span><span>${esp}€</span></div><div class="global-stat-row"><span>🏦 Virement</span><span>${vir}€</span></div><div class="global-stat-row"><span>Clientes</span><span>${DB.get('clientes').length}</span></div></div>`;
     return;
   }
-
   // Par mois
   const byMonth={};
+  const gC2=new Set();
   Object.entries(rdvs).forEach(([key,r])=>{
     const ym=key.split('_')[0].substring(0,7);
     if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,net:0,mins:0,esp:0,vir:0,dep:0,ess:0};
-    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
-    const b=calcTotal(r,p),e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
+    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},b=calcTotal(r,p);
+    let e=0;
+    if(r.groupeId){if(r.groupeLeader&&!gC2.has(r.groupeId)){gC2.add(r.groupeId);e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}
+    else{e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
     byMonth[ym].rdv++;byMonth[ym].brut+=b;byMonth[ym].net+=b-e;byMonth[ym].ess+=e;
     byMonth[ym].mins+=p.duree+(r.prolongation?20:0);
     if(r.payment==='virement')byMonth[ym].vir+=b;else byMonth[ym].esp+=b;
@@ -793,19 +909,7 @@ function buildStats(){
   c.innerHTML=sorted.map(ym=>{
     const[y,m]=ym.split('-'),mName=MONTHS_FR[parseInt(m)-1]+' '+y,d=byMonth[ym];
     const hh=Math.floor(d.mins/60),mm2=d.mins%60;
-    const heures=hh>0?(mm2>0?`${hh}h${mm2}`:`${hh}h`):(d.mins+'min');
-    return`<div class="month-stat-card">
-      <div class="month-stat-title">📅 ${mName.charAt(0).toUpperCase()+mName.slice(1)}</div>
-      <div class="month-stat-row"><span>RDV</span><span>${d.rdv}</span></div>
-      <div class="month-stat-row"><span>Heures</span><span>${heures}</span></div>
-      <div class="month-stat-row"><span>💵 Espèces</span><span>${d.esp}€</span></div>
-      <div class="month-stat-row"><span>🏦 Virement</span><span>${d.vir}€</span></div>
-      <div class="month-stat-row"><span>CA brut</span><span>${d.brut}€</span></div>
-      <div class="month-stat-row"><span>⛽ Essence</span><span>−${d.ess.toFixed(2)}€</span></div>
-      <div class="month-stat-row"><span>Net après essence</span><span>${d.net.toFixed(2)}€</span></div>
-      ${d.dep>0?`<div class="month-stat-row"><span>💸 Dépenses</span><span>−${d.dep.toFixed(2)}€</span></div>`:''}
-      <div class="month-stat-row total"><span>Bénéfice réel</span><span>${(d.net-d.dep).toFixed(2)}€</span></div>
-    </div>`;
+    return`<div class="month-stat-card"><div class="month-stat-title">📅 ${mName.charAt(0).toUpperCase()+mName.slice(1)}</div><div class="month-stat-row"><span>RDV</span><span>${d.rdv}</span></div><div class="month-stat-row"><span>Heures</span><span>${hh>0?(mm2>0?`${hh}h${mm2}`:`${hh}h`):(d.mins+'min')}</span></div><div class="month-stat-row"><span>💵 Espèces</span><span>${d.esp}€</span></div><div class="month-stat-row"><span>🏦 Virement</span><span>${d.vir}€</span></div><div class="month-stat-row"><span>CA brut</span><span>${d.brut}€</span></div><div class="month-stat-row"><span>⛽ Essence</span><span>−${d.ess.toFixed(2)}€</span></div><div class="month-stat-row"><span>Net après essence</span><span>${d.net.toFixed(2)}€</span></div>${d.dep>0?`<div class="month-stat-row"><span>💸 Dépenses</span><span>−${d.dep.toFixed(2)}€</span></div>`:''}<div class="month-stat-row total"><span>Bénéfice réel</span><span>${(d.net-d.dep).toFixed(2)}€</span></div></div>`;
   }).join('');
 }
 
@@ -813,10 +917,13 @@ function updateStats(){
   const rdvsAll=DB.get('rdvs'),weekDates=getWeekDates(weekOffset);
   const weekStart=fmtDate(weekDates[0]),weekEnd=fmtDate(weekDates[6]);
   let wRdv=0,wCa=0,wNet=0,wMins=0,wEsp=0,wVir=0,wEss=0;
+  const gC=new Set();
   Object.entries(rdvsAll).forEach(([key,r])=>{
     const date=key.split('_')[0];
-    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60};
-    const brut=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
+    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},brut=calcTotal(r,p);
+    let ess=0;
+    if(r.groupeId){if(r.groupeLeader&&!gC.has(r.groupeId)){gC.add(r.groupeId);ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}
+    else{ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
     if(date>=weekStart&&date<=weekEnd){
       wRdv++;wCa+=brut;wNet+=brut-ess;wEss+=ess;wMins+=p.duree+(r.prolongation?20:0);
       if(r.payment==='virement')wVir+=brut;else wEsp+=brut;
@@ -830,6 +937,34 @@ function updateStats(){
   document.getElementById('s-especes').textContent=wEsp+'€';
   document.getElementById('s-virement').textContent=wVir+'€';
   document.getElementById('s-essence-week').textContent=wEss.toFixed(2)+'€';
+}
+
+function buildRdvCard(key,r,rdvs){
+  const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
+  const c=r.tel?findClienteByTel(r.tel):null;
+  const total=calcTotal(r,p);
+  const ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
+  const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
+  const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
+  const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
+  const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';
+  // Groupe info
+  let groupeBadge='',groupeMembres='';
+  if(r.groupeId){
+    const membres=getGroupeMembers(r.groupeId);
+    const nbMembres=membres.length;
+    if(nbMembres>1){
+      groupeBadge=`<div class="rdv-groupe-badge">👥 Session groupée · ${nbMembres} clientes</div>`;
+      if(r.groupeLeader){
+        groupeMembres=`<div style="font-size:0.68rem;color:var(--warm);margin-top:3px">📋 ${membres.map(([,m])=>m.name+(m.groupeLeader?' (frais)':'')).join(' · ')}</div>`;
+      }
+    }
+  }
+  const card=document.createElement('div');
+  card.className='rdv-card '+p.color+(r.groupeId?' groupe':'');
+  card.innerHTML=`${groupeBadge}<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${groupeMembres}${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div><div class="rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
+  card.onclick=()=>openRdvModal(key);
+  return card;
 }
 
 function buildPlanning(){
@@ -856,18 +991,8 @@ function buildPlanning(){
     const timeEl=document.createElement('div');timeEl.className='slot-time';timeEl.textContent=h;
     const area=document.createElement('div');area.className='slot-area';
     if(rdvs[key]){
-      const r=rdvs[key],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
-      const c=r.tel?findClienteByTel(r.tel):null;
-      const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
       area.className+=' has-rdv';
-      const card=document.createElement('div');card.className='rdv-card '+p.color;
-      const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
-      const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
-      const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
-      const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';
-      card.innerHTML=`<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div>${r.tel?`<div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`:''}`;
-      card.onclick=()=>openRdvModal(key);
-      area.appendChild(card);
+      area.appendChild(buildRdvCard(key,rdvs[key],rdvs));
     }else if(cng){area.className+=' conge-slot';}
     else if(blocked.has(key)){area.className+=' blocked';}
     else if(travel.has(key)){area.className+=' travel';area.innerHTML='<div class="travel-label">🚗 Trajet</div>';}
@@ -906,15 +1031,16 @@ function buildMonth(){
   else{
     rdvList.innerHTML='';
     dayRdvs.forEach(([key,r])=>{
-      const time=key.split('_')[1],p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
+      const item=document.createElement('div');item.className='month-rdv-item';
+      const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40};
       const c=r.tel?findClienteByTel(r.tel):null;
       const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
       const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
       const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
       const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
       const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';
-      const item=document.createElement('div');item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${time}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${r.details?`<div class="month-rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div></div></div><div class="month-rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
+      const groupeBadge=r.groupeId?`<span style="background:var(--gold);color:var(--deep);font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px">👥 Groupe</span>`:'';
+      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${key.split('_')[1]}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}${groupeBadge}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div></div></div><div class="month-rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
       item.onclick=()=>openRdvModal(key);
       rdvList.appendChild(item);
     });
@@ -925,40 +1051,37 @@ function buildMonth(){
 function openRdvModal(key,defaultHour){
   if(isConge(selectedDay)&&!key){alert('Jour de congé 🏖');return;}
   editingRdvKey=key||null;
+  // Reset groupe si nouveau RDV (pas editing)
+  if(!key){currentGroupeId=null;currentGroupeRdvs=[];}
   document.getElementById('rdv-modal-title').textContent=key?'✏️ Modifier le RDV':'➕ Nouveau RDV';
   document.getElementById('btn-delete-rdv').style.display=key?'block':'none';
   document.getElementById('btn-wa-rappel').style.display='none';
   document.getElementById('tel-suggestions').style.display='none';
   document.getElementById('net-preview').style.display='none';
+  document.getElementById('btn-ajouter-groupe').style.display='none';
+  document.getElementById('groupe-info-box').style.display='none';
   currentRdvForWa=null;
   if(key&&DB.get('rdvs')[key]){
     const r=DB.get('rdvs')[key];currentRdvForWa=r;
-    document.getElementById('f-tel').value=r.tel||'';
-    document.getElementById('f-name').value=r.name;
-    document.getElementById('f-date').value=key.split('_')[0];
-    document.getElementById('f-time').value=r.time||key.split('_')[1];
+    document.getElementById('f-tel').value=r.tel||'';document.getElementById('f-name').value=r.name;
+    document.getElementById('f-date').value=key.split('_')[0];document.getElementById('f-time').value=r.time||key.split('_')[1];
     document.getElementById('f-prestation').value=r.prestation||'classic_60';
-    document.getElementById('f-dep').value=r.dep?'1':'0';
-    document.getElementById('f-km').value=r.km||'10';
-    document.getElementById('f-km-dist').value=r.kmDist||'';
-    toggleDepFields();
-    document.getElementById('f-adresse').value=r.adresse||'';
-    document.getElementById('f-details').value=r.details||'';
+    document.getElementById('f-dep').value=r.dep?'1':'0';document.getElementById('f-km').value=r.km||'10';
+    document.getElementById('f-km-dist').value=r.kmDist||'';toggleDepFields();
+    document.getElementById('f-adresse').value=r.adresse||'';document.getElementById('f-details').value=r.details||'';
     document.getElementById('f-prolongation').checked=r.prolongation||false;
-    document.getElementById('f-pourboire').value=r.pourboire||'';
-    setPayment(r.payment||'especes');
+    document.getElementById('f-pourboire').value=r.pourboire||'';setPayment(r.payment||'especes');
     if(r.tel)document.getElementById('btn-wa-rappel').style.display='flex';
     updateNetPreview();
   }else{
     ['f-tel','f-name','f-adresse','f-details','f-km-dist','f-pourboire'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-date').value=selectedDay;
-    document.getElementById('f-time').value=defaultHour||'10:00';
-    document.getElementById('f-prestation').value='classic_60';
-    document.getElementById('f-dep').value='0';
-    document.getElementById('f-km').value='10';
-    document.getElementById('dep-group').style.display='none';
-    document.getElementById('f-prolongation').checked=false;
-    setPayment('especes');
+    document.getElementById('f-date').value=selectedDay;document.getElementById('f-time').value=defaultHour||'10:00';
+    document.getElementById('f-prestation').value='classic_60';document.getElementById('f-dep').value='0';
+    document.getElementById('f-km').value='10';document.getElementById('dep-group').style.display='none';
+    document.getElementById('f-prolongation').checked=false;setPayment('especes');
+    // Afficher bouton groupe pour nouveau RDV
+    document.getElementById('btn-ajouter-groupe').style.display='block';
+    updateGroupeInfoBox();
   }
   openModal('overlay-rdv');
   setTimeout(()=>document.getElementById('f-tel').focus(),300);
@@ -974,80 +1097,61 @@ function saveRdv(){
   const tel=document.getElementById('f-tel').value.trim();
   const adresse=document.getElementById('f-adresse').value.trim();
   const details=document.getElementById('f-details').value.trim();
+  // Gérer le groupe
+  let groupeId=currentGroupeId,groupeLeader=false;
+  if(currentGroupeRdvs.length>0&&currentGroupeId){
+    groupeId=currentGroupeId;
+    groupeLeader=false;
+  }else if(currentGroupeRdvs.length===0&&currentGroupeId){
+    groupeLeader=true;
+  }
   const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist:depOn?document.getElementById('f-km-dist').value:'',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
+  if(groupeId){rdvData.groupeId=groupeId;rdvData.groupeLeader=currentGroupeRdvs.length===0;}
   rdvs[newKey]=rdvData;DB.set('rdvs',rdvs);
   syncCliente(name,tel,adresse,details);
+  // Ajouter au groupe si en cours
+  if(currentGroupeId)currentGroupeRdvs.push({...rdvData,key:newKey});
   selectedDay=date;
   document.getElementById('tel-suggestions').style.display='none';
+  const allGroupeRdvs=[...currentGroupeRdvs];
+  // Reset groupe
+  currentGroupeId=null;currentGroupeRdvs=[];
   closeModal('overlay-rdv');
   if(currentView==='semaine')buildPlanning();else buildMonth();
   scheduleNotifs();
-  openConfirmModal(rdvData);
+  // Ouvrir confirmation
+  if(allGroupeRdvs.length>0){
+    openConfirmModal(allGroupeRdvs[0],allGroupeRdvs);
+  }else{
+    openConfirmModal(rdvData,[rdvData]);
+  }
 }
 
 function deleteRdv(){
   if(!editingRdvKey)return;
   const rdvs=DB.get('rdvs');delete rdvs[editingRdvKey];DB.set('rdvs',rdvs);
-  closeModal('overlay-rdv');
-  if(currentView==='semaine')buildPlanning();else buildMonth();
+  closeModal('overlay-rdv');if(currentView==='semaine')buildPlanning();else buildMonth();
 }
 
 function renderClientes(filter){
   let clientes=DB.get('clientes');
   if(filter)clientes=clientes.filter(c=>(c.prenom+' '+c.nom+' '+(c.tel||'')+' '+(c.code||'')+' '+(c.adresse||'')).toLowerCase().includes(filter.toLowerCase()));
-
-  // Trier par ville (dernier segment de l'adresse)
-  clientes.sort((a,b)=>{
-    const va=extractVille(a.adresse).toLowerCase();
-    const vb=extractVille(b.adresse).toLowerCase();
-    return va.localeCompare(vb,'fr');
-  });
-
+  clientes.sort((a,b)=>extractVille(a.adresse).toLowerCase().localeCompare(extractVille(b.adresse).toLowerCase(),'fr'));
   const list=document.getElementById('clientes-list');list.innerHTML='';
-  if(!clientes.length){list.innerHTML=`<div class="empty-state" style="padding:50px 30px;text-align:center;color:var(--warm)"><div style="font-size:3rem;margin-bottom:12px">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
-
-  // Grouper par ville
+  if(!clientes.length){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
   const groups={};
-  clientes.forEach(c=>{
-    const ville=extractVille(c.adresse);
-    if(!groups[ville])groups[ville]=[];
-    groups[ville].push(c);
-  });
-
+  clientes.forEach(c=>{const v=extractVille(c.adresse);if(!groups[v])groups[v]=[];groups[v].push(c);});
   Object.keys(groups).sort((a,b)=>a.localeCompare(b,'fr')).forEach(ville=>{
-    // Header ville
-    const header=document.createElement('div');
-    header.className='ville-header';
-    header.textContent='📍 '+ville+' ('+groups[ville].length+')';
-    list.appendChild(header);
-
+    const header=document.createElement('div');header.className='ville-header';
+    header.textContent='📍 '+ville+' ('+groups[ville].length+')';list.appendChild(header);
     groups[ville].forEach(c=>{
       const fidele=isFidele(c),seancesLeft=fidele?0:FIDELITE_SEUIL-(c.seances||0);
       const card=document.createElement('div');card.className='cliente-card'+(fidele?'':' pending');
-      card.innerHTML=`
-        <div class="cliente-card-top">
-          <div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div>
-          <div class="cliente-info">
-            <div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>
-            ${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}
-            ${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}
-            ${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''}
-            ${c.notes?`<div class="cliente-sub" style="font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}
-          </div>
-          <div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div>
-        </div>
-        <div class="cliente-actions">
-          <button class="btn-planning" onclick="event.stopPropagation();addClienteToPlanning('${c.id}')">📅 Planning</button>
-          ${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞 Appeler</button>`:''}
-          ${c.adresse?`<button class="btn-waze-cliente" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️ Waze</button>`:''}
-          <button class="btn-delete-cliente-card" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑</button>
-        </div>`;
-      card.onclick=()=>openClienteModal(c.id);
-      list.appendChild(card);
+      card.innerHTML=`<div class="cliente-card-top"><div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}${c.details?`<div class="cliente-sub">📝 ${c.details}</div>`:''}${c.notes?`<div class="cliente-sub" style="font-style:italic">${c.notes.substring(0,50)}${c.notes.length>50?'...':''}</div>`:''}</div><div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div></div><div class="cliente-actions"><button class="btn-planning" onclick="event.stopPropagation();addClienteToPlanning('${c.id}')">📅 Planning</button>${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞 Appeler</button>`:''} ${c.adresse?`<button class="btn-waze-cliente" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️ Waze</button>`:''}<button class="btn-delete-c" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑</button></div>`;
+      card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
     });
   });
 }
-
 function filterClientes(){renderClientes(document.getElementById('search-input').value);}
 
 function openClienteModal(id){
@@ -1068,13 +1172,10 @@ function openClienteModal(id){
     }
   }else{
     ['c-prenom','c-nom','c-tel','c-adresse','c-details','c-notes'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';
-    cd.style.display='none';
+    document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';cd.style.display='none';
   }
-  openModal('overlay-cliente');
-  setTimeout(()=>document.getElementById('c-prenom').focus(),300);
+  openModal('overlay-cliente');setTimeout(()=>document.getElementById('c-prenom').focus(),300);
 }
-
 function saveCliente(){
   const prenom=document.getElementById('c-prenom').value.trim();
   if(!prenom){document.getElementById('c-prenom').focus();return;}
@@ -1085,7 +1186,6 @@ function saveCliente(){
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else clientes.push(data);
   DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
 }
-
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');editingRdvKey=null;editingClienteId=null;}
 document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
