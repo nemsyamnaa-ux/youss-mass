@@ -14,8 +14,8 @@
     html { font-size: 16px; -webkit-text-size-adjust: 100%; }
     body { background: var(--cream); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--deep); min-height: 100vh; padding-bottom: 90px; overscroll-behavior: none; }
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--deep); display: flex; border-top: 2px solid var(--gold); z-index: 200; padding-bottom: env(safe-area-inset-bottom); }
-    .nav-tab { flex: 1; padding: 12px 0 10px; text-align: center; cursor: pointer; color: var(--warm); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
-    .nav-tab .tab-icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
+    .nav-tab { flex: 1; padding: 10px 0 8px; text-align: center; cursor: pointer; color: var(--warm); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.07em; transition: color 0.2s; }
+    .nav-tab .tab-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
     .nav-tab.active { color: var(--gold); }
     .page { display: none; } .page.active { display: block; }
     .header { background: var(--deep); padding: 14px 16px 12px; position: sticky; top: 0; z-index: 100; }
@@ -128,10 +128,11 @@
     .month-rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
     .month-rdv-actions { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
     .month-empty { text-align: center; padding: 20px; color: var(--warm); font-size: 0.85rem; font-style: italic; }
+    /* STATS */
     .stats-page-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
     .stats-page-header .brand { display: block; margin-bottom: 8px; }
     .stats-nav { display: flex; gap: 6px; }
-    .stats-nav-btn { flex: 1; padding: 8px 4px; border-radius: 10px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.7rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
+    .stats-nav-btn { flex: 1; padding: 8px 4px; border-radius: 10px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.68rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
     .stats-nav-btn.active { background: var(--gold); color: var(--deep); border-color: var(--gold); }
     .stats-content { padding: 12px 14px; }
     .month-stat-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); border-left: 3px solid var(--gold); }
@@ -155,6 +156,7 @@
     .depense-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
     .depense-prix { font-weight: 700; color: var(--rose); font-size: 0.95rem; flex-shrink: 0; }
     .depense-del { background: none; border: none; color: var(--rose); font-size: 1.1rem; cursor: pointer; padding: 4px; flex-shrink: 0; }
+    /* CLIENTES */
     .clientes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
     .clientes-header .brand { margin-bottom: 10px; display: block; }
     .search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px 14px; gap: 8px; }
@@ -180,6 +182,27 @@
     .btn-call { background: var(--green); color: white; border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-waze-c { background: #1dacd6; color: white; border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-delete-c { background: #fbe8e6; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+    /* CARTES CADEAUX */
+    .cartes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
+    .cartes-header .brand { margin-bottom: 8px; display: block; }
+    .cartes-summary { display: flex; gap: 8px; padding: 12px 14px 6px; }
+    .carte-stat { flex: 1; background: var(--white); border-radius: 12px; padding: 10px 8px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
+    .carte-stat-val { font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+    .carte-stat-lbl { font-size: 0.58rem; text-transform: uppercase; color: var(--warm); margin-top: 2px; }
+    .cartes-section-title { padding: 8px 14px 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); }
+    .carte-cadeau-card { background: var(--white); border-radius: 16px; margin: 0 14px 12px; padding: 16px; box-shadow: 0 2px 12px rgba(59,42,42,0.08); border-left: 4px solid var(--gold); position: relative; overflow: hidden; }
+    .carte-cadeau-card.used { border-left-color: var(--sand); opacity: 0.6; }
+    .carte-cadeau-card::before { content: '🎁'; position: absolute; right: 12px; top: 12px; font-size: 1.8rem; opacity: 0.15; }
+    .carte-nom { font-weight: 700; font-size: 1rem; color: var(--deep); }
+    .carte-offert { font-size: 0.75rem; color: var(--warm); margin-top: 2px; }
+    .carte-prestation { font-size: 0.8rem; color: var(--rose); margin-top: 4px; font-weight: 600; }
+    .carte-montant { font-size: 1.2rem; font-weight: 700; color: var(--gold); margin-top: 4px; }
+    .carte-date { font-size: 0.68rem; color: var(--warm); margin-top: 2px; }
+    .carte-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .btn-utiliser { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 10px 16px; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
+    .btn-suppr-carte { background: #fbe8e6; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 10px 12px; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .carte-used-badge { background: var(--sand); color: var(--warm); font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-top: 8px; }
+    /* MODALS */
     .empty-state { text-align: center; padding: 50px 30px; color: var(--warm); }
     .empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
     .overlay { position: fixed; inset: 0; background: rgba(59,42,42,0.55); z-index: 300; display: none; align-items: flex-end; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
@@ -233,7 +256,6 @@
     .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
     .cat-btn { padding: 10px 6px; border-radius: 12px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.78rem; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.15s; }
     .cat-btn.selected { background: var(--deep); color: var(--gold); border-color: var(--deep); }
-    /* HISTORIQUE RDV dans fiche cliente */
     .historique-section { margin-top: 14px; }
     .historique-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 8px; }
     .historique-item { background: var(--white); border-radius: 10px; padding: 10px 12px; margin-bottom: 6px; border-left: 3px solid var(--sand); font-size: 0.8rem; }
@@ -241,7 +263,6 @@
     .historique-date { font-weight: 700; color: var(--deep); }
     .historique-detail { color: var(--warm); margin-top: 2px; font-size: 0.75rem; }
     .historique-prix { font-weight: 700; color: var(--green); float: right; }
-    /* Personnes associées sur fiche */
     .assoc-section { margin-top: 10px; background: #fdf3e3; border-radius: 12px; padding: 10px 14px; }
     .assoc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
     .assoc-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: var(--warm); padding: 3px 0; }
@@ -249,6 +270,7 @@
 </head>
 <body>
 
+<!-- PAGE PLANNING -->
 <div class="page active" id="page-planning">
   <div class="header">
     <div class="header-row">
@@ -265,7 +287,7 @@
       <button class="nav-btn" onclick="navNext()">›</button>
     </div>
   </div>
-  <div class="period-banner" id="period-banner">
+  <div class="period-banner">
     <div><div class="period-banner-label" id="period-label">Cette semaine</div><div class="period-banner-val" id="period-val">0€</div></div>
     <div style="text-align:right"><div class="period-banner-label">Net après essence</div><div class="period-banner-val" id="period-net">0€</div></div>
   </div>
@@ -302,6 +324,7 @@
   <button class="fab" onclick="openRdvModal()">＋</button>
 </div>
 
+<!-- PAGE STATS -->
 <div class="page" id="page-stats">
   <div class="stats-page-header">
     <span class="brand">📊 Revenus & Dépenses</span>
@@ -314,6 +337,7 @@
   <div class="stats-content" id="stats-content"></div>
 </div>
 
+<!-- PAGE CLIENTES -->
 <div class="page" id="page-clientes">
   <div class="clientes-header">
     <span class="brand">👩 Mes Clientes</span>
@@ -323,10 +347,26 @@
   <button class="fab" onclick="openClienteModal()">＋</button>
 </div>
 
+<!-- PAGE CARTES CADEAUX -->
+<div class="page" id="page-cartes">
+  <div class="cartes-header">
+    <span class="brand">🎁 Cartes Cadeaux</span>
+  </div>
+  <div class="cartes-summary">
+    <div class="carte-stat"><div class="carte-stat-val" id="cc-count">0</div><div class="carte-stat-lbl">En attente</div></div>
+    <div class="carte-stat"><div class="carte-stat-val" id="cc-total">0€</div><div class="carte-stat-lbl">Valeur totale</div></div>
+    <div class="carte-stat"><div class="carte-stat-val" id="cc-used">0</div><div class="carte-stat-lbl">Utilisées</div></div>
+  </div>
+  <div id="cartes-list"></div>
+  <button class="fab" onclick="openCarteModal()">＋</button>
+</div>
+
+<!-- NAV -->
 <nav class="bottom-nav">
   <div class="nav-tab active" id="tab-planning" onclick="switchTab('planning')"><span class="tab-icon">📅</span>Planning</div>
   <div class="nav-tab" id="tab-stats" onclick="switchTab('stats')"><span class="tab-icon">📊</span>Revenus</div>
   <div class="nav-tab" id="tab-clientes" onclick="switchTab('clientes')"><span class="tab-icon">👩</span>Clientes</div>
+  <div class="nav-tab" id="tab-cartes" onclick="switchTab('cartes')"><span class="tab-icon">🎁</span>Cadeaux</div>
 </nav>
 
 <!-- MODAL RDV -->
@@ -395,7 +435,7 @@
     <div class="modal-handle"></div>
     <div class="modal-title"><span id="confirm-modal-title">📩 Confirmation</span><button class="close-btn" onclick="closeModal('overlay-confirm')">✕</button></div>
     <p style="font-size:0.82rem;color:var(--warm);margin-bottom:8px" id="confirm-subtitle">Message à envoyer :</p>
-    <div id="groupe-confirm-nav" style="display:none;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap"></div>
+    <div id="groupe-confirm-nav" style="margin-bottom:10px;display:none;gap:8px;flex-wrap:wrap"></div>
     <div class="confirm-msg-box" id="confirm-msg-box"></div>
     <div class="send-btns">
       <button class="btn-send-wa" onclick="sendConfirmWa()">📲 WhatsApp</button>
@@ -409,6 +449,39 @@
       <button class="btn-send-copy" onclick="copyRappelMsg()" style="background:var(--warm)">📋 Copier rappel</button>
     </div>
     <button class="btn-danger" onclick="closeModal('overlay-confirm')" style="margin-top:10px">Fermer</button>
+  </div>
+</div>
+
+<!-- MODAL CARTE CADEAU -->
+<div class="overlay" id="overlay-carte">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><span>🎁 Nouvelle carte cadeau</span><button class="close-btn" onclick="closeModal('overlay-carte')">✕</button></div>
+    <div class="form-group"><label>Nom de la carte cadeau</label><input type="text" id="cc-nom" placeholder="Ex : Carte Noël · Massage détente"/></div>
+    <div class="form-group"><label>Offerte par</label><input type="text" id="cc-offert" placeholder="Ex : Rachida"/></div>
+    <div class="form-group">
+      <label>Prestation incluse</label>
+      <select id="cc-prestation">
+        <option value="">— Libre (montant libre) —</option>
+        <optgroup label="💆 Massage Classique">
+          <option value="classic_30">Massage 30 min — 25€</option>
+          <option value="classic_60">Massage 1h — 40€</option>
+          <option value="classic_90">Massage 1h30 — 55€</option>
+          <option value="classic_120">Massage 2h — 80€</option>
+        </optgroup>
+        <optgroup label="🪨 Pierres Chaudes">
+          <option value="pierres_60">Pierres chaudes 1h — 50€</option>
+          <option value="pierres_90">Pierres chaudes 1h30 — 65€</option>
+        </optgroup>
+        <optgroup label="💧 Drainage Lymphatique">
+          <option value="drainage_30">Drainage 1 zone 30min — 35€</option>
+          <option value="drainage_75">Drainage corps entier 1h15 — 65€</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="form-group"><label>Montant (€)</label><input type="number" id="cc-montant" placeholder="Ex: 40" min="0" step="1"/></div>
+    <div class="form-group"><label>Date de vente</label><input type="date" id="cc-date"/></div>
+    <button class="btn-primary" onclick="saveCarte()">✔ Enregistrer la carte cadeau</button>
   </div>
 </div>
 
@@ -430,13 +503,11 @@
       <div class="form-group"><label>Séances</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
     </div>
     <div class="form-group"><label>Notes</label><textarea id="c-notes" placeholder="Préférences de massage..."></textarea></div>
-    <!-- Personnes associées -->
     <div id="assoc-section-modal" class="assoc-section" style="display:none">
-      <div class="assoc-title">👥 Personnes associées (même foyer)</div>
+      <div class="assoc-title">👥 Personnes associées</div>
       <div id="assoc-list-modal"></div>
       <button class="btn-secondary" style="margin-top:8px;font-size:0.82rem;padding:8px" onclick="addAssocPerson()">➕ Ajouter une personne</button>
     </div>
-    <!-- Historique RDV -->
     <div class="historique-section" id="historique-section" style="display:none">
       <div class="historique-title">📋 Historique des RDV</div>
       <div id="historique-list"></div>
@@ -509,12 +580,11 @@ const DAYS_SHORT=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const DAYS_LONG=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const MONTHS_FR=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
 const FIDELITE_SEUIL=3;
-
 let weekOffset=0,monthOffset=0,selectedDay=fmtDate(new Date()),currentView='semaine';
 let editingRdvKey=null,editingClienteId=null,currentRdvForWa=null,currentPayment='especes';
 let lastSavedRdv=null,statsView='mois',selectedCat='huile';
 let currentGroupeId=null,currentGroupeRdvs=[],lastSavedGroupeRdvs=[],confirmGroupeIdx=0;
-let rdvFromClienteId=null; // ID de la cliente depuis laquelle on crée le RDV
+let assocPersonsTemp=[];
 
 function fmtDate(d){return d.toISOString().split('T')[0];}
 function getWeekDates(off){
@@ -529,33 +599,14 @@ function minsToTime(m){return`${String(Math.floor(m/60)).padStart(2,'0')}:${Stri
 function isConge(date){return DB.get('conges').includes(date);}
 function normTel(t){return t?t.replace(/\s/g,''):'';}
 function isFidele(c){return(c.seances||0)>=FIDELITE_SEUIL;}
-function fmtDateFr(ds){
-  const d=new Date(ds+'T12:00:00'),di=(d.getDay()+6)%7;
-  return DAYS_LONG[di]+' '+d.getDate()+' '+MONTHS_FR[d.getMonth()]+' '+d.getFullYear();
-}
+function fmtDateFr(ds){const d=new Date(ds+'T12:00:00'),di=(d.getDay()+6)%7;return DAYS_LONG[di]+' '+d.getDate()+' '+MONTHS_FR[d.getMonth()]+' '+d.getFullYear();}
 
 // ── ESSENCE ──
 function getEssence(){return DB.getObj('essence',{prix:0,conso:5.5});}
-function saveEssenceSettings(){
-  DB.setObj('essence',{prix:parseFloat(document.getElementById('e-prix').value)||0,conso:parseFloat(document.getElementById('e-conso').value)||5.5});
-  updateEssenceBanner();closeModal('overlay-essence');
-  if(currentView==='semaine')buildPlanning();else buildMonth();
-}
-function openEssenceSettings(){
-  const e=getEssence();
-  document.getElementById('e-prix').value=e.prix||'';
-  document.getElementById('e-conso').value=e.conso||5.5;
-  openModal('overlay-essence');
-}
-function updateEssenceBanner(){
-  const e=getEssence();
-  document.getElementById('essence-info').textContent=e.prix>0?`${e.prix}€/L · ${e.conso}L/100km`:'Configurer le prix du carburant';
-}
-function calcEssence(km){
-  const e=getEssence();
-  if(!e.prix||!km)return 0;
-  return Math.round(parseFloat(km)*2*e.conso/100*e.prix*100)/100;
-}
+function saveEssenceSettings(){DB.setObj('essence',{prix:parseFloat(document.getElementById('e-prix').value)||0,conso:parseFloat(document.getElementById('e-conso').value)||5.5});updateEssenceBanner();closeModal('overlay-essence');if(currentView==='semaine')buildPlanning();else buildMonth();}
+function openEssenceSettings(){const e=getEssence();document.getElementById('e-prix').value=e.prix||'';document.getElementById('e-conso').value=e.conso||5.5;openModal('overlay-essence');}
+function updateEssenceBanner(){const e=getEssence();document.getElementById('essence-info').textContent=e.prix>0?`${e.prix}€/L · ${e.conso}L/100km`:'Configurer le prix du carburant';}
+function calcEssence(km){const e=getEssence();if(!e.prix||!km)return 0;return Math.round(parseFloat(km)*2*e.conso/100*e.prix*100)/100;}
 function depPrix(r){return r.dep?(parseFloat(r.km)||10):0;}
 function calcTotal(r,p){return p.prix+depPrix(r)+(r.prolongation?15:0)+(parseFloat(r.pourboire)||0);}
 
@@ -572,138 +623,129 @@ function updateNetPreview(){
   preview.innerHTML=ess>0?`💰 Brut : ${brut}€ — ⛽ −${ess}€ = <strong>Net : ${(brut-ess).toFixed(2)}€</strong>`:`💰 Brut : ${brut}€`;
 }
 
-// ── GROUPE SESSION ──
-function getGroupeMembers(gId){
-  const rdvs=DB.get('rdvs');
-  return Object.entries(rdvs).filter(([,r])=>r.groupeId===gId).sort((a,b)=>a[0].localeCompare(b[0]));
+// ── CARTES CADEAUX ──
+function openCarteModal(){
+  document.getElementById('cc-nom').value='';
+  document.getElementById('cc-offert').value='';
+  document.getElementById('cc-prestation').value='';
+  document.getElementById('cc-montant').value='';
+  document.getElementById('cc-date').value=fmtDate(new Date());
+  openModal('overlay-carte');
+  setTimeout(()=>document.getElementById('cc-nom').focus(),300);
 }
-function updateGroupeInfoBox(){
-  const box=document.getElementById('groupe-info-box');
-  const ml=document.getElementById('groupe-membres-list');
-  const btn=document.getElementById('btn-ajouter-groupe');
-  if(currentGroupeRdvs.length>0){
-    box.style.display='block';
-    ml.innerHTML=currentGroupeRdvs.map(r=>`<div class="groupe-membre-item"><span>💆‍♀️ ${r.name}</span><span>${r.time} · ${calcTotal(r,PRESTATIONS[r.prestation]||{prix:40})}€</span></div>`).join('');
-  }else{
-    box.style.display='none';
+function saveCarte(){
+  const nom=document.getElementById('cc-nom').value.trim();
+  const offert=document.getElementById('cc-offert').value.trim();
+  if(!nom){document.getElementById('cc-nom').focus();return;}
+  const prest=document.getElementById('cc-prestation').value;
+  const p=prest?PRESTATIONS[prest]:null;
+  const montant=parseFloat(document.getElementById('cc-montant').value)||(p?p.prix:0);
+  if(!montant){alert('Entrez un montant !');return;}
+  const cartes=DB.get('cartes')||[];
+  cartes.push({
+    id:Date.now().toString(),
+    nom,offert,
+    prestation:prest,
+    prestationLabel:p?p.label:'Libre',
+    montant,
+    date:document.getElementById('cc-date').value||fmtDate(new Date()),
+    used:false,
+    dateUsed:null
+  });
+  DB.set('cartes',cartes);
+  closeModal('overlay-carte');
+  renderCartes();
+}
+function utiliserCarte(id){
+  if(!confirm('Marquer cette carte cadeau comme utilisée ?'))return;
+  const cartes=DB.get('cartes')||[];
+  const idx=cartes.findIndex(c=>c.id===id);
+  if(idx>=0){cartes[idx].used=true;cartes[idx].dateUsed=fmtDate(new Date());}
+  DB.set('cartes',cartes);
+  renderCartes();
+}
+function supprimerCarte(id){
+  if(!confirm('Supprimer cette carte cadeau ?'))return;
+  DB.set('cartes',(DB.get('cartes')||[]).filter(c=>c.id!==id));
+  renderCartes();
+}
+function renderCartes(){
+  const cartes=DB.get('cartes')||[];
+  const enAttente=cartes.filter(c=>!c.used);
+  const utilisees=cartes.filter(c=>c.used);
+  const totalVal=enAttente.reduce((s,c)=>s+(c.montant||0),0);
+  document.getElementById('cc-count').textContent=enAttente.length;
+  document.getElementById('cc-total').textContent=totalVal+'€';
+  document.getElementById('cc-used').textContent=utilisees.length;
+  const list=document.getElementById('cartes-list');
+  list.innerHTML='';
+  if(!cartes.length){list.innerHTML='<div class="empty-state"><div class="es-icon">🎁</div><p>Aucune carte cadeau enregistrée<br>Appuie sur + pour en ajouter une !</p></div>';return;}
+  if(enAttente.length>0){
+    const t=document.createElement('div');t.className='cartes-section-title';t.textContent='🎁 En attente ('+enAttente.length+')';list.appendChild(t);
+    enAttente.forEach(c=>{
+      const card=document.createElement('div');card.className='carte-cadeau-card';
+      card.innerHTML=`<div class="carte-nom">${c.nom}</div><div class="carte-offert">Offerte par : <strong>${c.offert||'—'}</strong></div><div class="carte-prestation">💆 ${c.prestationLabel||'Libre'}</div><div class="carte-montant">${c.montant}€</div><div class="carte-date">Vendue le ${fmtDateFr(c.date)}</div><div class="carte-actions"><button class="btn-utiliser" onclick="utiliserCarte('${c.id}')">✅ Marquer comme utilisée</button><button class="btn-suppr-carte" onclick="supprimerCarte('${c.id}')">🗑</button></div>`;
+      list.appendChild(card);
+    });
+  }
+  if(utilisees.length>0){
+    const t=document.createElement('div');t.className='cartes-section-title';t.textContent='✅ Utilisées ('+utilisees.length+')';list.appendChild(t);
+    utilisees.forEach(c=>{
+      const card=document.createElement('div');card.className='carte-cadeau-card used';
+      card.innerHTML=`<div class="carte-nom">${c.nom}</div><div class="carte-offert">Offerte par : <strong>${c.offert||'—'}</strong></div><div class="carte-prestation">💆 ${c.prestationLabel||'Libre'}</div><div class="carte-montant">${c.montant}€</div><div class="carte-date">Vendue le ${fmtDateFr(c.date)}</div><div class="carte-used-badge">✅ Utilisée le ${c.dateUsed?fmtDateFr(c.dateUsed):'—'}</div><div class="carte-actions"><button class="btn-suppr-carte" onclick="supprimerCarte('${c.id}')">🗑 Supprimer</button></div>`;
+      list.appendChild(card);
+    });
   }
 }
 
+// CA incluant cartes cadeaux
+function getTotalCartesCA(){
+  const cartes=DB.get('cartes')||[];
+  return cartes.reduce((s,c)=>s+(c.montant||0),0);
+}
+
+// ── GROUPE SESSION ──
+function getGroupeMembers(gId){const rdvs=DB.get('rdvs');return Object.entries(rdvs).filter(([,r])=>r.groupeId===gId).sort((a,b)=>a[0].localeCompare(b[0]));}
+function updateGroupeInfoBox(){
+  const box=document.getElementById('groupe-info-box'),ml=document.getElementById('groupe-membres-list');
+  if(currentGroupeRdvs.length>0){box.style.display='block';ml.innerHTML=currentGroupeRdvs.map(r=>`<div class="groupe-membre-item"><span>💆‍♀️ ${r.name}</span><span>${r.time} · ${calcTotal(r,PRESTATIONS[r.prestation]||{prix:40})}€</span></div>`).join('');}
+  else box.style.display='none';
+}
 function saveRdvAndAddGroupe(){
-  const name=document.getElementById('f-name').value.trim();
-  if(!name){document.getElementById('f-name').focus();return;}
+  const name=document.getElementById('f-name').value.trim();if(!name){document.getElementById('f-name').focus();return;}
   const date=document.getElementById('f-date').value||selectedDay,time=document.getElementById('f-time').value;
   const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
   if(editingRdvKey&&editingRdvKey!==newKey)delete rdvs[editingRdvKey];
   if(!currentGroupeId)currentGroupeId='grp-'+Date.now();
-  const isLeader=currentGroupeRdvs.length===0;
-  const depOn=document.getElementById('f-dep').value==='1'&&isLeader;
-  const tel=document.getElementById('f-tel').value.trim();
-  const adresse=document.getElementById('f-adresse').value.trim();
-  const details=document.getElementById('f-details').value.trim();
+  const isLeader=currentGroupeRdvs.length===0,depOn=document.getElementById('f-dep').value==='1'&&isLeader;
+  const tel=document.getElementById('f-tel').value.trim(),adresse=document.getElementById('f-adresse').value.trim(),details=document.getElementById('f-details').value.trim();
   const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist:depOn?document.getElementById('f-km-dist').value:'',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment,groupeId:currentGroupeId,groupeLeader:isLeader};
-  rdvs[newKey]=rdvData;DB.set('rdvs',rdvs);
-  syncCliente(name,tel,adresse,details);
-  currentGroupeRdvs.push({...rdvData,key:newKey});
-  selectedDay=date;
-  // Calculer prochaine heure
-  const p=PRESTATIONS[rdvData.prestation]||{duree:60};
-  const nextTime=minsToTime(timeToMins(time)+p.duree+(rdvData.prolongation?20:0));
-  document.getElementById('f-tel').value='';document.getElementById('f-name').value='';
-  document.getElementById('f-time').value=nextTime;document.getElementById('f-prestation').value='classic_60';
-  document.getElementById('f-prolongation').checked=false;document.getElementById('f-pourboire').value='';
-  document.getElementById('f-dep').value='0';document.getElementById('dep-group').style.display='none';
-  document.getElementById('net-preview').style.display='none';setPayment('especes');
-  editingRdvKey=null;updateGroupeInfoBox();
-  if(currentView==='semaine')buildPlanning();else buildMonth();
-  document.getElementById('f-tel').focus();
-}
-
-// ── CLIENTES ASSOCIÉES ──
-let assocPersonsTemp=[];
-
-function addAssocPerson(){
-  const prenom=prompt('Prénom de la personne associée ?');
-  if(!prenom)return;
-  const tel=prompt('Son numéro de téléphone (optionnel) ?')||'';
-  assocPersonsTemp.push({prenom,tel,id:'assoc-'+Date.now()});
-  renderAssocModal();
-}
-function renderAssocModal(){
-  const section=document.getElementById('assoc-section-modal');
-  const list=document.getElementById('assoc-list-modal');
-  section.style.display='block';
-  list.innerHTML=assocPersonsTemp.map((p,i)=>`<div class="assoc-item"><span>👤 ${p.prenom}${p.tel?' · 📞 '+p.tel:''}</span><button onclick="removeAssoc(${i})" style="background:none;border:none;color:var(--rose);cursor:pointer;font-size:0.8rem">✕</button></div>`).join('');
-}
-function removeAssoc(i){assocPersonsTemp.splice(i,1);renderAssocModal();}
-
-// RDV depuis fiche cliente
-function rdvFromCliente(){
-  const c=DB.get('clientes').find(x=>x.id===editingClienteId);
-  if(!c)return;
-  closeModal('overlay-cliente');
-  currentGroupeId=null;currentGroupeRdvs=[];
-  setTimeout(()=>{
-    openRdvModal(null,null);
-    setTimeout(()=>{
-      document.getElementById('f-tel').value=c.tel||'';
-      document.getElementById('f-name').value=c.prenom;
-      document.getElementById('f-adresse').value=c.adresse||'';
-      document.getElementById('f-details').value=c.details||'';
-    },350);
-  },200);
-}
-
-// RDV groupé depuis fiche cliente (avec personne associée)
-function rdvGroupeFromCliente(){
-  const c=DB.get('clientes').find(x=>x.id===editingClienteId);
-  if(!c)return;
-  // Vérifier s'il y a des personnes associées
-  const assoc=c.assoc||[];
-  closeModal('overlay-cliente');
-  currentGroupeId='grp-'+Date.now();currentGroupeRdvs=[];
-  setTimeout(()=>{
-    openRdvModal(null,null);
-    setTimeout(()=>{
-      document.getElementById('f-tel').value=c.tel||'';
-      document.getElementById('f-name').value=c.prenom;
-      document.getElementById('f-adresse').value=c.adresse||'';
-      document.getElementById('f-details').value=c.details||'';
-      // Afficher le bouton groupe dès le départ
-      updateGroupeInfoBox();
-    },350);
-  },200);
+  rdvs[newKey]=rdvData;DB.set('rdvs',rdvs);syncCliente(name,tel,adresse,details);currentGroupeRdvs.push({...rdvData,key:newKey});selectedDay=date;
+  const p=PRESTATIONS[rdvData.prestation]||{duree:60};const nextTime=minsToTime(timeToMins(time)+p.duree+(rdvData.prolongation?20:0));
+  document.getElementById('f-tel').value='';document.getElementById('f-name').value='';document.getElementById('f-time').value=nextTime;
+  document.getElementById('f-prestation').value='classic_60';document.getElementById('f-prolongation').checked=false;
+  document.getElementById('f-pourboire').value='';document.getElementById('f-dep').value='0';
+  document.getElementById('dep-group').style.display='none';document.getElementById('net-preview').style.display='none';
+  setPayment('especes');editingRdvKey=null;updateGroupeInfoBox();
+  if(currentView==='semaine')buildPlanning();else buildMonth();document.getElementById('f-tel').focus();
 }
 
 // ── MESSAGES ──
-function buildConfirmMsg(r,groupeMembers){
-  const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
-  const total=calcTotal(r,p);
-  let groupeInfo='';
-  if(r.groupeId&&groupeMembers&&groupeMembers.length>1){
-    const autres=groupeMembers.filter(([,m])=>m.name!==r.name).map(([,m])=>m.name).join(', ');
-    const leader=groupeMembers.find(([,m])=>m.groupeLeader)?.[1];
-    const frais=leader?depPrix(leader):0;
-    if(autres)groupeInfo=`\n\n👥 Session avec : ${autres}\n💡 Frais de déplacement (${frais}€) à partager entre vous selon votre arrangement.`;
-  }
-  return`Bonjour ${r.name} 🌸\n\n✅ Votre réservation est confirmée !\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 ${r.time}\n💆 ${p.label}${r.prolongation?'\n⏱ Prolongation +20 min (+15€)':''}\n💰 ${total}€${r.adresse?`\n📍 ${r.adresse}`:''}${groupeInfo}\n\nUn rappel vous sera envoyé la veille.\n\nMerci et à très bientôt ! 💛\nYouss Mass à Dom 🌸`;
+function buildConfirmMsg(r,gm){
+  const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};const total=calcTotal(r,p);
+  let gi='';
+  if(r.groupeId&&gm&&gm.length>1){const autres=gm.filter(([,m])=>m.name!==r.name).map(([,m])=>m.name).join(', ');const leader=gm.find(([,m])=>m.groupeLeader)?.[1];const frais=leader?depPrix(leader):0;if(autres)gi=`\n\n👥 Session avec : ${autres}\n💡 Frais de déplacement (${frais}€) à partager entre vous.`;}
+  return`Bonjour ${r.name} 🌸\n\n✅ Votre réservation est confirmée !\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 ${r.time}\n💆 ${p.label}${r.prolongation?'\n⏱ Prolongation +20 min (+15€)':''}\n💰 ${total}€${r.adresse?`\n📍 ${r.adresse}`:''}${gi}\n\nUn rappel vous sera envoyé la veille.\n\nMerci et à très bientôt ! 💛\nYouss Mass à Dom 🌸`;
 }
-function buildRappelMsg(r){
-  const p=PRESTATIONS[r.prestation]||{label:'massage'};
-  return`Bonjour ${r.name} 🌸\n\nJe vous rappelle votre RDV demain :\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 à ${r.time}\n💆 ${p.label}\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom 🌸`;
-}
+function buildRappelMsg(r){const p=PRESTATIONS[r.prestation]||{label:'massage'};return`Bonjour ${r.name} 🌸\n\nJe vous rappelle votre RDV demain :\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 à ${r.time}\n💆 ${p.label}\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom 🌸`;}
 function openConfirmModal(rdvData,groupeRdvsList){
-  lastSavedRdv=rdvData;
-  lastSavedGroupeRdvs=groupeRdvsList||[rdvData];
-  confirmGroupeIdx=0;
+  lastSavedRdv=rdvData;lastSavedGroupeRdvs=groupeRdvsList||[rdvData];confirmGroupeIdx=0;
   const isGroupe=lastSavedGroupeRdvs.length>1;
   document.getElementById('confirm-modal-title').textContent=isGroupe?'📩 Confirmations session groupée':'📩 Confirmation réservation';
   document.getElementById('confirm-subtitle').textContent=isGroupe?`Message 1/${lastSavedGroupeRdvs.length} — ${lastSavedGroupeRdvs[0].name} :`:'Message à envoyer :';
   const nav=document.getElementById('groupe-confirm-nav');
-  if(isGroupe){nav.style.display='flex';renderGroupeConfirmNav();}
-  else nav.style.display='none';
-  showConfirmForIdx(0);
-  openModal('overlay-confirm');
+  if(isGroupe){nav.style.display='flex';renderGroupeConfirmNav();}else nav.style.display='none';
+  showConfirmForIdx(0);openModal('overlay-confirm');
 }
 function renderGroupeConfirmNav(){
   const nav=document.getElementById('groupe-confirm-nav');
@@ -711,25 +753,13 @@ function renderGroupeConfirmNav(){
 }
 function showConfirmForIdx(idx){
   confirmGroupeIdx=idx;lastSavedRdv=lastSavedGroupeRdvs[idx];
-  const r=lastSavedRdv;
-  const gm=r.groupeId?getGroupeMembers(r.groupeId):null;
-  document.getElementById('confirm-msg-box').textContent=buildConfirmMsg(r,gm);
-  document.getElementById('rappel-msg-box').textContent=buildRappelMsg(r);
-  if(lastSavedGroupeRdvs.length>1){
-    document.getElementById('confirm-subtitle').textContent=`Message ${idx+1}/${lastSavedGroupeRdvs.length} — ${r.name} :`;
-    renderGroupeConfirmNav();
-  }
-}
-function sendConfirmWa(){
-  if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
   const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;
-  window.open('https://wa.me/'+normTel(lastSavedRdv.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildConfirmMsg(lastSavedRdv,gm)),'_blank');
+  document.getElementById('confirm-msg-box').textContent=buildConfirmMsg(lastSavedRdv,gm);
+  document.getElementById('rappel-msg-box').textContent=buildRappelMsg(lastSavedRdv);
+  if(lastSavedGroupeRdvs.length>1){document.getElementById('confirm-subtitle').textContent=`Message ${idx+1}/${lastSavedGroupeRdvs.length} — ${lastSavedRdv.name} :`;renderGroupeConfirmNav();}
 }
-function sendConfirmSms(){
-  if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}
-  const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;
-  window.location.href='sms:'+normTel(lastSavedRdv.tel)+'?body='+encodeURIComponent(buildConfirmMsg(lastSavedRdv,gm));
-}
+function sendConfirmWa(){if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;window.open('https://wa.me/'+normTel(lastSavedRdv.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildConfirmMsg(lastSavedRdv,gm)),'_blank');}
+function sendConfirmSms(){if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;window.location.href='sms:'+normTel(lastSavedRdv.tel)+'?body='+encodeURIComponent(buildConfirmMsg(lastSavedRdv,gm));}
 function copyMsg(msg){navigator.clipboard.writeText(msg).then(()=>alert('✅ Copié !')).catch(()=>{const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copié !');});}
 function copyConfirmMsg(){const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;copyMsg(buildConfirmMsg(lastSavedRdv,gm));}
 function sendRappelWa(){if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}window.open('https://wa.me/'+normTel(lastSavedRdv.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildRappelMsg(lastSavedRdv)),'_blank');}
@@ -738,14 +768,8 @@ function sendWaRappel(){if(!currentRdvForWa?.tel){alert('Pas de numéro !');retu
 function sendWaFromCard(key){const r=DB.get('rdvs')[key];if(!r||!r.tel)return;currentRdvForWa=r;sendWaRappel();}
 
 // ── CLIENTES ──
-function generateCode(){
-  const nums=DB.get('clientes').map(c=>{const m=(c.code||'').match(/YM-(\d+)/);return m?parseInt(m[1]):0;});
-  return'YM-'+String((nums.length?Math.max(...nums):0)+1).padStart(3,'0');
-}
-function findClienteByTel(tel){
-  if(!tel)return null;
-  return DB.get('clientes').find(c=>normTel(c.tel)===normTel(tel))||null;
-}
+function generateCode(){const nums=DB.get('clientes').map(c=>{const m=(c.code||'').match(/YM-(\d+)/);return m?parseInt(m[1]):0;});return'YM-'+String((nums.length?Math.max(...nums):0)+1).padStart(3,'0');}
+function findClienteByTel(tel){if(!tel)return null;return DB.get('clientes').find(c=>normTel(c.tel)===normTel(tel))||null;}
 function onTelInput(){
   const tel=document.getElementById('f-tel').value,sugg=document.getElementById('tel-suggestions');
   if(tel.length<4){sugg.style.display='none';return;}
@@ -754,173 +778,77 @@ function onTelInput(){
   sugg.innerHTML=matches.slice(0,5).map(c=>`<div class="tel-suggestion-item" onclick="selectSugg('${c.id}')">${c.prenom} ${c.nom||''} ${isFidele(c)?`<span class="tel-suggestion-code">${c.code||''}</span>`:`<span style="font-size:0.6rem;color:var(--warm)">(${c.seances||0}/3)</span>`}<div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div></div>`).join('');
   sugg.style.display='block';
 }
-function selectSugg(id){
-  const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;
-  document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom||'';
-  document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';
-  document.getElementById('tel-suggestions').style.display='none';
-}
+function selectSugg(id){const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom||'';document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';document.getElementById('tel-suggestions').style.display='none';}
 function syncCliente(name,tel,adresse,details){
-  if(!name)return;
-  const clientes=DB.get('clientes');
+  if(!name)return;const clientes=DB.get('clientes');
   let idx=normTel(tel)?clientes.findIndex(c=>normTel(c.tel)===normTel(tel)):-1;
   if(idx<0)idx=clientes.findIndex(c=>c.prenom.toLowerCase()===name.toLowerCase());
-  if(idx>=0){
-    if(tel)clientes[idx].tel=tel;if(adresse)clientes[idx].adresse=adresse;if(details)clientes[idx].details=details;
-    if(!editingRdvKey)clientes[idx].seances=(clientes[idx].seances||0)+1;
-    if(!clientes[idx].code&&isFidele(clientes[idx]))clientes[idx].code=generateCode();
-    DB.set('clientes',clientes);
-  }else{
-    DB.set('clientes',[...clientes,{id:Date.now().toString(),code:null,prenom:name,nom:'',tel:tel||'',adresse:adresse||'',details:details||'',source:'Planning',seances:1,notes:'',assoc:[]}]);
-  }
+  if(idx>=0){if(tel)clientes[idx].tel=tel;if(adresse)clientes[idx].adresse=adresse;if(details)clientes[idx].details=details;if(!editingRdvKey)clientes[idx].seances=(clientes[idx].seances||0)+1;if(!clientes[idx].code&&isFidele(clientes[idx]))clientes[idx].code=generateCode();DB.set('clientes',clientes);}
+  else{DB.set('clientes',[...clientes,{id:Date.now().toString(),code:null,prenom:name,nom:'',tel:tel||'',adresse:adresse||'',details:details||'',source:'Planning',seances:1,notes:'',assoc:[]}]);}
 }
-function deleteClienteDirectly(id,nom){
-  if(confirm(`Supprimer ${nom.trim()} du répertoire ? Action irréversible.`)){
-    DB.set('clientes',DB.get('clientes').filter(c=>c.id!==id));renderClientes();
-  }
-}
-function confirmDeleteCliente(){
-  if(!editingClienteId)return;
-  const c=DB.get('clientes').find(x=>x.id===editingClienteId);
-  if(confirm(`Supprimer ${c?c.prenom+' '+(c.nom||''):'cette cliente'} ? Action irréversible.`)){
-    DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));
-    closeModal('overlay-cliente');renderClientes();
-  }
-}
-
-// Historique RDV d'une cliente
-function getClienteRdvs(clienteId){
-  const c=DB.get('clientes').find(x=>x.id===clienteId);
-  if(!c)return[];
-  const rdvs=DB.get('rdvs'),today=fmtDate(new Date());
+function deleteClienteDirectly(id,nom){if(confirm(`Supprimer ${nom.trim()} du répertoire ?`)){DB.set('clientes',DB.get('clientes').filter(c=>c.id!==id));renderClientes();}}
+function confirmDeleteCliente(){if(!editingClienteId)return;const c=DB.get('clientes').find(x=>x.id===editingClienteId);if(confirm(`Supprimer ${c?c.prenom+' '+(c.nom||''):'cette cliente'} ?`)){DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));closeModal('overlay-cliente');renderClientes();}}
+function getClienteRdvs(cId){
+  const c=DB.get('clientes').find(x=>x.id===cId);if(!c)return[];
+  const rdvs=DB.get('rdvs');
   const allTels=[normTel(c.tel),...(c.assoc||[]).map(a=>normTel(a.tel)).filter(Boolean)];
   const allNames=[c.prenom.toLowerCase(),...(c.assoc||[]).map(a=>a.prenom.toLowerCase())];
-  return Object.entries(rdvs).filter(([key,r])=>{
-    const tel=normTel(r.tel),name=(r.name||'').toLowerCase();
-    return(tel&&allTels.includes(tel))||(allNames.includes(name));
-  }).sort((a,b)=>b[0].localeCompare(a[0]));
+  return Object.entries(rdvs).filter(([,r])=>{const t=normTel(r.tel),n=(r.name||'').toLowerCase();return(t&&allTels.includes(t))||(allNames.includes(n));}).sort((a,b)=>b[0].localeCompare(a[0]));
 }
+function addAssocPerson(){const p=prompt('Prénom ?');if(!p)return;const t=prompt('Téléphone (optionnel) ?')||'';assocPersonsTemp.push({prenom:p,tel:t,id:'assoc-'+Date.now()});renderAssocModal();}
+function renderAssocModal(){const s=document.getElementById('assoc-section-modal'),l=document.getElementById('assoc-list-modal');s.style.display='block';l.innerHTML=assocPersonsTemp.map((p,i)=>`<div class="assoc-item"><span>👤 ${p.prenom}${p.tel?' · 📞 '+p.tel:''}</span><button onclick="removeAssoc(${i})" style="background:none;border:none;color:var(--rose);cursor:pointer">✕</button></div>`).join('');}
+function removeAssoc(i){assocPersonsTemp.splice(i,1);renderAssocModal();}
+function rdvFromCliente(){const c=DB.get('clientes').find(x=>x.id===editingClienteId);if(!c)return;closeModal('overlay-cliente');currentGroupeId=null;currentGroupeRdvs=[];setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';},350);},200);}
+function rdvGroupeFromCliente(){const c=DB.get('clientes').find(x=>x.id===editingClienteId);if(!c)return;closeModal('overlay-cliente');currentGroupeId='grp-'+Date.now();currentGroupeRdvs=[];setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';updateGroupeInfoBox();},350);},200);}
 
 // ── DEPENSES ──
 function selectCat(cat){selectedCat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));document.getElementById('cat-'+cat).classList.add('selected');}
 function openDepenseModal(){document.getElementById('d-label').value='';document.getElementById('d-prix').value='';document.getElementById('d-date').value=fmtDate(new Date());selectCat('huile');openModal('overlay-depense');}
-function saveDepense(){
-  const prix=parseFloat(document.getElementById('d-prix').value)||0;
-  if(!prix){alert('Entrez un montant !');return;}
-  const dep=DB.get('depenses')||[];
-  dep.push({id:Date.now().toString(),cat:selectedCat,label:document.getElementById('d-label').value.trim()||CAT_LABELS[selectedCat],prix,date:document.getElementById('d-date').value||fmtDate(new Date())});
-  DB.set('depenses',dep);closeModal('overlay-depense');if(statsView==='depenses')buildStats();
-}
-function deleteDepense(id){
-  if(!confirm('Supprimer cette dépense ?'))return;
-  DB.set('depenses',(DB.get('depenses')||[]).filter(d=>d.id!==id));buildStats();
-}
+function saveDepense(){const prix=parseFloat(document.getElementById('d-prix').value)||0;if(!prix){alert('Entrez un montant !');return;}const dep=DB.get('depenses')||[];dep.push({id:Date.now().toString(),cat:selectedCat,label:document.getElementById('d-label').value.trim()||CAT_LABELS[selectedCat],prix,date:document.getElementById('d-date').value||fmtDate(new Date())});DB.set('depenses',dep);closeModal('overlay-depense');if(statsView==='depenses')buildStats();}
+function deleteDepense(id){if(!confirm('Supprimer ?'))return;DB.set('depenses',(DB.get('depenses')||[]).filter(d=>d.id!==id));buildStats();}
 
 function getBlockedSlots(rdvs){
   const blocked=new Set(),travel=new Set();
-  Object.entries(rdvs).forEach(([key,r])=>{
-    const[date,time]=key.split('_'),p=PRESTATIONS[r.prestation]||{duree:60};
-    const total=p.duree+(r.prolongation?20:0),start=timeToMins(time),slots=Math.ceil(total/30);
-    for(let i=1;i<slots;i++)blocked.add(date+'_'+minsToTime(start+i*30));
-    if(r.dep){
-      for(let i=1;i<=2;i++){const t=minsToTime(start-i*30);if(start-i*30>=0)travel.add(date+'_'+t);}
-      const end=start+slots*30;for(let i=0;i<2;i++)travel.add(date+'_'+minsToTime(end+i*30));
-    }
-  });
+  Object.entries(rdvs).forEach(([key,r])=>{const[date,time]=key.split('_'),p=PRESTATIONS[r.prestation]||{duree:60};const total=p.duree+(r.prolongation?20:0),start=timeToMins(time),slots=Math.ceil(total/30);for(let i=1;i<slots;i++)blocked.add(date+'_'+minsToTime(start+i*30));if(r.dep){for(let i=1;i<=2;i++){const t=minsToTime(start-i*30);if(start-i*30>=0)travel.add(date+'_'+t);}const end=start+slots*30;for(let i=0;i<2;i++)travel.add(date+'_'+minsToTime(end+i*30));}});
   return{blocked,travel};
 }
-function toggleConge(date){
-  const c=DB.get('conges'),idx=c.indexOf(date);
-  if(idx>=0)c.splice(idx,1);else c.push(date);
-  DB.set('conges',c);if(currentView==='semaine')buildPlanning();else buildMonth();
-}
-function setPayment(mode){
-  currentPayment=mode;
-  document.getElementById('pay-especes').classList.toggle('active',mode==='especes');
-  document.getElementById('pay-virement').classList.toggle('active',mode==='virement');
-}
+function toggleConge(date){const c=DB.get('conges'),idx=c.indexOf(date);if(idx>=0)c.splice(idx,1);else c.push(date);DB.set('conges',c);if(currentView==='semaine')buildPlanning();else buildMonth();}
+function setPayment(mode){currentPayment=mode;document.getElementById('pay-especes').classList.toggle('active',mode==='especes');document.getElementById('pay-virement').classList.toggle('active',mode==='virement');}
 function toggleDepFields(){document.getElementById('dep-group').style.display=document.getElementById('f-dep').value==='1'?'block':'none';updateNetPreview();}
 function callTel(tel){window.location.href='tel:'+normTel(tel);}
 function openWaze(a){window.location.href=`waze://?q=${encodeURIComponent(a)}&navigate=yes`;setTimeout(()=>window.open(`https://waze.com/ul?q=${encodeURIComponent(a)}&navigate=yes`,'_blank'),1500);}
-function showNotifBanner(){
-  const w=document.getElementById('notif-banner-wrap');
-  if(!('Notification'in window)){w.innerHTML='';return;}
-  if(Notification.permission==='granted')w.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';
-  else if(Notification.permission==='denied')w.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';
-  else w.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications 👆</div>';
-}
+function showNotifBanner(){const w=document.getElementById('notif-banner-wrap');if(!('Notification'in window)){w.innerHTML='';return;}if(Notification.permission==='granted')w.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';else if(Notification.permission==='denied')w.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';else w.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications 👆</div>';}
 async function askNotif(){await Notification.requestPermission();showNotifBanner();scheduleNotifs();}
-function scheduleNotifs(){
-  if(Notification.permission!=='granted')return;
-  const rdvs=DB.get('rdvs'),now=Date.now();
-  Object.entries(rdvs).forEach(([key,r])=>{
-    const[date,time]=key.split('_'),delay=new Date(date+'T'+time+':00').getTime()-3600000-now;
-    if(delay>0&&delay<604800000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}`});},delay);
-  });
-}
-function setView(v){
-  currentView=v;
-  document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';
-  document.getElementById('view-mois').style.display=v==='mois'?'block':'none';
-  document.getElementById('btn-semaine').classList.toggle('active',v==='semaine');
-  document.getElementById('btn-mois').classList.toggle('active',v==='mois');
-  if(v==='semaine')buildPlanning();else buildMonth();
-}
+function scheduleNotifs(){if(Notification.permission!=='granted')return;const rdvs=DB.get('rdvs'),now=Date.now();Object.entries(rdvs).forEach(([key,r])=>{const[date,time]=key.split('_'),delay=new Date(date+'T'+time+':00').getTime()-3600000-now;if(delay>0&&delay<604800000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}`});},delay);});}
+function setView(v){currentView=v;document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';document.getElementById('view-mois').style.display=v==='mois'?'block':'none';document.getElementById('btn-semaine').classList.toggle('active',v==='semaine');document.getElementById('btn-mois').classList.toggle('active',v==='mois');if(v==='semaine')buildPlanning();else buildMonth();}
 function navPrev(){if(currentView==='semaine'){weekOffset--;buildPlanning();}else{monthOffset--;buildMonth();}}
 function navNext(){if(currentView==='semaine'){weekOffset++;buildPlanning();}else{monthOffset++;buildMonth();}}
 function goToday(){weekOffset=0;monthOffset=0;selectedDay=fmtDate(new Date());if(currentView==='semaine')buildPlanning();else buildMonth();}
-function switchTab(tab){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+tab).classList.add('active');
-  document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='clientes')renderClientes();
-  if(tab==='stats')buildStats();
-}
+function switchTab(tab){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.getElementById('page-'+tab).classList.add('active');document.getElementById('tab-'+tab).classList.add('active');if(tab==='clientes')renderClientes();if(tab==='stats')buildStats();if(tab==='cartes')renderCartes();}
 
-function calcPeriodStats(rdvs,keys){
-  let brut=0,ess=0;const gC=new Set();
-  keys.forEach(key=>{
-    const r=rdvs[key];if(!r)return;
-    const p=PRESTATIONS[r.prestation]||{prix:40};brut+=calcTotal(r,p);
-    if(r.groupeId){if(r.groupeLeader&&!gC.has(r.groupeId)){gC.add(r.groupeId);ess+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}
-    else{ess+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
-  });
-  return{brut,net:brut-ess};
-}
+function calcEssAll(rdvList){const gc=new Set();let e=0;rdvList.forEach(r=>{if(r.groupeId){if(r.groupeLeader&&!gc.has(r.groupeId)){gc.add(r.groupeId);e+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}else{e+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}});return e;}
 
-function setStatsView(v){
-  statsView=v;
-  ['mois','global','depenses'].forEach(s=>document.getElementById('sn-'+s).classList.toggle('active',s===v));
-  buildStats();
-}
+function setStatsView(v){statsView=v;['mois','global','depenses'].forEach(s=>document.getElementById('sn-'+s).classList.toggle('active',s===v));buildStats();}
 
 function buildStats(){
   const rdvs=DB.get('rdvs'),depenses=DB.get('depenses')||[];
+  const cartesCA=getTotalCartesCA();
   const c=document.getElementById('stats-content');
-  const gC=new Set();
-
-  function calcEssAll(rdvList){
-    const gc=new Set();let e=0;
-    rdvList.forEach(r=>{if(r.groupeId){if(r.groupeLeader&&!gc.has(r.groupeId)){gc.add(r.groupeId);e+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}else{e+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}});
-    return e;
-  }
-
   if(statsView==='depenses'){
     const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
-    const totalBrut=Object.values(rdvs).reduce((s,r)=>{const p=PRESTATIONS[r.prestation]||{prix:40};return s+calcTotal(r,p);},0);
+    const totalBrut=Object.values(rdvs).reduce((s,r)=>{const p=PRESTATIONS[r.prestation]||{prix:40};return s+calcTotal(r,p);},0)+cartesCA;
     const totalEss=calcEssAll(Object.values(rdvs));
-    c.innerHTML=`<div class="depense-summary"><div class="depense-summary-title">💸 Résumé</div><div class="depense-summary-row"><span>CA brut</span><span>${totalBrut}€</span></div><div class="depense-summary-row"><span>⛽ Total essence</span><span>−${totalEss.toFixed(2)}€</span></div><div class="depense-summary-row"><span>💸 Total dépenses</span><span>−${totalDep.toFixed(2)}€</span></div><div class="depense-summary-row"><span><strong>Bénéfice net réel</strong></span><span><strong>${(totalBrut-totalEss-totalDep).toFixed(2)}€</strong></span></div></div><button class="btn-primary" style="margin-bottom:12px" onclick="openDepenseModal()">＋ Ajouter une dépense</button>${!depenses.length?'<div class="month-empty">Aucune dépense</div>':depenses.slice().reverse().map(d=>`<div class="depense-item"><div class="depense-icon">${CAT_ICONS[d.cat]||'📦'}</div><div class="depense-info"><div class="depense-label">${d.label}</div><div class="depense-sub">${CAT_LABELS[d.cat]||'Autre'} · ${d.date}</div></div><div class="depense-prix">−${d.prix}€</div><button class="depense-del" onclick="deleteDepense('${d.id}')">🗑</button></div>`).join('')}`;
+    c.innerHTML=`<div class="depense-summary"><div class="depense-summary-title">💸 Résumé</div><div class="depense-summary-row"><span>CA brut (RDV + cartes)</span><span>${totalBrut}€</span></div><div class="depense-summary-row"><span>⛽ Total essence</span><span>−${totalEss.toFixed(2)}€</span></div><div class="depense-summary-row"><span>💸 Total dépenses</span><span>−${totalDep.toFixed(2)}€</span></div><div class="depense-summary-row"><span><strong>Bénéfice net réel</strong></span><span><strong>${(totalBrut-totalEss-totalDep).toFixed(2)}€</strong></span></div></div><button class="btn-primary" style="margin-bottom:12px" onclick="openDepenseModal()">＋ Ajouter une dépense</button>${!depenses.length?'<div class="month-empty">Aucune dépense</div>':depenses.slice().reverse().map(d=>`<div class="depense-item"><div class="depense-icon">${CAT_ICONS[d.cat]||'📦'}</div><div class="depense-info"><div class="depense-label">${d.label}</div><div class="depense-sub">${CAT_LABELS[d.cat]||'Autre'} · ${d.date}</div></div><div class="depense-prix">−${d.prix}€</div><button class="depense-del" onclick="deleteDepense('${d.id}')">🗑</button></div>`).join('')}`;
     return;
   }
   if(statsView==='global'){
     let total=0,brut=0,mins=0,esp=0,vir=0;
     const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
-    const allRdvs=Object.values(rdvs);
-    const ess=calcEssAll(allRdvs);
+    const allRdvs=Object.values(rdvs);const ess=calcEssAll(allRdvs);
     allRdvs.forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},b=calcTotal(r,p);total++;brut+=b;mins+=p.duree+(r.prolongation?20:0);if(r.payment==='virement')vir+=b;else esp+=b;});
     const hh=Math.floor(mins/60),mm=mins%60;
-    c.innerHTML=`<div class="global-stat-card"><div class="global-stat-title">🏆 Total depuis le début</div><div class="global-stat-row"><span>Nombre de RDV</span><span>${total}</span></div><div class="global-stat-row"><span>Heures travaillées</span><span>${hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mins+'min')}</span></div><div class="global-stat-row"><span>CA brut</span><span>${brut}€</span></div><div class="global-stat-row"><span>⛽ Total essence</span><span>−${ess.toFixed(2)}€</span></div><div class="global-stat-row"><span>Net après essence</span><span>${(brut-ess).toFixed(2)}€</span></div><div class="global-stat-row"><span>💸 Dépenses pro</span><span>−${totalDep.toFixed(2)}€</span></div><div class="global-stat-row"><span>💰 Bénéfice réel</span><span>${(brut-ess-totalDep).toFixed(2)}€</span></div><div class="global-stat-row"><span>💵 Espèces</span><span>${esp}€</span></div><div class="global-stat-row"><span>🏦 Virement</span><span>${vir}€</span></div><div class="global-stat-row"><span>Clientes</span><span>${DB.get('clientes').length}</span></div></div>`;
+    const cartes=DB.get('cartes')||[];const cartesEnAttente=cartes.filter(x=>!x.used).length;const cartesUsed=cartes.filter(x=>x.used).length;
+    c.innerHTML=`<div class="global-stat-card"><div class="global-stat-title">🏆 Total depuis le début</div><div class="global-stat-row"><span>Nombre de RDV</span><span>${total}</span></div><div class="global-stat-row"><span>Heures travaillées</span><span>${hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mins+'min')}</span></div><div class="global-stat-row"><span>CA RDV brut</span><span>${brut}€</span></div><div class="global-stat-row"><span>🎁 CA Cartes cadeaux</span><span>+${cartesCA}€</span></div><div class="global-stat-row"><span>CA total brut</span><span>${brut+cartesCA}€</span></div><div class="global-stat-row"><span>⛽ Total essence</span><span>−${ess.toFixed(2)}€</span></div><div class="global-stat-row"><span>Net après essence</span><span>${(brut+cartesCA-ess).toFixed(2)}€</span></div><div class="global-stat-row"><span>💸 Dépenses pro</span><span>−${totalDep.toFixed(2)}€</span></div><div class="global-stat-row"><span>💰 Bénéfice réel</span><span>${(brut+cartesCA-ess-totalDep).toFixed(2)}€</span></div><div class="global-stat-row"><span>💵 Espèces</span><span>${esp}€</span></div><div class="global-stat-row"><span>🏦 Virement</span><span>${vir}€</span></div><div class="global-stat-row"><span>🎁 Cartes en attente</span><span>${cartesEnAttente}</span></div><div class="global-stat-row"><span>🎁 Cartes utilisées</span><span>${cartesUsed}</span></div></div>`;
     return;
   }
   // Par mois
@@ -929,9 +857,13 @@ function buildStats(){
     const ym=key.split('_')[0].substring(0,7);
     if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,mins:0,esp:0,vir:0,dep:0,rdvList:[]};
     const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},b=calcTotal(r,p);
-    byMonth[ym].rdv++;byMonth[ym].brut+=b;byMonth[ym].mins+=p.duree+(r.prolongation?20:0);
-    byMonth[ym].rdvList.push(r);
+    byMonth[ym].rdv++;byMonth[ym].brut+=b;byMonth[ym].mins+=p.duree+(r.prolongation?20:0);byMonth[ym].rdvList.push(r);
     if(r.payment==='virement')byMonth[ym].vir+=b;else byMonth[ym].esp+=b;
+  });
+  // Ajouter les cartes cadeaux au mois de vente
+  (DB.get('cartes')||[]).forEach(carte=>{
+    const ym=carte.date?carte.date.substring(0,7):'';
+    if(ym){if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,mins:0,esp:0,vir:0,dep:0,rdvList:[],cartes:0};byMonth[ym].cartes=(byMonth[ym].cartes||0)+carte.montant;}
   });
   depenses.forEach(d=>{const ym=d.date?d.date.substring(0,7):'';if(ym&&byMonth[ym])byMonth[ym].dep+=(d.prix||0);});
   const sorted=Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
@@ -939,90 +871,53 @@ function buildStats(){
   c.innerHTML=sorted.map(ym=>{
     const[y,m]=ym.split('-'),mName=MONTHS_FR[parseInt(m)-1]+' '+y,d=byMonth[ym];
     const hh=Math.floor(d.mins/60),mm2=d.mins%60;
-    const ess=calcEssAll(d.rdvList);
-    const net=d.brut-ess,ben=net-d.dep;
-    return`<div class="month-stat-card"><div class="month-stat-title">📅 ${mName.charAt(0).toUpperCase()+mName.slice(1)}</div><div class="month-stat-row"><span>RDV</span><span>${d.rdv}</span></div><div class="month-stat-row"><span>Heures</span><span>${hh>0?(mm2>0?`${hh}h${mm2}`:`${hh}h`):(d.mins+'min')}</span></div><div class="month-stat-row"><span>💵 Espèces</span><span>${d.esp}€</span></div><div class="month-stat-row"><span>🏦 Virement</span><span>${d.vir}€</span></div><div class="month-stat-row"><span>CA brut</span><span>${d.brut}€</span></div><div class="month-stat-row"><span>⛽ Essence</span><span>−${ess.toFixed(2)}€</span></div><div class="month-stat-row"><span>Net après essence</span><span>${net.toFixed(2)}€</span></div>${d.dep>0?`<div class="month-stat-row"><span>💸 Dépenses</span><span>−${d.dep.toFixed(2)}€</span></div>`:''}<div class="month-stat-row total"><span>Bénéfice réel</span><span>${ben.toFixed(2)}€</span></div></div>`;
+    const ess=calcEssAll(d.rdvList||[]);const cartesM=d.cartes||0;
+    const net=d.brut+cartesM-ess,ben=net-d.dep;
+    return`<div class="month-stat-card"><div class="month-stat-title">📅 ${mName.charAt(0).toUpperCase()+mName.slice(1)}</div><div class="month-stat-row"><span>RDV</span><span>${d.rdv}</span></div><div class="month-stat-row"><span>Heures</span><span>${hh>0?(mm2>0?`${hh}h${mm2}`:`${hh}h`):(d.mins+'min')}</span></div><div class="month-stat-row"><span>💵 Espèces</span><span>${d.esp}€</span></div><div class="month-stat-row"><span>🏦 Virement</span><span>${d.vir}€</span></div><div class="month-stat-row"><span>CA RDV</span><span>${d.brut}€</span></div>${cartesM>0?`<div class="month-stat-row"><span>🎁 Cartes cadeaux</span><span>+${cartesM}€</span></div>`:''}<div class="month-stat-row"><span>⛽ Essence</span><span>−${ess.toFixed(2)}€</span></div><div class="month-stat-row"><span>Net après essence</span><span>${net.toFixed(2)}€</span></div>${d.dep>0?`<div class="month-stat-row"><span>💸 Dépenses</span><span>−${d.dep.toFixed(2)}€</span></div>`:''}<div class="month-stat-row total"><span>Bénéfice réel</span><span>${ben.toFixed(2)}€</span></div></div>`;
   }).join('');
 }
 
 function updateStats(){
-  const rdvsAll=DB.get('rdvs');
-  const now=new Date();
-  const weekDates=getWeekDates(weekOffset);
-  const weekStart=fmtDate(weekDates[0]),weekEnd=fmtDate(weekDates[6]);
+  const rdvsAll=DB.get('rdvs'),now=new Date();
+  const weekDates=getWeekDates(weekOffset);const weekStart=fmtDate(weekDates[0]),weekEnd=fmtDate(weekDates[6]);
   const monthStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   let wRdv=0,wCa=0,wNet=0,wMins=0,wEsp=0,wVir=0,wEss=0;
-  let mCa=0,mNet=0;
-  const gCW=new Set(),gCM=new Set();
-
+  const gCW=new Set();
   Object.entries(rdvsAll).forEach(([key,r])=>{
-    const date=key.split('_')[0];
-    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},brut=calcTotal(r,p);
+    const date=key.split('_')[0],p=PRESTATIONS[r.prestation]||{prix:40,duree:60},brut=calcTotal(r,p);
     let ess=0;
-    if(r.groupeId){
-      if(r.groupeLeader){
-        if(!gCW.has(r.groupeId)&&date>=weekStart&&date<=weekEnd){gCW.add(r.groupeId);ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
-        if(!gCM.has(r.groupeId)&&date.startsWith(monthStr)){gCM.add(r.groupeId);mNet+=brut-(r.dep&&r.kmDist?calcEssence(r.kmDist):0);mCa+=brut;}
-        else if(!gCM.has(r.groupeId)&&date.startsWith(monthStr)===false&&date.startsWith(monthStr)){/* already handled */}
-      }
-    }else{
-      ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
-      if(date.startsWith(monthStr)){mCa+=brut;mNet+=brut-ess;}
-    }
-    if(date>=weekStart&&date<=weekEnd){
-      wRdv++;wCa+=brut;wNet+=brut-ess;wEss+=ess;wMins+=p.duree+(r.prolongation?20:0);
-      if(r.payment==='virement')wVir+=brut;else wEsp+=brut;
-    }
+    if(r.groupeId){if(r.groupeLeader&&!gCW.has(r.groupeId)&&date>=weekStart&&date<=weekEnd){gCW.add(r.groupeId);ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}
+    else{ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
+    if(date>=weekStart&&date<=weekEnd){wRdv++;wCa+=brut;wNet+=brut-ess;wEss+=ess;wMins+=p.duree+(r.prolongation?20:0);if(r.payment==='virement')wVir+=brut;else wEsp+=brut;}
   });
-
-  // Recalcul propre mois
-  mCa=0;mNet=0;const gCM2=new Set();
+  // Mois en cours
+  let mCa=0,mNet=0;const gCM=new Set();
   Object.entries(rdvsAll).forEach(([key,r])=>{
     const date=key.split('_')[0];if(!date.startsWith(monthStr))return;
     const p=PRESTATIONS[r.prestation]||{prix:40},b=calcTotal(r,p);let e=0;
-    if(r.groupeId){if(r.groupeLeader&&!gCM2.has(r.groupeId)){gCM2.add(r.groupeId);e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}
-    else{e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
+    if(r.groupeId){if(r.groupeLeader&&!gCM.has(r.groupeId)){gCM.add(r.groupeId);e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}else{e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
     mCa+=b;mNet+=b-e;
   });
+  // Ajouter cartes cadeaux du mois en cours
+  (DB.get('cartes')||[]).forEach(c=>{if(c.date&&c.date.startsWith(monthStr)){mCa+=c.montant;mNet+=c.montant;}});
 
-  document.getElementById('s-rdv').textContent=wRdv;
-  document.getElementById('s-ca').textContent=wCa+'€';
-  document.getElementById('s-net').textContent=wNet.toFixed(0)+'€';
-  const hh=Math.floor(wMins/60),mm=wMins%60;
-  document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(wMins+'min');
-  document.getElementById('s-especes').textContent=wEsp+'€';
-  document.getElementById('s-virement').textContent=wVir+'€';
-  document.getElementById('s-essence-week').textContent=wEss.toFixed(2)+'€';
-
-  // Bandeau période
-  if(currentView==='semaine'){
-    document.getElementById('period-label').textContent='Cette semaine';
-    document.getElementById('period-val').textContent=wCa+'€';
-    document.getElementById('period-net').textContent=wNet.toFixed(0)+'€';
-  }else{
-    const mName=MONTHS_FR[now.getMonth()]+' '+now.getFullYear();
-    document.getElementById('period-label').textContent='Ce mois — '+mName.charAt(0).toUpperCase()+mName.slice(1);
-    document.getElementById('period-val').textContent=mCa+'€';
-    document.getElementById('period-net').textContent=mNet.toFixed(0)+'€';
-  }
+  document.getElementById('s-rdv').textContent=wRdv;document.getElementById('s-ca').textContent=wCa+'€';document.getElementById('s-net').textContent=wNet.toFixed(0)+'€';
+  const hh=Math.floor(wMins/60),mm=wMins%60;document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(wMins+'min');
+  document.getElementById('s-especes').textContent=wEsp+'€';document.getElementById('s-virement').textContent=wVir+'€';document.getElementById('s-essence-week').textContent=wEss.toFixed(2)+'€';
+  if(currentView==='semaine'){document.getElementById('period-label').textContent='Cette semaine';document.getElementById('period-val').textContent=wCa+'€';document.getElementById('period-net').textContent=wNet.toFixed(0)+'€';}
+  else{const mName=MONTHS_FR[now.getMonth()]+' '+now.getFullYear();document.getElementById('period-label').textContent='Ce mois — '+mName.charAt(0).toUpperCase()+mName.slice(1);document.getElementById('period-val').textContent=mCa+'€';document.getElementById('period-net').textContent=mNet.toFixed(0)+'€';}
 }
 
 function buildRdvCard(key,r){
   const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
-  const c=r.tel?findClienteByTel(r.tel):null;
+  const cv=r.tel?findClienteByTel(r.tel):null;
   const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
   const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
   const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
-  const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
+  const codeLabel=cv&&cv.code?`<span class="rdv-code">${cv.code}</span>`:'';
   const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';
   let groupeBadge='',groupeMembres='';
-  if(r.groupeId){
-    const membres=getGroupeMembers(r.groupeId);
-    if(membres.length>1){
-      groupeBadge=`<div class="rdv-groupe-badge">👥 Session groupée · ${membres.length} clientes</div>`;
-      if(r.groupeLeader)groupeMembres=`<div style="font-size:0.68rem;color:var(--warm);margin-top:3px">📋 ${membres.map(([,m])=>m.name).join(' · ')}</div>`;
-    }
-  }
+  if(r.groupeId){const membres=getGroupeMembers(r.groupeId);if(membres.length>1){groupeBadge=`<div class="rdv-groupe-badge">👥 Session groupée · ${membres.length} clientes</div>`;if(r.groupeLeader)groupeMembres=`<div style="font-size:0.68rem;color:var(--warm);margin-top:3px">📋 ${membres.map(([,m])=>m.name).join(' · ')}</div>`;}}
   const card=document.createElement('div');card.className='rdv-card '+p.color+(r.groupeId?' groupe':'');
   card.innerHTML=`${groupeBadge}<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${groupeMembres}${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div><div class="rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
   card.onclick=()=>openRdvModal(key);return card;
@@ -1033,30 +928,13 @@ function buildPlanning(){
   const s=dates[0],e=dates[6];
   document.getElementById('week-label').textContent=s.getDate()+' '+MONTHS_FR[s.getMonth()]+' – '+e.getDate()+' '+MONTHS_FR[e.getMonth()];
   const strip=document.getElementById('days-strip');strip.innerHTML='';
-  dates.forEach((d,i)=>{
-    const ds=fmtDate(d),pill=document.createElement('div'),cng=isConge(ds);
-    pill.className='day-pill'+(ds===selectedDay?' active':'')+(ds===today?' today':'')+(cng?' conge':'');
-    const count=Object.keys(DB.get('rdvs')).filter(k=>k.startsWith(ds+'_')).length;
-    pill.innerHTML=`<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count}</div>`;
-    pill.onclick=()=>{selectedDay=ds;buildPlanning();};strip.appendChild(pill);
-  });
+  dates.forEach((d,i)=>{const ds=fmtDate(d),pill=document.createElement('div'),cng=isConge(ds);pill.className='day-pill'+(ds===selectedDay?' active':'')+(ds===today?' today':'')+(cng?' conge':'');const count=Object.keys(DB.get('rdvs')).filter(k=>k.startsWith(ds+'_')).length;pill.innerHTML=`<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count}</div>`;pill.onclick=()=>{selectedDay=ds;buildPlanning();};strip.appendChild(pill);});
   const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7,cng=isConge(selectedDay);
   document.getElementById('day-title-wrap').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS_FR[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
   document.getElementById('conge-banner-wrap').innerHTML=cng?'<div class="conge-banner">🏖 Jour de congé</div>':'';
   const rdvs=DB.get('rdvs'),{blocked,travel}=getBlockedSlots(rdvs);
   const list=document.getElementById('slots-list');list.innerHTML='';
-  HOURS.forEach(h=>{
-    const key=rdvKey(selectedDay,h),item=document.createElement('div');
-    item.className='slot-item';
-    const timeEl=document.createElement('div');timeEl.className='slot-time';timeEl.textContent=h;
-    const area=document.createElement('div');area.className='slot-area';
-    if(rdvs[key]){area.className+=' has-rdv';area.appendChild(buildRdvCard(key,rdvs[key]));}
-    else if(cng){area.className+=' conge-slot';}
-    else if(blocked.has(key)){area.className+=' blocked';}
-    else if(travel.has(key)){area.className+=' travel';area.innerHTML='<div class="travel-label">🚗 Trajet</div>';}
-    else{area.className+=' empty';area.innerHTML='<span class="slot-add">＋</span>';area.onclick=()=>openRdvModal(null,h);}
-    item.appendChild(timeEl);item.appendChild(area);list.appendChild(item);
-  });
+  HOURS.forEach(h=>{const key=rdvKey(selectedDay,h),item=document.createElement('div');item.className='slot-item';const timeEl=document.createElement('div');timeEl.className='slot-time';timeEl.textContent=h;const area=document.createElement('div');area.className='slot-area';if(rdvs[key]){area.className+=' has-rdv';area.appendChild(buildRdvCard(key,rdvs[key]));}else if(cng){area.className+=' conge-slot';}else if(blocked.has(key)){area.className+=' blocked';}else if(travel.has(key)){area.className+=' travel';area.innerHTML='<div class="travel-label">🚗 Trajet</div>';}else{area.className+=' empty';area.innerHTML='<span class="slot-add">＋</span>';area.onclick=()=>openRdvModal(null,h);}item.appendChild(timeEl);item.appendChild(area);list.appendChild(item);});
   updateStats();
 }
 
@@ -1066,40 +944,17 @@ function buildMonth(){
   document.getElementById('week-label').textContent=mName.charAt(0).toUpperCase()+mName.slice(1);
   const firstDay=new Date(d.getFullYear(),d.getMonth(),1),lastDay=new Date(d.getFullYear(),d.getMonth()+1,0);
   let startDow=firstDay.getDay();if(startDow===0)startDow=7;
-  const cells=document.getElementById('month-cells');cells.innerHTML='';
-  const rdvs=DB.get('rdvs'),today=fmtDate(new Date());
+  const cells=document.getElementById('month-cells');cells.innerHTML='';const rdvs=DB.get('rdvs'),today=fmtDate(new Date());
   for(let i=1;i<startDow;i++){const prev=new Date(d.getFullYear(),d.getMonth(),1-(startDow-i));const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${prev.getDate()}</div>`;cells.appendChild(cell);}
-  for(let day=1;day<=lastDay.getDate();day++){
-    const dd=new Date(d.getFullYear(),d.getMonth(),day),ds=fmtDate(dd),cng=isConge(ds);
-    const cell=document.createElement('div');
-    cell.className='month-cell'+(ds===today?' today':'')+(ds===selectedDay?' selected':'')+(cng?' conge':'');
-    const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(ds+'_'));
-    cell.innerHTML=`<div class="cell-num">${day}</div><div class="cell-dots">${cng?'<div style="font-size:0.7rem">🏖</div>':dayRdvs.map(([,r])=>{const p=PRESTATIONS[r.prestation]||{color:'c-gold'};return`<div class="month-dot ${p.color}"></div>`;}).join('')}</div>`;
-    cell.onclick=()=>{selectedDay=ds;buildMonth();};cells.appendChild(cell);
-  }
-  const remaining=(7-cells.children.length%7)%7;
-  for(let i=1;i<=remaining;i++){const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${i}</div>`;cells.appendChild(cell);}
+  for(let day=1;day<=lastDay.getDate();day++){const dd=new Date(d.getFullYear(),d.getMonth(),day),ds=fmtDate(dd),cng=isConge(ds);const cell=document.createElement('div');cell.className='month-cell'+(ds===today?' today':'')+(ds===selectedDay?' selected':'')+(cng?' conge':'');const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(ds+'_'));cell.innerHTML=`<div class="cell-num">${day}</div><div class="cell-dots">${cng?'<div style="font-size:0.7rem">🏖</div>':dayRdvs.map(([,r])=>{const p=PRESTATIONS[r.prestation]||{color:'c-gold'};return`<div class="month-dot ${p.color}"></div>`;}).join('')}</div>`;cell.onclick=()=>{selectedDay=ds;buildMonth();};cells.appendChild(cell);}
+  const remaining=(7-cells.children.length%7)%7;for(let i=1;i<=remaining;i++){const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${i}</div>`;cells.appendChild(cell);}
   const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7,cng=isConge(selectedDay);
   document.getElementById('month-selected-day').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS_FR[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
   document.getElementById('month-conge-banner').innerHTML=cng?'<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>':'';
   const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
   const rdvList=document.getElementById('month-rdv-list');
   if(!dayRdvs.length){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}
-  else{
-    rdvList.innerHTML='';
-    dayRdvs.forEach(([key,r])=>{
-      const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40};
-      const c=r.tel?findClienteByTel(r.tel):null;
-      const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
-      const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
-      const codeLabel=c&&c.code?`<span class="rdv-code">${c.code}</span>`:'';
-      const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';
-      const groupeBadge=r.groupeId?`<span style="background:var(--gold);color:var(--deep);font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px">👥</span>`:'';
-      const item=document.createElement('div');item.className='month-rdv-item';
-      item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${key.split('_')[1]}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}${groupeBadge}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${netLine}<div style="margin-top:4px">${payB}</div></div></div><div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`;
-      item.onclick=()=>openRdvModal(key);rdvList.appendChild(item);
-    });
-  }
+  else{rdvList.innerHTML='';dayRdvs.forEach(([key,r])=>{const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40};const cv=r.tel?findClienteByTel(r.tel):null;const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';const codeLabel=cv&&cv.code?`<span class="rdv-code">${cv.code}</span>`:'';const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';const groupeBadge=r.groupeId?`<span style="background:var(--gold);color:var(--deep);font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px">👥</span>`:'';const item=document.createElement('div');item.className='month-rdv-item';item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${key.split('_')[1]}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}${groupeBadge}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${netLine}<div style="margin-top:4px">${payB}</div></div></div><div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`;item.onclick=()=>openRdvModal(key);rdvList.appendChild(item);});}
   updateStats();
 }
 
@@ -1115,98 +970,49 @@ function openRdvModal(key,defaultHour){
   document.getElementById('btn-ajouter-groupe').style.display=key?'none':'block';
   document.getElementById('groupe-info-box').style.display='none';
   currentRdvForWa=null;
-  if(key&&DB.get('rdvs')[key]){
-    const r=DB.get('rdvs')[key];currentRdvForWa=r;
-    document.getElementById('f-tel').value=r.tel||'';document.getElementById('f-name').value=r.name;
-    document.getElementById('f-date').value=key.split('_')[0];document.getElementById('f-time').value=r.time||key.split('_')[1];
-    document.getElementById('f-prestation').value=r.prestation||'classic_60';
-    document.getElementById('f-dep').value=r.dep?'1':'0';document.getElementById('f-km').value=r.km||'10';
-    document.getElementById('f-km-dist').value=r.kmDist||'';toggleDepFields();
-    document.getElementById('f-adresse').value=r.adresse||'';document.getElementById('f-details').value=r.details||'';
-    document.getElementById('f-prolongation').checked=r.prolongation||false;
-    document.getElementById('f-pourboire').value=r.pourboire||'';setPayment(r.payment||'especes');
-    if(r.tel)document.getElementById('btn-wa-rappel').style.display='flex';updateNetPreview();
-  }else{
-    ['f-tel','f-name','f-adresse','f-details','f-km-dist','f-pourboire'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-date').value=selectedDay;document.getElementById('f-time').value=defaultHour||'10:00';
-    document.getElementById('f-prestation').value='classic_60';document.getElementById('f-dep').value='0';
-    document.getElementById('f-km').value='10';document.getElementById('dep-group').style.display='none';
-    document.getElementById('f-prolongation').checked=false;setPayment('especes');
-    updateGroupeInfoBox();
-  }
+  if(key&&DB.get('rdvs')[key]){const r=DB.get('rdvs')[key];currentRdvForWa=r;document.getElementById('f-tel').value=r.tel||'';document.getElementById('f-name').value=r.name;document.getElementById('f-date').value=key.split('_')[0];document.getElementById('f-time').value=r.time||key.split('_')[1];document.getElementById('f-prestation').value=r.prestation||'classic_60';document.getElementById('f-dep').value=r.dep?'1':'0';document.getElementById('f-km').value=r.km||'10';document.getElementById('f-km-dist').value=r.kmDist||'';toggleDepFields();document.getElementById('f-adresse').value=r.adresse||'';document.getElementById('f-details').value=r.details||'';document.getElementById('f-prolongation').checked=r.prolongation||false;document.getElementById('f-pourboire').value=r.pourboire||'';setPayment(r.payment||'especes');if(r.tel)document.getElementById('btn-wa-rappel').style.display='flex';updateNetPreview();}
+  else{['f-tel','f-name','f-adresse','f-details','f-km-dist','f-pourboire'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-date').value=selectedDay;document.getElementById('f-time').value=defaultHour||'10:00';document.getElementById('f-prestation').value='classic_60';document.getElementById('f-dep').value='0';document.getElementById('f-km').value='10';document.getElementById('dep-group').style.display='none';document.getElementById('f-prolongation').checked=false;setPayment('especes');updateGroupeInfoBox();}
   openModal('overlay-rdv');setTimeout(()=>document.getElementById('f-tel').focus(),300);
 }
 
 function saveRdv(){
-  const name=document.getElementById('f-name').value.trim();
-  if(!name){document.getElementById('f-name').focus();return;}
+  const name=document.getElementById('f-name').value.trim();if(!name){document.getElementById('f-name').focus();return;}
   const date=document.getElementById('f-date').value||selectedDay,time=document.getElementById('f-time').value;
   const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
   if(editingRdvKey&&editingRdvKey!==newKey)delete rdvs[editingRdvKey];
   const depOn=document.getElementById('f-dep').value==='1';
-  const tel=document.getElementById('f-tel').value.trim();
-  const adresse=document.getElementById('f-adresse').value.trim();
-  const details=document.getElementById('f-details').value.trim();
+  const tel=document.getElementById('f-tel').value.trim(),adresse=document.getElementById('f-adresse').value.trim(),details=document.getElementById('f-details').value.trim();
   const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist:depOn?document.getElementById('f-km-dist').value:'',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
-  if(currentGroupeId){
-    rdvData.groupeId=currentGroupeId;
-    rdvData.groupeLeader=currentGroupeRdvs.length===0;
-    currentGroupeRdvs.push({...rdvData,key:newKey});
-  }
-  rdvs[newKey]=rdvData;DB.set('rdvs',rdvs);
-  syncCliente(name,tel,adresse,details);
-  selectedDay=date;
-  const allGroupeRdvs=[...currentGroupeRdvs];
-  currentGroupeId=null;currentGroupeRdvs=[];
+  if(currentGroupeId){rdvData.groupeId=currentGroupeId;rdvData.groupeLeader=currentGroupeRdvs.length===0;currentGroupeRdvs.push({...rdvData,key:newKey});}
+  rdvs[newKey]=rdvData;DB.set('rdvs',rdvs);syncCliente(name,tel,adresse,details);selectedDay=date;
+  const allGroupeRdvs=[...currentGroupeRdvs];currentGroupeId=null;currentGroupeRdvs=[];
   document.getElementById('tel-suggestions').style.display='none';
-  closeModal('overlay-rdv');
-  if(currentView==='semaine')buildPlanning();else buildMonth();
-  scheduleNotifs();
-  openConfirmModal(allGroupeRdvs.length>0?allGroupeRdvs[0]:rdvData, allGroupeRdvs.length>0?allGroupeRdvs:[rdvData]);
+  closeModal('overlay-rdv');if(currentView==='semaine')buildPlanning();else buildMonth();scheduleNotifs();
+  openConfirmModal(allGroupeRdvs.length>0?allGroupeRdvs[0]:rdvData,allGroupeRdvs.length>0?allGroupeRdvs:[rdvData]);
 }
 
-function deleteRdv(){
-  if(!editingRdvKey)return;
-  const rdvs=DB.get('rdvs');delete rdvs[editingRdvKey];DB.set('rdvs',rdvs);
-  closeModal('overlay-rdv');if(currentView==='semaine')buildPlanning();else buildMonth();
-}
+function deleteRdv(){if(!editingRdvKey)return;const rdvs=DB.get('rdvs');delete rdvs[editingRdvKey];DB.set('rdvs',rdvs);closeModal('overlay-rdv');if(currentView==='semaine')buildPlanning();else buildMonth();}
 
 function renderClientes(filter){
   let clientes=DB.get('clientes');
   if(filter)clientes=clientes.filter(c=>(c.prenom+' '+c.nom+' '+(c.tel||'')+' '+(c.code||'')).toLowerCase().includes(filter.toLowerCase()));
-  // Tri alphabétique par prénom
   clientes.sort((a,b)=>a.prenom.localeCompare(b.prenom,'fr'));
   const list=document.getElementById('clientes-list');list.innerHTML='';
   if(!clientes.length){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
-  // Grouper par lettre
-  const groups={};
-  clientes.forEach(c=>{const l=(c.prenom[0]||'?').toUpperCase();if(!groups[l])groups[l]=[];groups[l].push(c);});
+  const groups={};clientes.forEach(c=>{const l=(c.prenom[0]||'?').toUpperCase();if(!groups[l])groups[l]=[];groups[l].push(c);});
   Object.keys(groups).sort().forEach(lettre=>{
-    const header=document.createElement('div');header.className='alpha-header';
-    header.textContent=lettre;list.appendChild(header);
+    const header=document.createElement('div');header.className='alpha-header';header.textContent=lettre;list.appendChild(header);
     groups[lettre].forEach(c=>{
       const fidele=isFidele(c),seancesLeft=fidele?0:FIDELITE_SEUIL-(c.seances||0);
       const card=document.createElement('div');card.className='cliente-card'+(fidele?'':' pending');
       const assocCount=(c.assoc||[]).length;
-      card.innerHTML=`<div class="cliente-card-top"><div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}${assocCount>0?`<div class="cliente-sub">👥 ${assocCount} personne${assocCount>1?'s':''} associée${assocCount>1?'s':''}</div>`:''}</div><div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div></div><div class="cliente-actions"><button class="btn-planning" onclick="event.stopPropagation();quickRdvFromCliente('${c.id}')">📅 RDV</button><button class="btn-planning" style="background:var(--warm);color:white" onclick="event.stopPropagation();quickGroupeFromCliente('${c.id}')">👥 RDV groupé</button>${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞</button>`:''} ${c.adresse?`<button class="btn-waze-c" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️</button>`:''}<button class="btn-delete-c" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑</button></div>`;
+      card.innerHTML=`<div class="cliente-card-top"><div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}${assocCount>0?`<div class="cliente-sub">👥 ${assocCount} personne${assocCount>1?'s':''} associée${assocCount>1?'s':''}</div>`:''}</div><div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div></div><div class="cliente-actions"><button class="btn-planning" onclick="event.stopPropagation();quickRdvFromCliente('${c.id}')">📅 RDV</button><button class="btn-planning" style="background:var(--warm);color:white" onclick="event.stopPropagation();quickGroupeFromCliente('${c.id}')">👥 Groupé</button>${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞</button>`:''} ${c.adresse?`<button class="btn-waze-c" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️</button>`:''}<button class="btn-delete-c" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑</button></div>`;
       card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
     });
   });
 }
-
-function quickRdvFromCliente(id){
-  const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;
-  currentGroupeId=null;currentGroupeRdvs=[];
-  switchTab('planning');
-  setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';},350);},200);
-}
-function quickGroupeFromCliente(id){
-  const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;
-  currentGroupeId='grp-'+Date.now();currentGroupeRdvs=[];
-  switchTab('planning');
-  setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';updateGroupeInfoBox();},350);},200);
-}
-
+function quickRdvFromCliente(id){const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;currentGroupeId=null;currentGroupeRdvs=[];switchTab('planning');setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';},350);},200);}
+function quickGroupeFromCliente(id){const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;currentGroupeId='grp-'+Date.now();currentGroupeRdvs=[];switchTab('planning');setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';updateGroupeInfoBox();},350);},200);}
 function filterClientes(){renderClientes(document.getElementById('search-input').value);}
 
 function openClienteModal(id){
@@ -1216,51 +1022,24 @@ function openClienteModal(id){
   document.getElementById('btn-rdv-from-cliente').style.display=id?'block':'none';
   document.getElementById('btn-rdv-groupe-from-cliente').style.display=id?'block':'none';
   document.getElementById('historique-section').style.display='none';
-  document.getElementById('assoc-section-modal').style.display='none';
+  document.getElementById('assoc-section-modal').style.display='block';
+  document.getElementById('assoc-list-modal').innerHTML='';
   const cd=document.getElementById('c-code-display');
   if(id){
     const c=DB.get('clientes').find(x=>x.id===id);
     if(c){
-      document.getElementById('c-prenom').value=c.prenom||'';document.getElementById('c-nom').value=c.nom||'';
-      document.getElementById('c-tel').value=c.tel||'';document.getElementById('c-adresse').value=c.adresse||'';
-      document.getElementById('c-details').value=c.details||'';document.getElementById('c-source').value=c.source||'Instagram';
-      document.getElementById('c-seances').value=c.seances||0;document.getElementById('c-notes').value=c.notes||'';
-      if(c.code){cd.textContent='🏷️ '+c.code+' · ⭐ Cliente fidèle';cd.style.display='block';}
-      else if(c.seances>0){cd.textContent=`⏳ ${c.seances}/${FIDELITE_SEUIL} RDV`;cd.style.display='block';}
-      else cd.style.display='none';
-      // Personnes associées
-      assocPersonsTemp=[...(c.assoc||[])];
-      if(assocPersonsTemp.length>0)renderAssocModal();
-      else{document.getElementById('assoc-section-modal').style.display='block';document.getElementById('assoc-list-modal').innerHTML='';}
-      // Historique
+      document.getElementById('c-prenom').value=c.prenom||'';document.getElementById('c-nom').value=c.nom||'';document.getElementById('c-tel').value=c.tel||'';document.getElementById('c-adresse').value=c.adresse||'';document.getElementById('c-details').value=c.details||'';document.getElementById('c-source').value=c.source||'Instagram';document.getElementById('c-seances').value=c.seances||0;document.getElementById('c-notes').value=c.notes||'';
+      if(c.code){cd.textContent='🏷️ '+c.code+' · ⭐ Cliente fidèle';cd.style.display='block';}else if(c.seances>0){cd.textContent=`⏳ ${c.seances}/${FIDELITE_SEUIL} RDV`;cd.style.display='block';}else cd.style.display='none';
+      assocPersonsTemp=[...(c.assoc||[])];if(assocPersonsTemp.length>0)renderAssocModal();
       const rdvs=getClienteRdvs(id);
-      if(rdvs.length>0){
-        document.getElementById('historique-section').style.display='block';
-        const today=fmtDate(new Date());
-        document.getElementById('historique-list').innerHTML=rdvs.map(([key,r])=>{
-          const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
-          const date=key.split('_')[0];
-          const isUpcoming=date>=today;
-          const total=calcTotal(r,p);
-          const groupeTag=r.groupeId?` <span style="font-size:0.65rem;color:var(--gold)">👥</span>`:'';
-          return`<div class="historique-item${isUpcoming?' upcoming':''}"><div class="historique-date">${isUpcoming?'📅 ':'✅ '}${fmtDateFr(date)} à ${r.time}${groupeTag}<span class="historique-prix">${total}€</span></div><div class="historique-detail">${p.label}${r.prolongation?' · ⏱+20min':''}${r.adresse?' · 📍 '+r.adresse:''}</div></div>`;
-        }).join('');
-      }
+      if(rdvs.length>0){document.getElementById('historique-section').style.display='block';const today=fmtDate(new Date());document.getElementById('historique-list').innerHTML=rdvs.map(([key,r])=>{const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};const date=key.split('_')[0];const isUpcoming=date>=today;const total=calcTotal(r,p);return`<div class="historique-item${isUpcoming?' upcoming':''}"><div class="historique-date">${isUpcoming?'📅 ':'✅ '}${fmtDateFr(date)} à ${r.time}${r.groupeId?` <span style="font-size:0.65rem;color:var(--gold)">👥</span>`:''}<span class="historique-prix">${total}€</span></div><div class="historique-detail">${p.label}${r.prolongation?' · ⏱+20min':''}${r.adresse?' · '+r.adresse:''}</div></div>`;}).join('');}
     }
-  }else{
-    ['c-prenom','c-nom','c-tel','c-adresse','c-details','c-notes'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';cd.style.display='none';
-    document.getElementById('assoc-section-modal').style.display='block';document.getElementById('assoc-list-modal').innerHTML='';
-  }
+  }else{['c-prenom','c-nom','c-tel','c-adresse','c-details','c-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';cd.style.display='none';}
   openModal('overlay-cliente');setTimeout(()=>document.getElementById('c-prenom').focus(),300);
 }
-
 function saveCliente(){
-  const prenom=document.getElementById('c-prenom').value.trim();
-  if(!prenom){document.getElementById('c-prenom').focus();return;}
-  const clientes=DB.get('clientes');
-  const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;
-  const seances=parseInt(document.getElementById('c-seances').value)||0;
+  const prenom=document.getElementById('c-prenom').value.trim();if(!prenom){document.getElementById('c-prenom').focus();return;}
+  const clientes=DB.get('clientes');const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;const seances=parseInt(document.getElementById('c-seances').value)||0;
   const data={id:editingClienteId||Date.now().toString(),code:existing?.code||(seances>=FIDELITE_SEUIL?generateCode():null),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),adresse:document.getElementById('c-adresse').value.trim(),details:document.getElementById('c-details').value.trim(),source:document.getElementById('c-source').value,seances,notes:document.getElementById('c-notes').value.trim(),assoc:assocPersonsTemp};
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else clientes.push(data);
   DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
