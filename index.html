@@ -385,7 +385,7 @@
         <div class="tel-suggestions" id="tel-suggestions" style="display:none"></div>
       </div>
     </div>
-    <div class="form-group"><label>Prénom</label><input type="text" id="f-name" placeholder="Ex : Sophie"/></div>
+    <div class="form-group"><label>Prénom</label><input type="text" id="f-name" placeholder="Ex : Sophie" oninput="onNameInput()" autocomplete="off"/></div>
     <div class="form-row">
       <div class="form-group"><label>Date</label><input type="date" id="f-date"/></div>
       <div class="form-group"><label>Heure</label><input type="time" id="f-time" value="10:00"/></div>
@@ -499,7 +499,7 @@
     <div class="form-group"><label>📍 Adresse</label><input type="text" id="c-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
     <div class="form-group"><label>📝 Détails accès</label><input type="text" id="c-details" placeholder="2ème étage, code 1234..."/></div>
     <div class="form-row">
-      <div class="form-group"><label>Comment trouvée ?</label><select id="c-source"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Bouche à oreille">Bouche à oreille</option><option value="WhatsApp">WhatsApp</option><option value="Autre">Autre</option></select></div>
+      <div class="form-group"><label>Comment trouvée ?</label><select id="c-source"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Bouche à oreille">Bouche à oreille</option><option value="WhatsApp">WhatsApp</option><option value="Planning">Planning</option><option value="Autre">Autre</option></select></div>
       <div class="form-group"><label>Séances</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
     </div>
     <div class="form-group"><label>Notes</label><textarea id="c-notes" placeholder="Préférences de massage..."></textarea></div>
@@ -528,8 +528,8 @@
       <div class="cat-grid">
         <button class="cat-btn selected" id="cat-huile" onclick="selectCat('huile')">🧴 Huile massage</button>
         <button class="cat-btn" id="cat-serviette" onclick="selectCat('serviette')">🛁 Serviette</button>
-        <button class="cat-btn" id="cat-protection" onclick="selectCat('protection')">🛡️ Protection</button>
-        <button class="cat-btn" id="cat-bougie" onclick="selectCat('bougie')">🕯️ Bougie</button>
+        <button class="cat-btn" id="cat-protection" onclick="selectCat('protection')">🛡 Protection</button>
+        <button class="cat-btn" id="cat-bougie" onclick="selectCat('bougie')">🕯 Bougie</button>
         <button class="cat-btn" id="cat-transport" onclick="selectCat('transport')">🚗 Transport</button>
         <button class="cat-btn" id="cat-autre" onclick="selectCat('autre')">📦 Autre</button>
       </div>
@@ -572,7 +572,7 @@ const PRESTATIONS={
   drainage_30:{label:'Drainage 1 zone 30min',duree:30,prix:35,color:'c-purple'},
   drainage_75:{label:'Drainage corps 1h15',duree:75,prix:65,color:'c-purple'},
 };
-const CAT_ICONS={huile:'🧴',serviette:'🛁',protection:'🛡️',bougie:'🕯️',transport:'🚗',autre:'📦'};
+const CAT_ICONS={huile:'🧴',serviette:'🛁',protection:'🛡',bougie:'🕯',transport:'🚗',autre:'📦'};
 const CAT_LABELS={huile:'Huile massage',serviette:'Serviette',protection:'Protection',bougie:'Bougie',transport:'Transport',autre:'Autre'};
 const HOURS=[];
 for(let h=8;h<=23;h++){HOURS.push(`${String(h).padStart(2,'0')}:00`);if(h<23)HOURS.push(`${String(h).padStart(2,'0')}:30`);}
@@ -598,8 +598,22 @@ function timeToMins(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
 function minsToTime(m){return`${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
 function isConge(date){return DB.get('conges').includes(date);}
 function normTel(t){return t?t.replace(/\s/g,''):'';}
-function isFidele(c){return(c.seances||0)>=FIDELITE_SEUIL;}
 function fmtDateFr(ds){const d=new Date(ds+'T12:00:00'),di=(d.getDay()+6)%7;return DAYS_LONG[di]+' '+d.getDate()+' '+MONTHS_FR[d.getMonth()]+' '+d.getFullYear();}
+
+// ── OUTILS RECHERCHE RÉPERTOIRE ──
+function stripAcc(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
+function telKey(t){let d=String(t||'').replace(/\D/g,'');if(d.startsWith('0033'))d='0'+d.slice(4);else if(d.startsWith('33')&&d.length>=11)d='0'+d.slice(2);return d;}
+function codeKey(c){return stripAcc(c).replace(/[^a-z0-9]/g,'');}
+function nextCode(list){const n=list.map(c=>{const m=(c.code||'').match(/YM-(\d+)/);return m?parseInt(m[1]):0;});return'YM-'+String((n.length?Math.max(...n):0)+1).padStart(3,'0');}
+function isFidele(c){return !!c.code||(c.seances||0)>=FIDELITE_SEUIL;}
+function matchCliente(c,q){
+  const qa=stripAcc(q).trim();if(!qa)return true;
+  const qd=telKey(q),qc=codeKey(q);
+  if(stripAcc((c.prenom||'')+' '+(c.nom||'')).includes(qa))return true;
+  if(qc&&codeKey(c.code).includes(qc))return true;
+  if(qd.length>=3&&telKey(c.tel).includes(qd))return true;
+  return(c.assoc||[]).some(a=>stripAcc(a.prenom).includes(qa)||(qd.length>=3&&telKey(a.tel).includes(qd)));
+}
 
 // ── ESSENCE ──
 function getEssence(){return DB.getObj('essence',{prix:0,conso:5.5});}
@@ -708,7 +722,7 @@ function getTotalCartesCA(){
 function getGroupeMembers(gId){const rdvs=DB.get('rdvs');return Object.entries(rdvs).filter(([,r])=>r.groupeId===gId).sort((a,b)=>a[0].localeCompare(b[0]));}
 function updateGroupeInfoBox(){
   const box=document.getElementById('groupe-info-box'),ml=document.getElementById('groupe-membres-list');
-  if(currentGroupeRdvs.length>0){box.style.display='block';ml.innerHTML=currentGroupeRdvs.map(r=>`<div class="groupe-membre-item"><span>💆‍♀️ ${r.name}</span><span>${r.time} · ${calcTotal(r,PRESTATIONS[r.prestation]||{prix:40})}€</span></div>`).join('');}
+  if(currentGroupeRdvs.length>0){box.style.display='block';ml.innerHTML=currentGroupeRdvs.map(r=>`<div class="groupe-membre-item"><span>💆♀ ${r.name}</span><span>${r.time} · ${calcTotal(r,PRESTATIONS[r.prestation]||{prix:40})}€</span></div>`).join('');}
   else box.style.display='none';
 }
 function saveRdvAndAddGroupe(){
@@ -768,32 +782,32 @@ function sendWaRappel(){if(!currentRdvForWa?.tel){alert('Pas de numéro !');retu
 function sendWaFromCard(key){const r=DB.get('rdvs')[key];if(!r||!r.tel)return;currentRdvForWa=r;sendWaRappel();}
 
 // ── CLIENTES ──
-function generateCode(){const nums=DB.get('clientes').map(c=>{const m=(c.code||'').match(/YM-(\d+)/);return m?parseInt(m[1]):0;});return'YM-'+String((nums.length?Math.max(...nums):0)+1).padStart(3,'0');}
-function findClienteByTel(tel){if(!tel)return null;return DB.get('clientes').find(c=>normTel(c.tel)===normTel(tel))||null;}
-function onTelInput(){
-  const tel=document.getElementById('f-tel').value,sugg=document.getElementById('tel-suggestions');
-  if(tel.length<4){sugg.style.display='none';return;}
-  const matches=DB.get('clientes').filter(c=>normTel(c.tel).includes(normTel(tel)));
-  if(!matches.length){sugg.style.display='none';return;}
-  sugg.innerHTML=matches.slice(0,5).map(c=>`<div class="tel-suggestion-item" onclick="selectSugg('${c.id}')">${c.prenom} ${c.nom||''} ${isFidele(c)?`<span class="tel-suggestion-code">${c.code||''}</span>`:`<span style="font-size:0.6rem;color:var(--warm)">(${c.seances||0}/3)</span>`}<div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div></div>`).join('');
-  sugg.style.display='block';
+function findClienteByTel(tel){const k=telKey(tel);if(!k)return null;return DB.get('clientes').find(c=>telKey(c.tel)===k)||null;}
+function showSugg(list){
+  const s=document.getElementById('tel-suggestions');
+  if(!list.length){s.style.display='none';return;}
+  s.innerHTML=list.slice(0,5).map(c=>`<div class="tel-suggestion-item" onclick="selectSugg('${c.id}')">${c.prenom} ${c.nom||''}<span class="tel-suggestion-code">${c.code||''}</span><div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div></div>`).join('');
+  s.style.display='block';
 }
+function onTelInput(){const v=document.getElementById('f-tel').value;if(telKey(v).length<3){showSugg([]);return;}showSugg(DB.get('clientes').filter(c=>matchCliente(c,v)));}
+function onNameInput(){const v=document.getElementById('f-name').value.trim();if(v.length<2){showSugg([]);return;}showSugg(DB.get('clientes').filter(c=>matchCliente(c,v)));}
 function selectSugg(id){const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom||'';document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';document.getElementById('tel-suggestions').style.display='none';}
 function syncCliente(name,tel,adresse,details){
-  if(!name)return;const clientes=DB.get('clientes');
-  let idx=normTel(tel)?clientes.findIndex(c=>normTel(c.tel)===normTel(tel)):-1;
-  if(idx<0)idx=clientes.findIndex(c=>c.prenom.toLowerCase()===name.toLowerCase());
-  if(idx>=0){if(tel)clientes[idx].tel=tel;if(adresse)clientes[idx].adresse=adresse;if(details)clientes[idx].details=details;if(!editingRdvKey)clientes[idx].seances=(clientes[idx].seances||0)+1;if(!clientes[idx].code&&isFidele(clientes[idx]))clientes[idx].code=generateCode();DB.set('clientes',clientes);}
-  else{DB.set('clientes',[...clientes,{id:Date.now().toString(),code:null,prenom:name,nom:'',tel:tel||'',adresse:adresse||'',details:details||'',source:'Planning',seances:1,notes:'',assoc:[]}]);}
+  if(!name)return;const clientes=DB.get('clientes'),k=telKey(tel),n=stripAcc(name).trim();
+  let idx=k?clientes.findIndex(c=>telKey(c.tel)===k):-1;
+  if(idx<0)idx=clientes.findIndex(c=>stripAcc(c.prenom).trim()===n&&(!k||!telKey(c.tel)));
+  if(idx>=0){const c=clientes[idx];if(tel)c.tel=tel;if(adresse)c.adresse=adresse;if(details)c.details=details;if(!editingRdvKey)c.seances=(c.seances||0)+1;if(!c.code)c.code=nextCode(clientes);}
+  else clientes.push({id:Date.now().toString(),code:nextCode(clientes),prenom:name,nom:'',tel:tel||'',adresse:adresse||'',details:details||'',source:'Planning',seances:1,notes:'',assoc:[]});
+  DB.set('clientes',clientes);
 }
 function deleteClienteDirectly(id,nom){if(confirm(`Supprimer ${nom.trim()} du répertoire ?`)){DB.set('clientes',DB.get('clientes').filter(c=>c.id!==id));renderClientes();}}
 function confirmDeleteCliente(){if(!editingClienteId)return;const c=DB.get('clientes').find(x=>x.id===editingClienteId);if(confirm(`Supprimer ${c?c.prenom+' '+(c.nom||''):'cette cliente'} ?`)){DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));closeModal('overlay-cliente');renderClientes();}}
 function getClienteRdvs(cId){
   const c=DB.get('clientes').find(x=>x.id===cId);if(!c)return[];
   const rdvs=DB.get('rdvs');
-  const allTels=[normTel(c.tel),...(c.assoc||[]).map(a=>normTel(a.tel)).filter(Boolean)];
-  const allNames=[c.prenom.toLowerCase(),...(c.assoc||[]).map(a=>a.prenom.toLowerCase())];
-  return Object.entries(rdvs).filter(([,r])=>{const t=normTel(r.tel),n=(r.name||'').toLowerCase();return(t&&allTels.includes(t))||(allNames.includes(n));}).sort((a,b)=>b[0].localeCompare(a[0]));
+  const allTels=[telKey(c.tel),...(c.assoc||[]).map(a=>telKey(a.tel)).filter(Boolean)].filter(Boolean);
+  const allNames=[stripAcc(c.prenom).trim(),...(c.assoc||[]).map(a=>stripAcc(a.prenom).trim())];
+  return Object.entries(rdvs).filter(([,r])=>{const t=telKey(r.tel),n=stripAcc(r.name).trim();return(t&&allTels.includes(t))||(allNames.includes(n));}).sort((a,b)=>b[0].localeCompare(a[0]));
 }
 function addAssocPerson(){const p=prompt('Prénom ?');if(!p)return;const t=prompt('Téléphone (optionnel) ?')||'';assocPersonsTemp.push({prenom:p,tel:t,id:'assoc-'+Date.now()});renderAssocModal();}
 function renderAssocModal(){const s=document.getElementById('assoc-section-modal'),l=document.getElementById('assoc-list-modal');s.style.display='block';l.innerHTML=assocPersonsTemp.map((p,i)=>`<div class="assoc-item"><span>👤 ${p.prenom}${p.tel?' · 📞 '+p.tel:''}</span><button onclick="removeAssoc(${i})" style="background:none;border:none;color:var(--rose);cursor:pointer">✕</button></div>`).join('');}
@@ -819,7 +833,7 @@ function callTel(tel){window.location.href='tel:'+normTel(tel);}
 function openWaze(a){window.location.href=`waze://?q=${encodeURIComponent(a)}&navigate=yes`;setTimeout(()=>window.open(`https://waze.com/ul?q=${encodeURIComponent(a)}&navigate=yes`,'_blank'),1500);}
 function showNotifBanner(){const w=document.getElementById('notif-banner-wrap');if(!('Notification'in window)){w.innerHTML='';return;}if(Notification.permission==='granted')w.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';else if(Notification.permission==='denied')w.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';else w.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications 👆</div>';}
 async function askNotif(){await Notification.requestPermission();showNotifBanner();scheduleNotifs();}
-function scheduleNotifs(){if(Notification.permission!=='granted')return;const rdvs=DB.get('rdvs'),now=Date.now();Object.entries(rdvs).forEach(([key,r])=>{const[date,time]=key.split('_'),delay=new Date(date+'T'+time+':00').getTime()-3600000-now;if(delay>0&&delay<604800000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆‍♀️ ${r.name} · ${p?p.label:'Massage'} à ${time}`});},delay);});}
+function scheduleNotifs(){if(Notification.permission!=='granted')return;const rdvs=DB.get('rdvs'),now=Date.now();Object.entries(rdvs).forEach(([key,r])=>{const[date,time]=key.split('_'),delay=new Date(date+'T'+time+':00').getTime()-3600000-now;if(delay>0&&delay<604800000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆♀ ${r.name} · ${p?p.label:'Massage'} à ${time}`});},delay);});}
 function setView(v){currentView=v;document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';document.getElementById('view-mois').style.display=v==='mois'?'block':'none';document.getElementById('btn-semaine').classList.toggle('active',v==='semaine');document.getElementById('btn-mois').classList.toggle('active',v==='mois');if(v==='semaine')buildPlanning();else buildMonth();}
 function navPrev(){if(currentView==='semaine'){weekOffset--;buildPlanning();}else{monthOffset--;buildMonth();}}
 function navNext(){if(currentView==='semaine'){weekOffset++;buildPlanning();}else{monthOffset++;buildMonth();}}
@@ -919,7 +933,7 @@ function buildRdvCard(key,r){
   let groupeBadge='',groupeMembres='';
   if(r.groupeId){const membres=getGroupeMembers(r.groupeId);if(membres.length>1){groupeBadge=`<div class="rdv-groupe-badge">👥 Session groupée · ${membres.length} clientes</div>`;if(r.groupeLeader)groupeMembres=`<div style="font-size:0.68rem;color:var(--warm);margin-top:3px">📋 ${membres.map(([,m])=>m.name).join(' · ')}</div>`;}}
   const card=document.createElement('div');card.className='rdv-card '+p.color+(r.groupeId?' groupe':'');
-  card.innerHTML=`${groupeBadge}<div class="rdv-name">💆‍♀️ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${groupeMembres}${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div><div class="rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
+  card.innerHTML=`${groupeBadge}<div class="rdv-name">💆♀ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${groupeMembres}${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺</div>`:''}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div><div class="rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
   card.onclick=()=>openRdvModal(key);return card;
 }
 
@@ -954,7 +968,7 @@ function buildMonth(){
   const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
   const rdvList=document.getElementById('month-rdv-list');
   if(!dayRdvs.length){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}
-  else{rdvList.innerHTML='';dayRdvs.forEach(([key,r])=>{const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40};const cv=r.tel?findClienteByTel(r.tel):null;const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';const codeLabel=cv&&cv.code?`<span class="rdv-code">${cv.code}</span>`:'';const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';const groupeBadge=r.groupeId?`<span style="background:var(--gold);color:var(--deep);font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px">👥</span>`:'';const item=document.createElement('div');item.className='month-rdv-item';item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${key.split('_')[1]}</div><div class="month-rdv-info"><div class="month-rdv-name">💆‍♀️ ${r.name} ${codeLabel}${groupeBadge}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺️</div>`:''}${netLine}<div style="margin-top:4px">${payB}</div></div></div><div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`;item.onclick=()=>openRdvModal(key);rdvList.appendChild(item);});}
+  else{rdvList.innerHTML='';dayRdvs.forEach(([key,r])=>{const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40};const cv=r.tel?findClienteByTel(r.tel):null;const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';const codeLabel=cv&&cv.code?`<span class="rdv-code">${cv.code}</span>`:'';const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';const groupeBadge=r.groupeId?`<span style="background:var(--gold);color:var(--deep);font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px">👥</span>`:'';const item=document.createElement('div');item.className='month-rdv-item';item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${key.split('_')[1]}</div><div class="month-rdv-info"><div class="month-rdv-name">💆♀ ${r.name} ${codeLabel}${groupeBadge}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺</div>`:''}${netLine}<div style="margin-top:4px">${payB}</div></div></div><div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`;item.onclick=()=>openRdvModal(key);rdvList.appendChild(item);});}
   updateStats();
 }
 
@@ -962,7 +976,7 @@ function openRdvModal(key,defaultHour){
   if(isConge(selectedDay)&&!key){alert('Jour de congé 🏖');return;}
   editingRdvKey=key||null;
   if(!key&&!currentGroupeId){currentGroupeId=null;currentGroupeRdvs=[];}
-  document.getElementById('rdv-modal-title').textContent=key?'✏️ Modifier le RDV':'➕ Nouveau RDV';
+  document.getElementById('rdv-modal-title').textContent=key?'✏ Modifier le RDV':'➕ Nouveau RDV';
   document.getElementById('btn-delete-rdv').style.display=key?'block':'none';
   document.getElementById('btn-wa-rappel').style.display='none';
   document.getElementById('tel-suggestions').style.display='none';
@@ -995,18 +1009,18 @@ function deleteRdv(){if(!editingRdvKey)return;const rdvs=DB.get('rdvs');delete r
 
 function renderClientes(filter){
   let clientes=DB.get('clientes');
-  if(filter)clientes=clientes.filter(c=>(c.prenom+' '+c.nom+' '+(c.tel||'')+' '+(c.code||'')).toLowerCase().includes(filter.toLowerCase()));
-  clientes.sort((a,b)=>a.prenom.localeCompare(b.prenom,'fr'));
+  if(filter)clientes=clientes.filter(c=>matchCliente(c,filter));
+  clientes.sort((a,b)=>(a.prenom||'').localeCompare(b.prenom||'','fr'));
   const list=document.getElementById('clientes-list');list.innerHTML='';
   if(!clientes.length){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
-  const groups={};clientes.forEach(c=>{const l=(c.prenom[0]||'?').toUpperCase();if(!groups[l])groups[l]=[];groups[l].push(c);});
+  const groups={};clientes.forEach(c=>{const l=stripAcc((c.prenom||'?')[0]||'?').toUpperCase();if(!groups[l])groups[l]=[];groups[l].push(c);});
   Object.keys(groups).sort().forEach(lettre=>{
     const header=document.createElement('div');header.className='alpha-header';header.textContent=lettre;list.appendChild(header);
     groups[lettre].forEach(c=>{
       const fidele=isFidele(c),seancesLeft=fidele?0:FIDELITE_SEUIL-(c.seances||0);
       const card=document.createElement('div');card.className='cliente-card'+(fidele?'':' pending');
       const assocCount=(c.assoc||[]).length;
-      card.innerHTML=`<div class="cliente-card-top"><div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}${assocCount>0?`<div class="cliente-sub">👥 ${assocCount} personne${assocCount>1?'s':''} associée${assocCount>1?'s':''}</div>`:''}</div><div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div></div><div class="cliente-actions"><button class="btn-planning" onclick="event.stopPropagation();quickRdvFromCliente('${c.id}')">📅 RDV</button><button class="btn-planning" style="background:var(--warm);color:white" onclick="event.stopPropagation();quickGroupeFromCliente('${c.id}')">👥 Groupé</button>${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞</button>`:''} ${c.adresse?`<button class="btn-waze-c" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺️</button>`:''}<button class="btn-delete-c" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑</button></div>`;
+      card.innerHTML=`<div class="cliente-card-top"><div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}${assocCount>0?`<div class="cliente-sub">👥 ${assocCount} personne${assocCount>1?'s':''} associée${assocCount>1?'s':''}</div>`:''}</div><div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div></div><div class="cliente-actions"><button class="btn-planning" onclick="event.stopPropagation();quickRdvFromCliente('${c.id}')">📅 RDV</button><button class="btn-planning" style="background:var(--warm);color:white" onclick="event.stopPropagation();quickGroupeFromCliente('${c.id}')">👥 Groupé</button>${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞</button>`:''} ${c.adresse?`<button class="btn-waze-c" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺</button>`:''}<button class="btn-delete-c" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑</button></div>`;
       card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
     });
   });
@@ -1017,7 +1031,7 @@ function filterClientes(){renderClientes(document.getElementById('search-input')
 
 function openClienteModal(id){
   editingClienteId=id||null;assocPersonsTemp=[];
-  document.getElementById('cliente-modal-title').textContent=id?'✏️ Modifier':'➕ Nouvelle cliente';
+  document.getElementById('cliente-modal-title').textContent=id?'✏ Modifier':'➕ Nouvelle cliente';
   document.getElementById('btn-delete-cliente').style.display=id?'block':'none';
   document.getElementById('btn-rdv-from-cliente').style.display=id?'block':'none';
   document.getElementById('btn-rdv-groupe-from-cliente').style.display=id?'block':'none';
@@ -1029,7 +1043,7 @@ function openClienteModal(id){
     const c=DB.get('clientes').find(x=>x.id===id);
     if(c){
       document.getElementById('c-prenom').value=c.prenom||'';document.getElementById('c-nom').value=c.nom||'';document.getElementById('c-tel').value=c.tel||'';document.getElementById('c-adresse').value=c.adresse||'';document.getElementById('c-details').value=c.details||'';document.getElementById('c-source').value=c.source||'Instagram';document.getElementById('c-seances').value=c.seances||0;document.getElementById('c-notes').value=c.notes||'';
-      if(c.code){cd.textContent='🏷️ '+c.code+' · ⭐ Cliente fidèle';cd.style.display='block';}else if(c.seances>0){cd.textContent=`⏳ ${c.seances}/${FIDELITE_SEUIL} RDV`;cd.style.display='block';}else cd.style.display='none';
+      if(c.code){cd.textContent='🏷 '+c.code+((c.seances||0)>=FIDELITE_SEUIL?' · ⭐ Cliente fidèle':'');cd.style.display='block';}else cd.style.display='none';
       assocPersonsTemp=[...(c.assoc||[])];if(assocPersonsTemp.length>0)renderAssocModal();
       const rdvs=getClienteRdvs(id);
       if(rdvs.length>0){document.getElementById('historique-section').style.display='block';const today=fmtDate(new Date());document.getElementById('historique-list').innerHTML=rdvs.map(([key,r])=>{const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};const date=key.split('_')[0];const isUpcoming=date>=today;const total=calcTotal(r,p);return`<div class="historique-item${isUpcoming?' upcoming':''}"><div class="historique-date">${isUpcoming?'📅 ':'✅ '}${fmtDateFr(date)} à ${r.time}${r.groupeId?` <span style="font-size:0.65rem;color:var(--gold)">👥</span>`:''}<span class="historique-prix">${total}€</span></div><div class="historique-detail">${p.label}${r.prolongation?' · ⏱+20min':''}${r.adresse?' · '+r.adresse:''}</div></div>`;}).join('');}
@@ -1039,8 +1053,8 @@ function openClienteModal(id){
 }
 function saveCliente(){
   const prenom=document.getElementById('c-prenom').value.trim();if(!prenom){document.getElementById('c-prenom').focus();return;}
-  const clientes=DB.get('clientes');const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;const seances=parseInt(document.getElementById('c-seances').value)||0;
-  const data={id:editingClienteId||Date.now().toString(),code:existing?.code||(seances>=FIDELITE_SEUIL?generateCode():null),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),adresse:document.getElementById('c-adresse').value.trim(),details:document.getElementById('c-details').value.trim(),source:document.getElementById('c-source').value,seances,notes:document.getElementById('c-notes').value.trim(),assoc:assocPersonsTemp};
+  const clientes=DB.get('clientes');const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;
+  const data={id:editingClienteId||Date.now().toString(),code:existing?.code||nextCode(clientes),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),adresse:document.getElementById('c-adresse').value.trim(),details:document.getElementById('c-details').value.trim(),source:document.getElementById('c-source').value,seances:parseInt(document.getElementById('c-seances').value)||0,notes:document.getElementById('c-notes').value.trim(),assoc:assocPersonsTemp};
   if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else clientes.push(data);
   DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
 }
@@ -1048,6 +1062,21 @@ function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');editingRdvKey=null;editingClienteId=null;}
 document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
 document.addEventListener('click',e=>{if(!e.target.closest('.tel-input-wrap'))document.getElementById('tel-suggestions').style.display='none';});
+
+// ── RECONSTRUCTION DU RÉPERTOIRE À PARTIR DES RDV (une seule fois) ──
+(function(){try{
+  if(localStorage.getItem('youss-migr-rep-v1'))return;
+  const clientes=DB.get('clientes'),rdvs=Object.values(DB.get('rdvs')),count={};
+  rdvs.forEach(r=>{if(!r.name)return;const k=telKey(r.tel),n=stripAcc(r.name).trim();
+    let c=k?clientes.find(x=>telKey(x.tel)===k):null;
+    if(!c)c=clientes.find(x=>stripAcc(x.prenom).trim()===n&&(!k||!telKey(x.tel)));
+    if(!c){c={id:Date.now()+'-'+clientes.length,code:null,prenom:r.name,nom:'',tel:r.tel||'',adresse:r.adresse||'',details:r.details||'',source:'Planning',seances:0,notes:'',assoc:[]};clientes.push(c);}
+    else if(!c.tel&&r.tel)c.tel=r.tel;
+    count[c.id]=(count[c.id]||0)+1;});
+  clientes.forEach(c=>{c.seances=Math.max(c.seances||0,count[c.id]||0);if(!c.code)c.code=nextCode(clientes);});
+  DB.set('clientes',clientes);localStorage.setItem('youss-migr-rep-v1','1');
+}catch(e){console.error(e);}})();
+
 updateEssenceBanner();showNotifBanner();buildPlanning();
 </script>
 </body>
