@@ -1,1083 +1,223 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="Youss Mass"/>
-  <meta name="theme-color" content="#3b2a2a"/>
-  <title>Youss Mass à Dom</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --cream: #f5efe6; --sand: #e8d9c4; --rose: #c97b6e; --deep: #3b2a2a; --warm: #8b5e52; --gold: #c4a46b; --green: #7a9e7e; --white: #ffffff; }
-    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
-    body { background: var(--cream); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--deep); min-height: 100vh; padding-bottom: 90px; overscroll-behavior: none; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--deep); display: flex; border-top: 2px solid var(--gold); z-index: 200; padding-bottom: env(safe-area-inset-bottom); }
-    .nav-tab { flex: 1; padding: 10px 0 8px; text-align: center; cursor: pointer; color: var(--warm); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.07em; transition: color 0.2s; }
-    .nav-tab .tab-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
-    .nav-tab.active { color: var(--gold); }
-    .page { display: none; } .page.active { display: block; }
-    .header { background: var(--deep); padding: 14px 16px 12px; position: sticky; top: 0; z-index: 100; }
-    .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .brand { font-size: 1.1rem; color: var(--cream); font-weight: 700; }
-    .brand em { color: var(--gold); font-style: italic; }
-    .today-btn { background: var(--rose); color: white; border: none; border-radius: 16px; padding: 5px 13px; font-size: 0.78rem; cursor: pointer; font-family: inherit; }
-    .view-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
-    .view-btn { flex: 1; padding: 7px; border-radius: 10px; border: 1.5px solid rgba(196,164,107,0.3); background: rgba(255,255,255,0.08); color: var(--sand); font-size: 0.75rem; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.2s; }
-    .view-btn.active { background: var(--gold); color: var(--deep); border-color: var(--gold); font-weight: 700; }
-    .week-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(196,164,107,0.3); color: var(--gold); width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-    #week-label { font-size: 0.82rem; color: var(--sand); text-align: center; flex: 1; }
-    .period-banner { margin: 0 14px 6px; background: var(--deep); border: 1.5px solid var(--gold); border-radius: 12px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
-    .period-banner-label { font-size: 0.7rem; color: var(--sand); text-transform: uppercase; letter-spacing: 0.08em; }
-    .period-banner-val { font-size: 1.1rem; font-weight: 700; color: var(--gold); }
-    .stats { display: flex; gap: 6px; padding: 6px 14px 4px; flex-wrap: wrap; }
-    .stat { flex: 1; min-width: 60px; background: var(--white); border-radius: 12px; padding: 8px 4px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
-    .stat-val { font-size: 1rem; color: var(--rose); font-weight: 700; }
-    .stat-lbl { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warm); margin-top: 2px; }
-    .stats-pay { display: flex; gap: 6px; padding: 4px 14px 6px; flex-wrap: wrap; }
-    .stat-pay { flex: 1; min-width: 70px; border-radius: 12px; padding: 7px 4px; text-align: center; }
-    .stat-pay.especes { background: #eaf3eb; }
-    .stat-pay.virement { background: #e6eef8; }
-    .stat-pay.essence { background: #fdf3e3; }
-    .stat-pay-val { font-size: 0.95rem; font-weight: 700; }
-    .stat-pay.especes .stat-pay-val { color: var(--green); }
-    .stat-pay.virement .stat-pay-val { color: #5b8ac9; }
-    .stat-pay.essence .stat-pay-val { color: var(--gold); }
-    .stat-pay-lbl { font-size: 0.54rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--warm); margin-top: 1px; }
-    .essence-banner { margin: 0 14px 8px; background: #fdf3e3; border: 1.5px solid var(--gold); border-radius: 12px; padding: 8px 14px; font-size: 0.78rem; color: var(--deep); display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .days-strip { display: flex; overflow-x: auto; gap: 7px; padding: 8px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-    .days-strip::-webkit-scrollbar { display: none; }
-    .day-pill { flex-shrink: 0; background: var(--white); border-radius: 14px; padding: 8px 12px; text-align: center; cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 8px rgba(59,42,42,0.06); min-width: 54px; transition: all 0.15s; }
-    .day-pill.active { background: var(--deep); border-color: var(--gold); }
-    .day-pill.today { border-color: var(--rose); }
-    .day-pill.conge { background: #fbe8e6; border-color: var(--rose); }
-    .day-pill.active.conge { background: #c0392b; border-color: #c0392b; }
-    .day-pill .dname { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); }
-    .day-pill.active .dname { color: var(--sand); }
-    .day-pill .dnum { font-size: 1.2rem; font-weight: 700; color: var(--deep); margin-top: 1px; }
-    .day-pill.active .dnum { color: var(--gold); }
-    .day-pill.today .dnum { color: var(--rose); }
-    .day-pill.conge .dnum { color: var(--rose); }
-    .day-pill.active.today .dnum { color: var(--gold); }
-    .day-badge { width: 16px; height: 16px; background: var(--rose); border-radius: 50%; font-size: 0.55rem; color: white; display: flex; align-items: center; justify-content: center; margin: 3px auto 0; font-weight: 700; }
-    .day-badge.hidden { visibility: hidden; }
-    .day-title { font-size: 0.95rem; font-weight: 600; padding: 2px 16px 8px; font-style: italic; color: var(--warm); display: flex; align-items: center; justify-content: space-between; padding-right: 14px; }
-    .btn-conge { font-size: 0.72rem; padding: 4px 10px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-weight: 700; }
-    .btn-conge.off { background: #fbe8e6; color: var(--rose); }
-    .btn-conge.on { background: var(--rose); color: white; }
-    .conge-banner { background: #fbe8e6; border: 1.5px solid var(--rose); border-radius: 12px; margin: 0 14px 10px; padding: 12px 14px; text-align: center; color: var(--rose); font-weight: 700; font-size: 0.9rem; }
-    .slots-list { padding: 0 14px; }
-    .slot-item { display: flex; align-items: stretch; gap: 8px; margin-bottom: 5px; min-height: 48px; }
-    .slot-time { font-size: 0.68rem; color: var(--warm); width: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; font-weight: 600; }
-    .slot-area { flex: 1; border-radius: 11px; min-height: 48px; cursor: pointer; position: relative; transition: background 0.15s; }
-    .slot-area.empty { border: 1.5px dashed var(--sand); }
-    .slot-area.empty:active { background: #fdf5ee; }
-    .slot-area.blocked { background: var(--sand); opacity: 0.4; cursor: default; }
-    .slot-area.travel { background: #f0e6d9; opacity: 0.6; cursor: default; border: 1.5px dashed var(--gold); }
-    .slot-area.travel .travel-label { font-size: 0.65rem; color: var(--warm); display: flex; align-items: center; justify-content: center; height: 100%; font-style: italic; }
-    .slot-area.conge-slot { background: #fbe8e6; opacity: 0.5; cursor: default; }
-    .slot-add { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--sand); }
-    .rdv-card { border-radius: 11px; padding: 9px 13px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-    .rdv-card.c-rose { background: #fbe8e6; border-left: 3px solid var(--rose); }
-    .rdv-card.c-gold { background: #fdf3e3; border-left: 3px solid var(--gold); }
-    .rdv-card.c-green { background: #eaf3eb; border-left: 3px solid var(--green); }
-    .rdv-card.c-blue { background: #e6eef8; border-left: 3px solid #5b8ac9; }
-    .rdv-card.c-purple { background: #f0e6f8; border-left: 3px solid #9b6bc9; }
-    .rdv-card.groupe { border-top: 2px solid var(--gold); }
-    .rdv-name { font-weight: 700; font-size: 0.92rem; }
-    .rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
-    .rdv-address { font-size: 0.7rem; color: #5b8ac9; margin-top: 3px; cursor: pointer; text-decoration: underline; }
-    .rdv-phone { font-size: 0.7rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
-    .rdv-code { font-size: 0.62rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 6px; border-radius: 6px; display: inline-block; }
-    .rdv-net { font-size: 0.68rem; color: var(--gold); font-weight: 700; margin-top: 3px; }
-    .rdv-groupe-badge { background: var(--gold); color: var(--deep); font-size: 0.62rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; display: inline-block; margin-bottom: 4px; }
-    .rdv-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-    .btn-wa { background: #25d366; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; font-family: inherit; }
-    .fab { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); right: 18px; width: 54px; height: 54px; background: var(--rose); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 16px rgba(201,123,110,0.45); cursor: pointer; z-index: 150; border: none; color: white; }
-    .month-grid { padding: 0 14px 14px; }
-    .month-days-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
-    .month-day-name { text-align: center; font-size: 0.6rem; text-transform: uppercase; color: var(--warm); font-weight: 700; padding: 4px 0; }
-    .month-cells { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-    .month-cell { background: var(--white); border-radius: 10px; min-height: 52px; padding: 4px; cursor: pointer; border: 2px solid transparent; box-shadow: 0 1px 4px rgba(59,42,42,0.05); transition: all 0.15s; }
-    .month-cell.today { border-color: var(--rose); }
-    .month-cell.selected { border-color: var(--gold); background: var(--deep); }
-    .month-cell.other-month { opacity: 0.35; }
-    .month-cell.conge { background: #fbe8e6; border-color: var(--rose); }
-    .month-cell.conge.selected { background: #c0392b; border-color: #c0392b; }
-    .month-cell .cell-num { font-size: 0.75rem; font-weight: 700; color: var(--deep); margin-bottom: 2px; }
-    .month-cell.selected .cell-num { color: var(--gold); }
-    .month-cell.today .cell-num { color: var(--rose); }
-    .month-cell.conge .cell-num { color: var(--rose); }
-    .month-cell.selected.today .cell-num { color: var(--gold); }
-    .month-cell .cell-dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 2px; }
-    .month-dot { width: 7px; height: 7px; border-radius: 50%; }
-    .month-dot.c-rose { background: var(--rose); }
-    .month-dot.c-gold { background: var(--gold); }
-    .month-dot.c-green { background: var(--green); }
-    .month-dot.c-blue { background: #5b8ac9; }
-    .month-dot.c-purple { background: #9b6bc9; }
-    .month-selected-day { padding: 8px 16px 4px; font-size: 0.9rem; font-style: italic; color: var(--warm); font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-right: 14px; }
-    .month-rdv-list { padding: 0 14px; }
-    .month-rdv-item { background: var(--white); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(59,42,42,0.06); cursor: pointer; }
-    .month-rdv-top { display: flex; align-items: center; gap: 10px; }
-    .month-rdv-time { font-size: 0.8rem; font-weight: 700; color: var(--rose); min-width: 38px; }
-    .month-rdv-info { flex: 1; }
-    .month-rdv-name { font-weight: 700; font-size: 0.9rem; }
-    .month-rdv-detail { font-size: 0.7rem; color: var(--warm); margin-top: 2px; }
-    .month-rdv-actions { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
-    .month-empty { text-align: center; padding: 20px; color: var(--warm); font-size: 0.85rem; font-style: italic; }
-    /* STATS */
-    .stats-page-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
-    .stats-page-header .brand { display: block; margin-bottom: 8px; }
-    .stats-nav { display: flex; gap: 6px; }
-    .stats-nav-btn { flex: 1; padding: 8px 4px; border-radius: 10px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.68rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
-    .stats-nav-btn.active { background: var(--gold); color: var(--deep); border-color: var(--gold); }
-    .stats-content { padding: 12px 14px; }
-    .month-stat-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); border-left: 3px solid var(--gold); }
-    .month-stat-title { font-weight: 700; font-size: 1rem; color: var(--deep); margin-bottom: 8px; }
-    .month-stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--warm); padding: 3px 0; }
-    .month-stat-row span:last-child { font-weight: 700; color: var(--deep); }
-    .month-stat-row.total { border-top: 1px solid var(--sand); margin-top: 6px; padding-top: 8px; }
-    .month-stat-row.total span { color: var(--rose); font-size: 0.95rem; }
-    .global-stat-card { background: var(--deep); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; }
-    .global-stat-title { font-weight: 700; font-size: 0.9rem; color: var(--gold); margin-bottom: 10px; }
-    .global-stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--sand); padding: 4px 0; }
-    .global-stat-row span:last-child { font-weight: 700; color: var(--cream); }
-    .depense-summary { background: #fbe8e6; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; border-left: 3px solid var(--rose); }
-    .depense-summary-title { font-weight: 700; font-size: 0.9rem; color: var(--rose); margin-bottom: 8px; }
-    .depense-summary-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--warm); padding: 2px 0; }
-    .depense-summary-row span:last-child { font-weight: 700; color: var(--rose); }
-    .depense-item { background: var(--white); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(59,42,42,0.06); display: flex; align-items: center; gap: 10px; }
-    .depense-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .depense-info { flex: 1; }
-    .depense-label { font-weight: 700; font-size: 0.9rem; }
-    .depense-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
-    .depense-prix { font-weight: 700; color: var(--rose); font-size: 0.95rem; flex-shrink: 0; }
-    .depense-del { background: none; border: none; color: var(--rose); font-size: 1.1rem; cursor: pointer; padding: 4px; flex-shrink: 0; }
-    /* CLIENTES */
-    .clientes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
-    .clientes-header .brand { margin-bottom: 10px; display: block; }
-    .search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px 14px; gap: 8px; }
-    .search-bar input { background: none; border: none; outline: none; color: var(--cream); font-size: 0.9rem; flex: 1; font-family: inherit; }
-    .search-bar input::placeholder { color: var(--warm); }
-    .search-bar span { color: var(--warm); font-size: 1rem; }
-    .alpha-header { padding: 6px 14px 2px; font-size: 0.75rem; font-weight: 700; color: var(--gold); letter-spacing: 0.15em; }
-    .cliente-card { background: var(--white); border-radius: 14px; padding: 14px 16px; margin: 0 14px 10px; box-shadow: 0 2px 10px rgba(59,42,42,0.07); cursor: pointer; border-left: 3px solid var(--gold); }
-    .cliente-card.pending { border-left-color: var(--sand); }
-    .cliente-card-top { display: flex; align-items: center; gap: 12px; }
-    .cliente-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: var(--warm); flex-shrink: 0; }
-    .cliente-avatar.fidele { background: var(--gold); color: var(--deep); }
-    .cliente-info { flex: 1; }
-    .cliente-name { font-weight: 700; font-size: 0.95rem; }
-    .cliente-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; background: rgba(196,164,107,0.15); padding: 1px 7px; border-radius: 6px; display: inline-block; margin-left: 6px; }
-    .cliente-pending-badge { font-size: 0.6rem; color: var(--warm); background: var(--sand); padding: 1px 7px; border-radius: 6px; display: inline-block; margin-left: 6px; }
-    .cliente-sub { font-size: 0.72rem; color: var(--warm); margin-top: 2px; }
-    .cliente-tel { font-size: 0.72rem; color: var(--green); margin-top: 2px; cursor: pointer; font-weight: 600; text-decoration: underline; }
-    .cliente-badge { background: var(--sand); color: var(--warm); font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
-    .cliente-badge.fidele { background: rgba(196,164,107,0.2); color: var(--gold); }
-    .cliente-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .btn-planning { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
-    .btn-call { background: var(--green); color: white; border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
-    .btn-waze-c { background: #1dacd6; color: white; border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
-    .btn-delete-c { background: #fbe8e6; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: inherit; }
-    /* CARTES CADEAUX */
-    .cartes-header { background: var(--deep); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; }
-    .cartes-header .brand { margin-bottom: 8px; display: block; }
-    .cartes-summary { display: flex; gap: 8px; padding: 12px 14px 6px; }
-    .carte-stat { flex: 1; background: var(--white); border-radius: 12px; padding: 10px 8px; text-align: center; box-shadow: 0 2px 8px rgba(59,42,42,0.06); }
-    .carte-stat-val { font-size: 1.1rem; font-weight: 700; color: var(--gold); }
-    .carte-stat-lbl { font-size: 0.58rem; text-transform: uppercase; color: var(--warm); margin-top: 2px; }
-    .cartes-section-title { padding: 8px 14px 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); }
-    .carte-cadeau-card { background: var(--white); border-radius: 16px; margin: 0 14px 12px; padding: 16px; box-shadow: 0 2px 12px rgba(59,42,42,0.08); border-left: 4px solid var(--gold); position: relative; overflow: hidden; }
-    .carte-cadeau-card.used { border-left-color: var(--sand); opacity: 0.6; }
-    .carte-cadeau-card::before { content: '🎁'; position: absolute; right: 12px; top: 12px; font-size: 1.8rem; opacity: 0.15; }
-    .carte-nom { font-weight: 700; font-size: 1rem; color: var(--deep); }
-    .carte-offert { font-size: 0.75rem; color: var(--warm); margin-top: 2px; }
-    .carte-prestation { font-size: 0.8rem; color: var(--rose); margin-top: 4px; font-weight: 600; }
-    .carte-montant { font-size: 1.2rem; font-weight: 700; color: var(--gold); margin-top: 4px; }
-    .carte-date { font-size: 0.68rem; color: var(--warm); margin-top: 2px; }
-    .carte-actions { display: flex; gap: 8px; margin-top: 10px; }
-    .btn-utiliser { background: var(--deep); color: var(--gold); border: none; border-radius: 10px; padding: 10px 16px; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: inherit; flex: 1; }
-    .btn-suppr-carte { background: #fbe8e6; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 10px 12px; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: inherit; }
-    .carte-used-badge { background: var(--sand); color: var(--warm); font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-top: 8px; }
-    /* MODALS */
-    .empty-state { text-align: center; padding: 50px 30px; color: var(--warm); }
-    .empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
-    .overlay { position: fixed; inset: 0; background: rgba(59,42,42,0.55); z-index: 300; display: none; align-items: flex-end; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
-    .overlay.open { display: flex; }
-    .modal { background: var(--cream); border-radius: 24px 24px 0 0; padding: 20px 18px calc(24px + env(safe-area-inset-bottom)); width: 100%; max-height: 92vh; overflow-y: auto; animation: slideUp 0.22s ease; }
-    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .modal-handle { width: 38px; height: 4px; background: var(--sand); border-radius: 2px; margin: 0 auto 16px; }
-    .modal-title { font-size: 1.15rem; font-weight: 700; color: var(--deep); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-    .close-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--warm); padding: 4px; }
-    .form-group { margin-bottom: 12px; }
-    label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 4px; font-weight: 600; }
-    input[type=text], input[type=tel], input[type=time], input[type=date], input[type=number], select, textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--sand); border-radius: 12px; font-size: 1rem; color: var(--deep); background: var(--white); outline: none; font-family: inherit; -webkit-appearance: none; appearance: none; }
-    textarea { resize: none; height: 70px; }
-    input:focus, select:focus, textarea:focus { border-color: var(--rose); }
-    .form-row { display: flex; gap: 10px; }
-    .form-row .form-group { flex: 1; }
-    .btn-primary { width: 100%; background: var(--deep); color: var(--gold); border: none; border-radius: 13px; padding: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 6px; font-family: inherit; }
-    .btn-secondary { width: 100%; background: var(--gold); color: var(--deep); border: none; border-radius: 13px; padding: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 8px; font-family: inherit; }
-    .btn-danger { width: 100%; background: none; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 13px; padding: 11px; font-size: 0.9rem; cursor: pointer; margin-top: 8px; font-family: inherit; }
-    .btn-whatsapp { width: 100%; background: #25d366; color: white; border: none; border-radius: 13px; padding: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 8px; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .checkbox-group { display: flex; align-items: center; gap: 10px; background: var(--white); border: 1.5px solid var(--sand); border-radius: 12px; padding: 11px 14px; }
-    .checkbox-group input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--rose); cursor: pointer; }
-    .checkbox-group span { font-size: 0.95rem; color: var(--deep); }
-    .checkbox-group .prix-sup { margin-left: auto; font-weight: 700; color: var(--rose); font-size: 0.9rem; }
-    .notif-banner { margin: 0 14px 8px; border-radius: 12px; padding: 10px 14px; font-size: 0.8rem; color: var(--deep); display: flex; align-items: center; gap: 8px; cursor: pointer; background: #eaf3eb; border: 1.5px solid var(--green); }
-    .notif-banner.denied { background: #fbe8e6; border-color: var(--rose); cursor: default; }
-    .notif-banner.ok { cursor: default; }
-    .pay-toggle { display: flex; gap: 8px; }
-    .pay-btn { flex: 1; padding: 11px; border-radius: 12px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: center; }
-    .pay-btn.active { background: var(--deep); color: var(--gold); border-color: var(--deep); }
-    .tip-badge { display: inline-block; background: #fdf3e3; color: var(--gold); font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 4px; }
-    .pay-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 4px; }
-    .pay-badge.especes { background: #eaf3eb; color: var(--green); }
-    .pay-badge.virement { background: #e6eef8; color: #5b8ac9; }
-    .tel-input-wrap { position: relative; }
-    .tel-suggestions { position: absolute; top: 100%; left: 0; right: 0; background: var(--white); border: 1.5px solid var(--sand); border-radius: 12px; z-index: 50; box-shadow: 0 4px 16px rgba(59,42,42,0.1); max-height: 200px; overflow-y: auto; }
-    .tel-suggestion-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--sand); font-size: 0.9rem; }
-    .tel-suggestion-item:last-child { border-bottom: none; }
-    .tel-suggestion-code { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-left: 6px; }
-    .net-preview { background: #fdf3e3; border-radius: 10px; padding: 8px 12px; font-size: 0.82rem; color: var(--deep); margin-top: 8px; font-weight: 600; text-align: center; }
-    .groupe-info-box { background: #fdf3e3; border: 1.5px solid var(--gold); border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; font-size: 0.82rem; }
-    .groupe-membre-item { display: flex; justify-content: space-between; padding: 3px 0; font-size: 0.78rem; color: var(--warm); border-bottom: 1px solid var(--sand); }
-    .groupe-membre-item:last-child { border-bottom: none; }
-    .confirm-msg-box { background: var(--white); border-radius: 12px; padding: 14px; font-size: 0.85rem; color: var(--deep); line-height: 1.6; white-space: pre-wrap; border: 1.5px solid var(--sand); margin-bottom: 14px; max-height: 200px; overflow-y: auto; }
-    .send-btns { display: flex; flex-direction: column; gap: 10px; }
-    .btn-send-wa { background: #25d366; color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-send-sms { background: #5b8ac9; color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-send-copy { background: var(--deep); color: var(--gold); border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-send-rappel { background: var(--warm); color: white; border: none; border-radius: 13px; padding: 13px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; }
-    .msg-separator { text-align: center; font-size: 0.72rem; color: var(--warm); margin: 8px 0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
-    .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-    .cat-btn { padding: 10px 6px; border-radius: 12px; border: 1.5px solid var(--sand); background: var(--white); color: var(--warm); font-size: 0.78rem; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.15s; }
-    .cat-btn.selected { background: var(--deep); color: var(--gold); border-color: var(--deep); }
-    .historique-section { margin-top: 14px; }
-    .historique-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 8px; }
-    .historique-item { background: var(--white); border-radius: 10px; padding: 10px 12px; margin-bottom: 6px; border-left: 3px solid var(--sand); font-size: 0.8rem; }
-    .historique-item.upcoming { border-left-color: var(--rose); }
-    .historique-date { font-weight: 700; color: var(--deep); }
-    .historique-detail { color: var(--warm); margin-top: 2px; font-size: 0.75rem; }
-    .historique-prix { font-weight: 700; color: var(--green); float: right; }
-    .assoc-section { margin-top: 10px; background: #fdf3e3; border-radius: 12px; padding: 10px 14px; }
-    .assoc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-    .assoc-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: var(--warm); padding: 3px 0; }
-  </style>
-</head>
-<body>
+cat > /tmp/patch.py <<'PYEOF'
+import re
+P='/mnt/user-data/outputs/index.html'
+s=open(P,encoding='utf-8').read()
 
-<!-- PAGE PLANNING -->
-<div class="page active" id="page-planning">
-  <div class="header">
-    <div class="header-row">
-      <div class="brand">🌸 Youss Mass <em>à Dom</em></div>
-      <button class="today-btn" onclick="goToday()">Aujourd'hui</button>
-    </div>
-    <div class="view-toggle">
-      <button class="view-btn active" id="btn-semaine" onclick="setView('semaine')">📅 Semaine</button>
-      <button class="view-btn" id="btn-mois" onclick="setView('mois')">🗓 Mois</button>
-    </div>
-    <div class="week-nav">
-      <button class="nav-btn" onclick="navPrev()">‹</button>
-      <div id="week-label"></div>
-      <button class="nav-btn" onclick="navNext()">›</button>
-    </div>
-  </div>
-  <div class="period-banner">
-    <div><div class="period-banner-label" id="period-label">Cette semaine</div><div class="period-banner-val" id="period-val">0€</div></div>
-    <div style="text-align:right"><div class="period-banner-label">Net après essence</div><div class="period-banner-val" id="period-net">0€</div></div>
-  </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-val" id="s-rdv">0</div><div class="stat-lbl">RDV</div></div>
-    <div class="stat"><div class="stat-val" id="s-ca">0€</div><div class="stat-lbl">Brut</div></div>
-    <div class="stat"><div class="stat-val" id="s-net">0€</div><div class="stat-lbl">Net</div></div>
-    <div class="stat"><div class="stat-val" id="s-h">0h</div><div class="stat-lbl">Heures</div></div>
-  </div>
-  <div class="stats-pay">
-    <div class="stat-pay especes"><div class="stat-pay-val" id="s-especes">0€</div><div class="stat-pay-lbl">💵 Espèces</div></div>
-    <div class="stat-pay virement"><div class="stat-pay-val" id="s-virement">0€</div><div class="stat-pay-lbl">🏦 Virement</div></div>
-    <div class="stat-pay essence"><div class="stat-pay-val" id="s-essence-week">0€</div><div class="stat-pay-lbl">⛽ Essence</div></div>
-  </div>
-  <div class="essence-banner" onclick="openEssenceSettings()">⛽ <span id="essence-info">Configurer le prix du carburant</span></div>
-  <div id="notif-banner-wrap"></div>
-  <div id="view-semaine">
-    <div class="days-strip" id="days-strip"></div>
-    <div class="day-title" id="day-title-wrap"></div>
-    <div id="conge-banner-wrap"></div>
-    <div class="slots-list" id="slots-list"></div>
-  </div>
-  <div id="view-mois" style="display:none">
-    <div class="month-grid">
-      <div class="month-days-header">
-        <div class="month-day-name">Lun</div><div class="month-day-name">Mar</div><div class="month-day-name">Mer</div><div class="month-day-name">Jeu</div><div class="month-day-name">Ven</div><div class="month-day-name">Sam</div><div class="month-day-name">Dim</div>
-      </div>
-      <div class="month-cells" id="month-cells"></div>
-    </div>
-    <div class="month-selected-day" id="month-selected-day"></div>
-    <div id="month-conge-banner"></div>
-    <div class="month-rdv-list" id="month-rdv-list"></div>
-  </div>
-  <button class="fab" onclick="openRdvModal()">＋</button>
-</div>
+def rep(old,new,count=1):
+    global s
+    n=s.count(old)
+    assert n==count,(old[:60],n)
+    s=s.replace(old,new)
 
-<!-- PAGE STATS -->
-<div class="page" id="page-stats">
-  <div class="stats-page-header">
-    <span class="brand">📊 Revenus & Dépenses</span>
-    <div class="stats-nav">
-      <button class="stats-nav-btn active" id="sn-mois" onclick="setStatsView('mois')">📅 Par mois</button>
-      <button class="stats-nav-btn" id="sn-global" onclick="setStatsView('global')">🏆 Global</button>
-      <button class="stats-nav-btn" id="sn-depenses" onclick="setStatsView('depenses')">💸 Dépenses</button>
-    </div>
-  </div>
-  <div class="stats-content" id="stats-content"></div>
-</div>
+# CSS
+rep("    /* MODALS */", r"""    .slot-area.bloc { background: #ece6ef; border: 1.5px solid #9b6bc9; cursor: pointer; }
+    .bloc-label { font-size: 0.74rem; color: #6b4a8a; font-weight: 700; display: flex; align-items: center; height: 100%; padding: 0 12px; }
+    .month-dot.c-bloc { background: #9b9b9b; }
+    /* MODALS */""")
 
-<!-- PAGE CLIENTES -->
-<div class="page" id="page-clientes">
-  <div class="clientes-header">
-    <span class="brand">👩 Mes Clientes</span>
-    <div class="search-bar"><span>🔍</span><input type="text" id="search-input" placeholder="Nom, tel ou code YM..." oninput="filterClientes()"/></div>
-  </div>
-  <div id="clientes-list"></div>
-  <button class="fab" onclick="openClienteModal()">＋</button>
-</div>
+# Bannière tarifs
+rep("""<div class="essence-banner" onclick="openEssenceSettings()">⛽ <span id="essence-info">Configurer le prix du carburant</span></div>""",
+"""<div class="essence-banner" onclick="openEssenceSettings()">⛽ <span id="essence-info">Configurer le prix du carburant</span></div>
+  <div class="essence-banner" onclick="openTarifModal()">💶 <span>Mes tarifs (modifier mes prix)</span></div>""")
 
-<!-- PAGE CARTES CADEAUX -->
-<div class="page" id="page-cartes">
-  <div class="cartes-header">
-    <span class="brand">🎁 Cartes Cadeaux</span>
-  </div>
-  <div class="cartes-summary">
-    <div class="carte-stat"><div class="carte-stat-val" id="cc-count">0</div><div class="carte-stat-lbl">En attente</div></div>
-    <div class="carte-stat"><div class="carte-stat-val" id="cc-total">0€</div><div class="carte-stat-lbl">Valeur totale</div></div>
-    <div class="carte-stat"><div class="carte-stat-val" id="cc-used">0</div><div class="carte-stat-lbl">Utilisées</div></div>
-  </div>
-  <div id="cartes-list"></div>
-  <button class="fab" onclick="openCarteModal()">＋</button>
-</div>
+# Selects dynamiques
+s,n=re.subn(r'<select id="f-prestation" onchange="updateNetPreview\(\)">.*?</select>',lambda m:'<select id="f-prestation" onchange="updateNetPreview()"></select>',s,count=1,flags=re.S); assert n==1
+s,n=re.subn(r'<select id="cc-prestation">.*?</select>',lambda m:'<select id="cc-prestation"></select>',s,count=1,flags=re.S); assert n==1
+s,n=re.subn(r'<select id="f-km" onchange="updateNetPreview\(\)">.*?</select>',lambda m:'<select id="f-km" onchange="updateNetPreview()"></select>',s,count=1,flags=re.S); assert n==1
+rep('<span class="prix-sup">+15€</span>','<span class="prix-sup" id="prolong-prix">+15€</span>')
 
-<!-- NAV -->
-<nav class="bottom-nav">
-  <div class="nav-tab active" id="tab-planning" onclick="switchTab('planning')"><span class="tab-icon">📅</span>Planning</div>
-  <div class="nav-tab" id="tab-stats" onclick="switchTab('stats')"><span class="tab-icon">📊</span>Revenus</div>
-  <div class="nav-tab" id="tab-clientes" onclick="switchTab('clientes')"><span class="tab-icon">👩</span>Clientes</div>
-  <div class="nav-tab" id="tab-cartes" onclick="switchTab('cartes')"><span class="tab-icon">🎁</span>Cadeaux</div>
-</nav>
-
-<!-- MODAL RDV -->
-<div class="overlay" id="overlay-rdv">
+# Modals
+rep("<!-- MODAL ESSENCE -->", r"""<!-- MODAL TARIFS -->
+<div class="overlay" id="overlay-tarifs">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title"><span id="rdv-modal-title">Nouveau RDV</span><button class="close-btn" onclick="closeModal('overlay-rdv')">✕</button></div>
-    <div id="groupe-info-box" class="groupe-info-box" style="display:none">
-      <strong style="color:var(--gold)">👥 Session groupée</strong> — frais de déplacement communs
-      <div id="groupe-membres-list" style="margin-top:6px"></div>
-    </div>
-    <div class="form-group">
-      <label>📞 Téléphone</label>
-      <div class="tel-input-wrap">
-        <input type="tel" id="f-tel" placeholder="06 XX XX XX XX" oninput="onTelInput()" autocomplete="off"/>
-        <div class="tel-suggestions" id="tel-suggestions" style="display:none"></div>
-      </div>
-    </div>
-    <div class="form-group"><label>Prénom</label><input type="text" id="f-name" placeholder="Ex : Sophie" oninput="onNameInput()" autocomplete="off"/></div>
+    <div class="modal-title"><span>💶 Mes tarifs</span><button class="close-btn" onclick="closeModal('overlay-tarifs')">✕</button></div>
+    <div class="form-group"><label>Appliquer à partir du</label><input type="date" id="t-date"/></div>
+    <div style="font-size:0.78rem;color:var(--warm);margin-bottom:10px">Les RDV avant cette date gardent leurs anciens tarifs. Pour le 1er janvier, choisis cette date puis change les prix.</div>
+    <div id="t-grid"></div>
+    <div class="historique-title" style="margin:8px 0 6px">⏱ Supplément & déplacement</div>
+    <div class="form-group"><label>Prolongation +20 min (€)</label><input type="number" id="t-prolong" min="0" step="0.5"/></div>
     <div class="form-row">
-      <div class="form-group"><label>Date</label><input type="date" id="f-date"/></div>
-      <div class="form-group"><label>Heure</label><input type="time" id="f-time" value="10:00"/></div>
+      <div class="form-group"><label>Jusqu'à 30km</label><input type="number" id="t-km0" min="0" step="0.5"/></div>
+      <div class="form-group"><label>30 à 40km</label><input type="number" id="t-km1" min="0" step="0.5"/></div>
+      <div class="form-group"><label>+ de 40km</label><input type="number" id="t-km2" min="0" step="0.5"/></div>
     </div>
-    <div class="form-group">
-      <label>Prestation</label>
-      <select id="f-prestation" onchange="updateNetPreview()">
-        <optgroup label="💆 Massage Classique">
-          <option value="classic_30">Massage 30 min — 25€</option>
-          <option value="classic_60" selected>Massage 1h — 40€</option>
-          <option value="classic_90">Massage 1h30 — 55€</option>
-          <option value="classic_120">Massage 2h — 80€</option>
-        </optgroup>
-        <optgroup label="🪨 Pierres Chaudes">
-          <option value="pierres_60">Pierres chaudes 1h — 50€</option>
-          <option value="pierres_90">Pierres chaudes 1h30 — 65€</option>
-        </optgroup>
-        <optgroup label="💧 Drainage Lymphatique">
-          <option value="drainage_30">Drainage 1 zone 30min — 35€</option>
-          <option value="drainage_75">Drainage corps entier 1h15 — 65€</option>
-        </optgroup>
-      </select>
+    <button class="btn-primary" onclick="saveTarifs()">✔ Enregistrer les tarifs</button>
+    <div class="historique-section">
+      <div class="historique-title">📋 Historique des tarifs</div>
+      <div id="t-versions"></div>
     </div>
-    <div class="form-group"><label>Déplacement</label><select id="f-dep" onchange="toggleDepFields()"><option value="0">Non</option><option value="1">Oui</option></select></div>
-    <div id="dep-group" style="display:none">
-      <div class="form-group"><label>Tarif km</label><select id="f-km" onchange="updateNetPreview()"><option value="10">Jusqu'à 30km — +10€</option><option value="15">30 à 40km — +15€</option><option value="20">Plus de 40km — +20€</option></select></div>
-      <div class="form-group"><label>Distance aller (km)</label><input type="number" id="f-km-dist" placeholder="Ex: 15" min="0" step="1" oninput="updateNetPreview()"/></div>
-      <div id="net-preview" class="net-preview" style="display:none"></div>
-    </div>
-    <div class="form-group"><label>📍 Adresse complète</label><input type="text" id="f-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
-    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="f-details" placeholder="2ème étage, code 1234..."/></div>
-    <div class="form-group"><label>Supplément</label><label class="checkbox-group"><input type="checkbox" id="f-prolongation" onchange="updateNetPreview()"/><span>⏱ Prolongation +20 min</span><span class="prix-sup">+15€</span></label></div>
+  </div>
+</div>
+
+<!-- MODAL BLOCAGE -->
+<div class="overlay" id="overlay-bloc">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><span id="bloc-modal-title">🚫 Bloquer un créneau</span><button class="close-btn" onclick="closeModal('overlay-bloc')">✕</button></div>
+    <div class="form-group"><label>Date</label><input type="date" id="b-date"/></div>
     <div class="form-row">
-      <div class="form-group"><label>💰 Pourboire</label><input type="number" id="f-pourboire" placeholder="0" min="0" step="1" oninput="updateNetPreview()"/></div>
-      <div class="form-group"><label>💳 Paiement</label><div class="pay-toggle"><button type="button" class="pay-btn active" id="pay-especes" onclick="setPayment('especes')">💵 Espèces</button><button type="button" class="pay-btn" id="pay-virement" onclick="setPayment('virement')">🏦 Virement</button></div></div>
+      <div class="form-group"><label>De</label><input type="time" id="b-start" value="12:00"/></div>
+      <div class="form-group"><label>À</label><input type="time" id="b-end" value="14:00"/></div>
     </div>
-    <button class="btn-primary" onclick="saveRdv()">✔ Enregistrer</button>
-    <button class="btn-secondary" id="btn-ajouter-groupe" onclick="saveRdvAndAddGroupe()">👥 Enregistrer + ajouter une personne</button>
-    <button class="btn-whatsapp" id="btn-wa-rappel" onclick="sendWaRappel()" style="display:none">📲 Rappel WhatsApp</button>
-    <button class="btn-danger" id="btn-delete-rdv" onclick="deleteRdv()" style="display:none">🗑 Supprimer ce RDV</button>
+    <div class="form-group"><label>Motif</label><input type="text" id="b-label" placeholder="Ex : Déjeuner avec maman"/></div>
+    <button class="btn-primary" onclick="saveBloc()">✔ Enregistrer</button>
+    <button class="btn-danger" id="btn-delete-bloc" onclick="deleteBloc()" style="display:none">🗑 Supprimer ce blocage</button>
   </div>
 </div>
 
-<!-- MODAL CONFIRMATION -->
-<div class="overlay" id="overlay-confirm">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title"><span id="confirm-modal-title">📩 Confirmation</span><button class="close-btn" onclick="closeModal('overlay-confirm')">✕</button></div>
-    <p style="font-size:0.82rem;color:var(--warm);margin-bottom:8px" id="confirm-subtitle">Message à envoyer :</p>
-    <div id="groupe-confirm-nav" style="margin-bottom:10px;display:none;gap:8px;flex-wrap:wrap"></div>
-    <div class="confirm-msg-box" id="confirm-msg-box"></div>
-    <div class="send-btns">
-      <button class="btn-send-wa" onclick="sendConfirmWa()">📲 WhatsApp</button>
-      <button class="btn-send-sms" onclick="sendConfirmSms()">💬 SMS</button>
-      <button class="btn-send-copy" onclick="copyConfirmMsg()">📋 Copier</button>
-    </div>
-    <div class="msg-separator">— Rappel veille —</div>
-    <div class="confirm-msg-box" id="rappel-msg-box"></div>
-    <div class="send-btns">
-      <button class="btn-send-rappel" onclick="sendRappelWa()">📲 Rappel WhatsApp</button>
-      <button class="btn-send-copy" onclick="copyRappelMsg()" style="background:var(--warm)">📋 Copier rappel</button>
-    </div>
-    <button class="btn-danger" onclick="closeModal('overlay-confirm')" style="margin-top:10px">Fermer</button>
-  </div>
-</div>
+<!-- MODAL ESSENCE -->""")
 
-<!-- MODAL CARTE CADEAU -->
-<div class="overlay" id="overlay-carte">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title"><span>🎁 Nouvelle carte cadeau</span><button class="close-btn" onclick="closeModal('overlay-carte')">✕</button></div>
-    <div class="form-group"><label>Nom de la carte cadeau</label><input type="text" id="cc-nom" placeholder="Ex : Carte Noël · Massage détente"/></div>
-    <div class="form-group"><label>Offerte par</label><input type="text" id="cc-offert" placeholder="Ex : Rachida"/></div>
-    <div class="form-group">
-      <label>Prestation incluse</label>
-      <select id="cc-prestation">
-        <option value="">— Libre (montant libre) —</option>
-        <optgroup label="💆 Massage Classique">
-          <option value="classic_30">Massage 30 min — 25€</option>
-          <option value="classic_60">Massage 1h — 40€</option>
-          <option value="classic_90">Massage 1h30 — 55€</option>
-          <option value="classic_120">Massage 2h — 80€</option>
-        </optgroup>
-        <optgroup label="🪨 Pierres Chaudes">
-          <option value="pierres_60">Pierres chaudes 1h — 50€</option>
-          <option value="pierres_90">Pierres chaudes 1h30 — 65€</option>
-        </optgroup>
-        <optgroup label="💧 Drainage Lymphatique">
-          <option value="drainage_30">Drainage 1 zone 30min — 35€</option>
-          <option value="drainage_75">Drainage corps entier 1h15 — 65€</option>
-        </optgroup>
-      </select>
-    </div>
-    <div class="form-group"><label>Montant (€)</label><input type="number" id="cc-montant" placeholder="Ex: 40" min="0" step="1"/></div>
-    <div class="form-group"><label>Date de vente</label><input type="date" id="cc-date"/></div>
-    <button class="btn-primary" onclick="saveCarte()">✔ Enregistrer la carte cadeau</button>
-  </div>
-</div>
+# calcTotal
+rep("function calcTotal(r,p){return p.prix+depPrix(r)+(r.prolongation?15:0)+(parseFloat(r.pourboire)||0);}",
+"function calcTotal(r,p){const d=r.date||null;const base=(d&&r.prestation)?prixFor(r.prestation,d):p.prix;return base+depPrix(r)+(r.prolongation?prolongPrix(d):0)+(parseFloat(r.pourboire)||0);}")
 
-<!-- MODAL CLIENTE -->
-<div class="overlay" id="overlay-cliente">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title"><span id="cliente-modal-title">Nouvelle cliente</span><button class="close-btn" onclick="closeModal('overlay-cliente')">✕</button></div>
-    <div id="c-code-display" style="text-align:center;margin-bottom:12px;font-size:0.8rem;color:var(--gold);font-weight:700;display:none"></div>
-    <div class="form-row">
-      <div class="form-group"><label>Prénom</label><input type="text" id="c-prenom" placeholder="Sophie"/></div>
-      <div class="form-group"><label>Nom</label><input type="text" id="c-nom" placeholder="Martin"/></div>
-    </div>
-    <div class="form-group"><label>📞 Téléphone</label><input type="tel" id="c-tel" placeholder="06 XX XX XX XX"/></div>
-    <div class="form-group"><label>📍 Adresse</label><input type="text" id="c-adresse" placeholder="12 rue de la Paix, Pantin 93500"/></div>
-    <div class="form-group"><label>📝 Détails accès</label><input type="text" id="c-details" placeholder="2ème étage, code 1234..."/></div>
-    <div class="form-row">
-      <div class="form-group"><label>Comment trouvée ?</label><select id="c-source"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Bouche à oreille">Bouche à oreille</option><option value="WhatsApp">WhatsApp</option><option value="Planning">Planning</option><option value="Autre">Autre</option></select></div>
-      <div class="form-group"><label>Séances</label><input type="text" id="c-seances" placeholder="0" value="0"/></div>
-    </div>
-    <div class="form-group"><label>Notes</label><textarea id="c-notes" placeholder="Préférences de massage..."></textarea></div>
-    <div id="assoc-section-modal" class="assoc-section" style="display:none">
-      <div class="assoc-title">👥 Personnes associées</div>
-      <div id="assoc-list-modal"></div>
-      <button class="btn-secondary" style="margin-top:8px;font-size:0.82rem;padding:8px" onclick="addAssocPerson()">➕ Ajouter une personne</button>
-    </div>
-    <div class="historique-section" id="historique-section" style="display:none">
-      <div class="historique-title">📋 Historique des RDV</div>
-      <div id="historique-list"></div>
-    </div>
-    <button class="btn-primary" onclick="saveCliente()" style="margin-top:12px">✔ Enregistrer</button>
-    <button class="btn-secondary" id="btn-rdv-from-cliente" onclick="rdvFromCliente()" style="display:none">📅 Ajouter un RDV</button>
-    <button class="btn-secondary" id="btn-rdv-groupe-from-cliente" onclick="rdvGroupeFromCliente()" style="display:none;background:var(--warm);color:white">👥 RDV + personne associée</button>
-    <button class="btn-danger" id="btn-delete-cliente" onclick="confirmDeleteCliente()" style="display:none">🗑 Supprimer cette cliente</button>
-  </div>
-</div>
-
-<!-- MODAL DEPENSE -->
-<div class="overlay" id="overlay-depense">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title"><span>💸 Ajouter une dépense</span><button class="close-btn" onclick="closeModal('overlay-depense')">✕</button></div>
-    <div class="form-group"><label>Catégorie</label>
-      <div class="cat-grid">
-        <button class="cat-btn selected" id="cat-huile" onclick="selectCat('huile')">🧴 Huile massage</button>
-        <button class="cat-btn" id="cat-serviette" onclick="selectCat('serviette')">🛁 Serviette</button>
-        <button class="cat-btn" id="cat-protection" onclick="selectCat('protection')">🛡 Protection</button>
-        <button class="cat-btn" id="cat-bougie" onclick="selectCat('bougie')">🕯 Bougie</button>
-        <button class="cat-btn" id="cat-transport" onclick="selectCat('transport')">🚗 Transport</button>
-        <button class="cat-btn" id="cat-autre" onclick="selectCat('autre')">📦 Autre</button>
-      </div>
-    </div>
-    <div class="form-group"><label>Description</label><input type="text" id="d-label" placeholder="Ex: Huile amande douce"/></div>
-    <div class="form-row">
-      <div class="form-group"><label>Montant (€)</label><input type="number" id="d-prix" placeholder="0" min="0" step="0.01"/></div>
-      <div class="form-group"><label>Date</label><input type="date" id="d-date"/></div>
-    </div>
-    <button class="btn-primary" onclick="saveDepense()">✔ Ajouter</button>
-  </div>
-</div>
-
-<!-- MODAL ESSENCE -->
-<div class="overlay" id="overlay-essence">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title"><span>⛽ Paramètres Essence</span><button class="close-btn" onclick="closeModal('overlay-essence')">✕</button></div>
-    <div class="form-group"><label>Prix du litre SP95-E10 (€)</label><input type="number" id="e-prix" placeholder="Ex: 1.85" step="0.01" min="0"/></div>
-    <div class="form-group"><label>Consommation aux 100km (L)</label><input type="number" id="e-conso" placeholder="5.5" step="0.1" min="0"/></div>
-    <div style="background:var(--sand);border-radius:12px;padding:12px;font-size:0.8rem;color:var(--deep);margin-bottom:12px">💡 Twingo 3 SP95-E10 ≈ 5,5L/100km</div>
-    <button class="btn-primary" onclick="saveEssenceSettings()">✔ Enregistrer</button>
-  </div>
-</div>
-
-<script>
-const DB={
-  get:(k)=>JSON.parse(localStorage.getItem('youss-'+k)||(k==='rdvs'?'{}':k==='conges'?'[]':'[]')),
-  set:(k,v)=>localStorage.setItem('youss-'+k,JSON.stringify(v)),
-  getObj:(k,def)=>JSON.parse(localStorage.getItem('youss-'+k)||JSON.stringify(def)),
-  setObj:(k,v)=>localStorage.setItem('youss-'+k,JSON.stringify(v))
-};
-const PRESTATIONS={
-  classic_30:{label:'Massage 30min',duree:30,prix:25,color:'c-rose'},
-  classic_60:{label:'Massage 1h',duree:60,prix:40,color:'c-gold'},
-  classic_90:{label:'Massage 1h30',duree:90,prix:55,color:'c-green'},
-  classic_120:{label:'Massage 2h',duree:120,prix:80,color:'c-green'},
-  pierres_60:{label:'Pierres chaudes 1h',duree:60,prix:50,color:'c-blue'},
-  pierres_90:{label:'Pierres chaudes 1h30',duree:90,prix:65,color:'c-blue'},
-  drainage_30:{label:'Drainage 1 zone 30min',duree:30,prix:35,color:'c-purple'},
-  drainage_75:{label:'Drainage corps 1h15',duree:75,prix:65,color:'c-purple'},
-};
-const CAT_ICONS={huile:'🧴',serviette:'🛁',protection:'🛡',bougie:'🕯',transport:'🚗',autre:'📦'};
-const CAT_LABELS={huile:'Huile massage',serviette:'Serviette',protection:'Protection',bougie:'Bougie',transport:'Transport',autre:'Autre'};
-const HOURS=[];
-for(let h=8;h<=23;h++){HOURS.push(`${String(h).padStart(2,'0')}:00`);if(h<23)HOURS.push(`${String(h).padStart(2,'0')}:30`);}
-const DAYS_SHORT=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-const DAYS_LONG=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const MONTHS_FR=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-const FIDELITE_SEUIL=3;
-let weekOffset=0,monthOffset=0,selectedDay=fmtDate(new Date()),currentView='semaine';
-let editingRdvKey=null,editingClienteId=null,currentRdvForWa=null,currentPayment='especes';
-let lastSavedRdv=null,statsView='mois',selectedCat='huile';
-let currentGroupeId=null,currentGroupeRdvs=[],lastSavedGroupeRdvs=[],confirmGroupeIdx=0;
-let assocPersonsTemp=[];
-
-function fmtDate(d){return d.toISOString().split('T')[0];}
-function getWeekDates(off){
-  const now=new Date(),day=now.getDay(),mon=new Date(now);
-  mon.setDate(now.getDate()-(day===0?6:day-1)+off*7);
-  return Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d;});
-}
-function rdvKey(date,time){return date+'_'+time;}
-function initials(p,n){return((p||'?')[0]+(n||'')[0]).toUpperCase();}
-function timeToMins(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
-function minsToTime(m){return`${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
-function isConge(date){return DB.get('conges').includes(date);}
-function normTel(t){return t?t.replace(/\s/g,''):'';}
-function fmtDateFr(ds){const d=new Date(ds+'T12:00:00'),di=(d.getDay()+6)%7;return DAYS_LONG[di]+' '+d.getDate()+' '+MONTHS_FR[d.getMonth()]+' '+d.getFullYear();}
-
-// ── OUTILS RECHERCHE RÉPERTOIRE ──
-function stripAcc(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
-function telKey(t){let d=String(t||'').replace(/\D/g,'');if(d.startsWith('0033'))d='0'+d.slice(4);else if(d.startsWith('33')&&d.length>=11)d='0'+d.slice(2);return d;}
-function codeKey(c){return stripAcc(c).replace(/[^a-z0-9]/g,'');}
-function nextCode(list){const n=list.map(c=>{const m=(c.code||'').match(/YM-(\d+)/);return m?parseInt(m[1]):0;});return'YM-'+String((n.length?Math.max(...n):0)+1).padStart(3,'0');}
-function isFidele(c){return !!c.code||(c.seances||0)>=FIDELITE_SEUIL;}
-function matchCliente(c,q){
-  const qa=stripAcc(q).trim();if(!qa)return true;
-  const qd=telKey(q),qc=codeKey(q);
-  if(stripAcc((c.prenom||'')+' '+(c.nom||'')).includes(qa))return true;
-  if(qc&&codeKey(c.code).includes(qc))return true;
-  if(qd.length>=3&&telKey(c.tel).includes(qd))return true;
-  return(c.assoc||[]).some(a=>stripAcc(a.prenom).includes(qa)||(qd.length>=3&&telKey(a.tel).includes(qd)));
-}
-
-// ── ESSENCE ──
-function getEssence(){return DB.getObj('essence',{prix:0,conso:5.5});}
-function saveEssenceSettings(){DB.setObj('essence',{prix:parseFloat(document.getElementById('e-prix').value)||0,conso:parseFloat(document.getElementById('e-conso').value)||5.5});updateEssenceBanner();closeModal('overlay-essence');if(currentView==='semaine')buildPlanning();else buildMonth();}
-function openEssenceSettings(){const e=getEssence();document.getElementById('e-prix').value=e.prix||'';document.getElementById('e-conso').value=e.conso||5.5;openModal('overlay-essence');}
-function updateEssenceBanner(){const e=getEssence();document.getElementById('essence-info').textContent=e.prix>0?`${e.prix}€/L · ${e.conso}L/100km`:'Configurer le prix du carburant';}
-function calcEssence(km){const e=getEssence();if(!e.prix||!km)return 0;return Math.round(parseFloat(km)*2*e.conso/100*e.prix*100)/100;}
-function depPrix(r){return r.dep?(parseFloat(r.km)||10):0;}
-function calcTotal(r,p){return p.prix+depPrix(r)+(r.prolongation?15:0)+(parseFloat(r.pourboire)||0);}
-
-function updateNetPreview(){
+# updateNetPreview
+new_unp=r"""function updateNetPreview(){
   const dep=document.getElementById('f-dep').value==='1';
   const preview=document.getElementById('net-preview');
   if(!dep){preview.style.display='none';return;}
-  const p=PRESTATIONS[document.getElementById('f-prestation').value]||{prix:40};
+  const d=document.getElementById('f-date').value||selectedDay;
+  const base=prixFor(document.getElementById('f-prestation').value,d);
   const km=parseFloat(document.getElementById('f-km').value)||10;
   const kmDist=parseFloat(document.getElementById('f-km-dist').value)||0;
-  const brut=p.prix+km+(document.getElementById('f-prolongation').checked?15:0)+(parseFloat(document.getElementById('f-pourboire').value)||0);
+  const brut=base+km+(document.getElementById('f-prolongation').checked?prolongPrix(d):0)+(parseFloat(document.getElementById('f-pourboire').value)||0);
   const ess=kmDist>0?calcEssence(kmDist):0;
   preview.style.display='block';
   preview.innerHTML=ess>0?`💰 Brut : ${brut}€ — ⛽ −${ess}€ = <strong>Net : ${(brut-ess).toFixed(2)}€</strong>`:`💰 Brut : ${brut}€`;
 }
 
-// ── CARTES CADEAUX ──
-function openCarteModal(){
-  document.getElementById('cc-nom').value='';
-  document.getElementById('cc-offert').value='';
-  document.getElementById('cc-prestation').value='';
-  document.getElementById('cc-montant').value='';
-  document.getElementById('cc-date').value=fmtDate(new Date());
-  openModal('overlay-carte');
-  setTimeout(()=>document.getElementById('cc-nom').focus(),300);
+// ── CARTES CADEAUX"""
+s,n=re.subn(r'function updateNetPreview\(\)\{.*?\n\}\n\n// ── CARTES CADEAUX',lambda m:new_unp,s,count=1,flags=re.S); assert n==1
+
+# carte cadeau
+rep("const montant=parseFloat(document.getElementById('cc-montant').value)||(p?p.prix:0);","const montant=parseFloat(document.getElementById('cc-montant').value)||(p?prixFor(prest,fmtDate(new Date())):0);")
+
+# message confirmation
+rep(r"${r.prolongation?'\n⏱ Prolongation +20 min (+15€)':''}", r"${r.prolongation?'\n⏱ Prolongation +20 min (+'+prolongPrix(r.date)+'€)':''}")
+
+# boutons Bloquer (planning + mois)
+rep("""<button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>""",
+"""<div style="display:flex;gap:6px"><button class="btn-conge off" onclick="openBlocModal(null,'${selectedDay}')">🚫 Bloquer</button><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button></div>""",2)
+
+# planning : blocages sur les créneaux
+rep("const rdvs=DB.get('rdvs'),{blocked,travel}=getBlockedSlots(rdvs);","const rdvs=DB.get('rdvs'),{blocked,travel}=getBlockedSlots(rdvs);const blocsDay=getBlocs(selectedDay);")
+rep("area.appendChild(buildRdvCard(key,rdvs[key]));}else if(cng){area.className+=' conge-slot';}",
+r"""area.appendChild(buildRdvCard(key,rdvs[key]));}else if(blocsDay.find(b=>timeToMins(b.start)<=timeToMins(h)&&timeToMins(h)<timeToMins(b.end))){const bl=blocsDay.find(b=>timeToMins(b.start)<=timeToMins(h)&&timeToMins(h)<timeToMins(b.end));area.className+=' bloc';const first=timeToMins(bl.start)>timeToMins(h)-30;area.innerHTML=first?`<div class="bloc-label">🚫 ${bl.label} · ${bl.start}–${bl.end}</div>`:'<div class="bloc-label" style="opacity:0.4">│</div>';area.onclick=()=>openBlocModal(bl.id);}else if(cng){area.className+=' conge-slot';}""")
+
+# mois : points + liste
+rep(".join('')}</div>`;cell.onclick=()=>{selectedDay=ds;buildMonth();};",
+".join('')}${getBlocs(ds).map(()=>'<div class=\"month-dot c-bloc\"></div>').join('')}</div>`;cell.onclick=()=>{selectedDay=ds;buildMonth();};")
+rep("""if(!dayRdvs.length){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}""",
+"""const blocsM=getBlocs(selectedDay);
+  if(!dayRdvs.length&&!blocsM.length){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}""")
+rep("else{rdvList.innerHTML='';dayRdvs.forEach(",
+r"""else{rdvList.innerHTML='';blocsM.forEach(b=>{const it=document.createElement('div');it.className='month-rdv-item';it.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time" style="color:#9b6bc9">${b.start}</div><div class="month-rdv-info"><div class="month-rdv-name">🚫 ${b.label}</div><div class="month-rdv-detail">${b.start} – ${b.end}</div></div></div>`;it.onclick=()=>openBlocModal(b.id);rdvList.appendChild(it);});dayRdvs.forEach(""")
+
+# conflit blocage à l'enregistrement d'un RDV (2 fonctions)
+rep("const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');",
+r"""const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
+  {const bc=checkBlocConflict(date,time,document.getElementById('f-prestation').value,document.getElementById('f-prolongation').checked);if(bc&&!confirm('Ce créneau est bloqué ("'+bc.label+'", '+bc.start+'–'+bc.end+'). Enregistrer quand même ?'))return;}""",2)
+
+# ouverture modal RDV : rafraîchir les tarifs
+rep("openModal('overlay-rdv');setTimeout(()=>document.getElementById('f-tel').focus(),300);","refreshTarifSelects();openModal('overlay-rdv');setTimeout(()=>document.getElementById('f-tel').focus(),300);")
+
+# Nouvelles fonctions
+newjs=r"""// ── TARIFS MODIFIABLES ──
+const GROUPS=[['💆 Massage Classique',['classic_30','classic_60','classic_90','classic_120']],['🪨 Pierres Chaudes',['pierres_60','pierres_90']],['💧 Drainage Lymphatique',['drainage_30','drainage_75']]];
+const SEL_LABEL={classic_30:'Massage 30 min',classic_60:'Massage 1h',classic_90:'Massage 1h30',classic_120:'Massage 2h',pierres_60:'Pierres chaudes 1h',pierres_90:'Pierres chaudes 1h30',drainage_30:'Drainage 1 zone 30min',drainage_75:'Drainage corps entier 1h15'};
+const KM_LABELS=["Jusqu'à 30km","30 à 40km","Plus de 40km"];
+function defaultTarifs(){const prix={};Object.keys(PRESTATIONS).forEach(k=>{prix[k]=PRESTATIONS[k].prix;});return{versions:[{from:'2000-01-01',prix,prolong:15,km:[10,15,20]}]};}
+function getTarifs(){return DB.getObj('tarifs',defaultTarifs());}
+function tarifAt(d){const day=d||fmtDate(new Date());const vs=getTarifs().versions.slice().sort((a,b)=>a.from.localeCompare(b.from));let cur=vs[0];vs.forEach(v=>{if(v.from<=day)cur=v;});return cur;}
+function prixFor(id,d){const t=tarifAt(d);const v=t.prix&&t.prix[id];return(v!=null&&!isNaN(v))?parseFloat(v):((PRESTATIONS[id]||{prix:40}).prix);}
+function prolongPrix(d){const t=tarifAt(d);return(t.prolong!=null&&!isNaN(t.prolong))?parseFloat(t.prolong):15;}
+function fmtP(n){n=parseFloat(n)||0;return Number.isInteger(n)?String(n):n.toFixed(2).replace('.',',');}
+function prestaOptions(d,libre){let h=libre?'<option value="">— Libre (montant libre) —</option>':'';GROUPS.forEach(([g,ids])=>{h+=`<optgroup label="${g}">`+ids.map(id=>`<option value="${id}">${SEL_LABEL[id]} — ${fmtP(prixFor(id,d))}€</option>`).join('')+'</optgroup>';});return h;}
+function kmOptions(d){const km=tarifAt(d).km||[10,15,20];return km.map((v,i)=>`<option value="${v}">${KM_LABELS[i]} — +${fmtP(v)}€</option>`).join('');}
+function setKmValue(v){const fk=document.getElementById('f-km');if(v===''||v==null){fk.selectedIndex=0;return;}if(![...fk.options].some(o=>o.value===String(v))){const o=document.createElement('option');o.value=v;o.textContent='Tarif km — +'+fmtP(v)+'€';fk.appendChild(o);}fk.value=String(v);}
+function refreshTarifSelects(){
+  const d=document.getElementById('f-date').value||selectedDay||fmtDate(new Date());
+  const fp=document.getElementById('f-prestation'),cc=document.getElementById('cc-prestation'),fk=document.getElementById('f-km');
+  const vf=fp.value,vc=cc.value,vk=fk.value;
+  fp.innerHTML=prestaOptions(d,false);cc.innerHTML=prestaOptions(fmtDate(new Date()),true);fk.innerHTML=kmOptions(d);
+  fp.value=vf||'classic_60';cc.value=vc||'';setKmValue(vk);
+  document.getElementById('prolong-prix').textContent='+'+fmtP(prolongPrix(d))+'€';
 }
-function saveCarte(){
-  const nom=document.getElementById('cc-nom').value.trim();
-  const offert=document.getElementById('cc-offert').value.trim();
-  if(!nom){document.getElementById('cc-nom').focus();return;}
-  const prest=document.getElementById('cc-prestation').value;
-  const p=prest?PRESTATIONS[prest]:null;
-  const montant=parseFloat(document.getElementById('cc-montant').value)||(p?p.prix:0);
-  if(!montant){alert('Entrez un montant !');return;}
-  const cartes=DB.get('cartes')||[];
-  cartes.push({
-    id:Date.now().toString(),
-    nom,offert,
-    prestation:prest,
-    prestationLabel:p?p.label:'Libre',
-    montant,
-    date:document.getElementById('cc-date').value||fmtDate(new Date()),
-    used:false,
-    dateUsed:null
-  });
-  DB.set('cartes',cartes);
-  closeModal('overlay-carte');
-  renderCartes();
+function openTarifModal(){document.getElementById('t-date').value=fmtDate(new Date());fillTarifInputs();renderTarifVersions();openModal('overlay-tarifs');}
+function fillTarifInputs(){
+  const d=document.getElementById('t-date').value||fmtDate(new Date());const t=tarifAt(d);
+  let h='';GROUPS.forEach(([g,ids])=>{h+=`<div class="historique-title" style="margin:8px 0 6px">${g}</div><div class="form-row" style="flex-wrap:wrap">`+ids.map(id=>`<div class="form-group" style="min-width:44%"><label>${SEL_LABEL[id]} (€)</label><input type="number" id="t-p-${id}" min="0" step="0.5" value="${prixFor(id,d)}"/></div>`).join('')+'</div>';});
+  document.getElementById('t-grid').innerHTML=h;
+  document.getElementById('t-prolong').value=prolongPrix(d);
+  (t.km||[10,15,20]).forEach((v,i)=>{document.getElementById('t-km'+i).value=v;});
 }
-function utiliserCarte(id){
-  if(!confirm('Marquer cette carte cadeau comme utilisée ?'))return;
-  const cartes=DB.get('cartes')||[];
-  const idx=cartes.findIndex(c=>c.id===id);
-  if(idx>=0){cartes[idx].used=true;cartes[idx].dateUsed=fmtDate(new Date());}
-  DB.set('cartes',cartes);
-  renderCartes();
+function saveTarifs(){
+  const d=document.getElementById('t-date').value;if(!d){alert('Choisis la date à partir de laquelle les tarifs s\'appliquent.');return;}
+  const prix={};let ok=true;
+  Object.keys(PRESTATIONS).forEach(id=>{const v=parseFloat(document.getElementById('t-p-'+id).value);if(isNaN(v)||v<0)ok=false;prix[id]=v;});
+  const pr=parseFloat(document.getElementById('t-prolong').value);const km=[0,1,2].map(i=>parseFloat(document.getElementById('t-km'+i).value));
+  if(!ok||isNaN(pr)||pr<0||km.some(v=>isNaN(v)||v<0)){alert('Vérifie les montants : il faut un nombre dans chaque case.');return;}
+  const t=getTarifs();const nv={from:d,prix,prolong:pr,km};const i=t.versions.findIndex(v=>v.from===d);if(i>=0)t.versions[i]=nv;else t.versions.push(nv);
+  t.versions.sort((a,b)=>a.from.localeCompare(b.from));DB.setObj('tarifs',t);
+  refreshTarifSelects();renderTarifVersions();
+  if(currentView==='semaine')buildPlanning();else buildMonth();
+  alert('✅ Tarifs enregistrés — applicables à partir du '+fmtDateFr(d));
+  closeModal('overlay-tarifs');
 }
-function supprimerCarte(id){
-  if(!confirm('Supprimer cette carte cadeau ?'))return;
-  DB.set('cartes',(DB.get('cartes')||[]).filter(c=>c.id!==id));
-  renderCartes();
+function renderTarifVersions(){
+  const t=getTarifs();
+  document.getElementById('t-versions').innerHTML=t.versions.map(v=>`<div class="historique-item"><div class="historique-date">${v.from==='2000-01-01'?'Tarifs d\'origine':'À partir du '+fmtDateFr(v.from)}${v.from!=='2000-01-01'?`<button onclick="deleteTarifVersion('${v.from}')" style="float:right;background:none;border:none;color:var(--rose);cursor:pointer">🗑</button>`:''}</div><div class="historique-detail">Massage 1h : ${fmtP(v.prix.classic_60)}€</div></div>`).join('');
 }
-function renderCartes(){
-  const cartes=DB.get('cartes')||[];
-  const enAttente=cartes.filter(c=>!c.used);
-  const utilisees=cartes.filter(c=>c.used);
-  const totalVal=enAttente.reduce((s,c)=>s+(c.montant||0),0);
-  document.getElementById('cc-count').textContent=enAttente.length;
-  document.getElementById('cc-total').textContent=totalVal+'€';
-  document.getElementById('cc-used').textContent=utilisees.length;
-  const list=document.getElementById('cartes-list');
-  list.innerHTML='';
-  if(!cartes.length){list.innerHTML='<div class="empty-state"><div class="es-icon">🎁</div><p>Aucune carte cadeau enregistrée<br>Appuie sur + pour en ajouter une !</p></div>';return;}
-  if(enAttente.length>0){
-    const t=document.createElement('div');t.className='cartes-section-title';t.textContent='🎁 En attente ('+enAttente.length+')';list.appendChild(t);
-    enAttente.forEach(c=>{
-      const card=document.createElement('div');card.className='carte-cadeau-card';
-      card.innerHTML=`<div class="carte-nom">${c.nom}</div><div class="carte-offert">Offerte par : <strong>${c.offert||'—'}</strong></div><div class="carte-prestation">💆 ${c.prestationLabel||'Libre'}</div><div class="carte-montant">${c.montant}€</div><div class="carte-date">Vendue le ${fmtDateFr(c.date)}</div><div class="carte-actions"><button class="btn-utiliser" onclick="utiliserCarte('${c.id}')">✅ Marquer comme utilisée</button><button class="btn-suppr-carte" onclick="supprimerCarte('${c.id}')">🗑</button></div>`;
-      list.appendChild(card);
-    });
-  }
-  if(utilisees.length>0){
-    const t=document.createElement('div');t.className='cartes-section-title';t.textContent='✅ Utilisées ('+utilisees.length+')';list.appendChild(t);
-    utilisees.forEach(c=>{
-      const card=document.createElement('div');card.className='carte-cadeau-card used';
-      card.innerHTML=`<div class="carte-nom">${c.nom}</div><div class="carte-offert">Offerte par : <strong>${c.offert||'—'}</strong></div><div class="carte-prestation">💆 ${c.prestationLabel||'Libre'}</div><div class="carte-montant">${c.montant}€</div><div class="carte-date">Vendue le ${fmtDateFr(c.date)}</div><div class="carte-used-badge">✅ Utilisée le ${c.dateUsed?fmtDateFr(c.dateUsed):'—'}</div><div class="carte-actions"><button class="btn-suppr-carte" onclick="supprimerCarte('${c.id}')">🗑 Supprimer</button></div>`;
-      list.appendChild(card);
-    });
-  }
+function deleteTarifVersion(from){
+  if(!confirm('Supprimer ces tarifs ? Les RDV concernés reprendront les tarifs précédents.'))return;
+  const t=getTarifs();t.versions=t.versions.filter(v=>v.from!==from);DB.setObj('tarifs',t);
+  refreshTarifSelects();renderTarifVersions();if(currentView==='semaine')buildPlanning();else buildMonth();
 }
 
-// CA incluant cartes cadeaux
-function getTotalCartesCA(){
-  const cartes=DB.get('cartes')||[];
-  return cartes.reduce((s,c)=>s+(c.montant||0),0);
+// ── BLOCAGE DE CRÉNEAUX ──
+let editingBlocId=null;
+function getBlocs(date){return(DB.get('blocs')||[]).filter(b=>b.date===date).sort((a,b)=>a.start.localeCompare(b.start));}
+function checkBlocConflict(date,time,prest,prolong){
+  const start=timeToMins(time),end=start+((PRESTATIONS[prest]||{duree:60}).duree)+(prolong?20:0);
+  return getBlocs(date).find(b=>timeToMins(b.start)<end&&timeToMins(b.end)>start)||null;
+}
+function openBlocModal(id,date,start){
+  editingBlocId=id||null;
+  const b=id?(DB.get('blocs')||[]).find(x=>x.id===id):null;
+  document.getElementById('bloc-modal-title').textContent=b?'✏ Modifier le blocage':'🚫 Bloquer un créneau';
+  document.getElementById('b-date').value=b?b.date:(date||selectedDay);
+  document.getElementById('b-start').value=b?b.start:(start||'12:00');
+  document.getElementById('b-end').value=b?b.end:(start?minsToTime(Math.min(timeToMins(start)+120,23*60+30)):'14:00');
+  document.getElementById('b-label').value=b?(b.label||''):'';
+  document.getElementById('btn-delete-bloc').style.display=b?'block':'none';
+  openModal('overlay-bloc');
+}
+function saveBloc(){
+  const date=document.getElementById('b-date').value,start=document.getElementById('b-start').value,end=document.getElementById('b-end').value;
+  const label=document.getElementById('b-label').value.trim()||'Indisponible';
+  if(!date||!start||!end){alert('Remplis la date et les heures.');return;}
+  if(timeToMins(end)<=timeToMins(start)){alert('L\'heure de fin doit être après l\'heure de début.');return;}
+  const blocs=DB.get('blocs')||[];
+  if(editingBlocId){const i=blocs.findIndex(b=>b.id===editingBlocId);if(i>=0)blocs[i]={id:editingBlocId,date,start,end,label};}
+  else blocs.push({id:Date.now().toString(),date,start,end,label});
+  DB.set('blocs',blocs);editingBlocId=null;selectedDay=date;
+  closeModal('overlay-bloc');if(currentView==='semaine')buildPlanning();else buildMonth();
+}
+function deleteBloc(){
+  if(!editingBlocId)return;
+  DB.set('blocs',(DB.get('blocs')||[]).filter(b=>b.id!==editingBlocId));editingBlocId=null;
+  closeModal('overlay-bloc');if(currentView==='semaine')buildPlanning();else buildMonth();
 }
 
-// ── GROUPE SESSION ──
-function getGroupeMembers(gId){const rdvs=DB.get('rdvs');return Object.entries(rdvs).filter(([,r])=>r.groupeId===gId).sort((a,b)=>a[0].localeCompare(b[0]));}
-function updateGroupeInfoBox(){
-  const box=document.getElementById('groupe-info-box'),ml=document.getElementById('groupe-membres-list');
-  if(currentGroupeRdvs.length>0){box.style.display='block';ml.innerHTML=currentGroupeRdvs.map(r=>`<div class="groupe-membre-item"><span>💆♀ ${r.name}</span><span>${r.time} · ${calcTotal(r,PRESTATIONS[r.prestation]||{prix:40})}€</span></div>`).join('');}
-  else box.style.display='none';
-}
-function saveRdvAndAddGroupe(){
-  const name=document.getElementById('f-name').value.trim();if(!name){document.getElementById('f-name').focus();return;}
-  const date=document.getElementById('f-date').value||selectedDay,time=document.getElementById('f-time').value;
-  const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
-  if(editingRdvKey&&editingRdvKey!==newKey)delete rdvs[editingRdvKey];
-  if(!currentGroupeId)currentGroupeId='grp-'+Date.now();
-  const isLeader=currentGroupeRdvs.length===0,depOn=document.getElementById('f-dep').value==='1'&&isLeader;
-  const tel=document.getElementById('f-tel').value.trim(),adresse=document.getElementById('f-adresse').value.trim(),details=document.getElementById('f-details').value.trim();
-  const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist:depOn?document.getElementById('f-km-dist').value:'',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment,groupeId:currentGroupeId,groupeLeader:isLeader};
-  rdvs[newKey]=rdvData;DB.set('rdvs',rdvs);syncCliente(name,tel,adresse,details);currentGroupeRdvs.push({...rdvData,key:newKey});selectedDay=date;
-  const p=PRESTATIONS[rdvData.prestation]||{duree:60};const nextTime=minsToTime(timeToMins(time)+p.duree+(rdvData.prolongation?20:0));
-  document.getElementById('f-tel').value='';document.getElementById('f-name').value='';document.getElementById('f-time').value=nextTime;
-  document.getElementById('f-prestation').value='classic_60';document.getElementById('f-prolongation').checked=false;
-  document.getElementById('f-pourboire').value='';document.getElementById('f-dep').value='0';
-  document.getElementById('dep-group').style.display='none';document.getElementById('net-preview').style.display='none';
-  setPayment('especes');editingRdvKey=null;updateGroupeInfoBox();
-  if(currentView==='semaine')buildPlanning();else buildMonth();document.getElementById('f-tel').focus();
-}
+// ── RECONSTRUCTION DU RÉPERTOIRE"""
+rep("// ── RECONSTRUCTION DU RÉPERTOIRE",newjs)
 
-// ── MESSAGES ──
-function buildConfirmMsg(r,gm){
-  const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};const total=calcTotal(r,p);
-  let gi='';
-  if(r.groupeId&&gm&&gm.length>1){const autres=gm.filter(([,m])=>m.name!==r.name).map(([,m])=>m.name).join(', ');const leader=gm.find(([,m])=>m.groupeLeader)?.[1];const frais=leader?depPrix(leader):0;if(autres)gi=`\n\n👥 Session avec : ${autres}\n💡 Frais de déplacement (${frais}€) à partager entre vous.`;}
-  return`Bonjour ${r.name} 🌸\n\n✅ Votre réservation est confirmée !\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 ${r.time}\n💆 ${p.label}${r.prolongation?'\n⏱ Prolongation +20 min (+15€)':''}\n💰 ${total}€${r.adresse?`\n📍 ${r.adresse}`:''}${gi}\n\nUn rappel vous sera envoyé la veille.\n\nMerci et à très bientôt ! 💛\nYouss Mass à Dom 🌸`;
-}
-function buildRappelMsg(r){const p=PRESTATIONS[r.prestation]||{label:'massage'};return`Bonjour ${r.name} 🌸\n\nJe vous rappelle votre RDV demain :\n\n📅 ${fmtDateFr(r.date||selectedDay)}\n🕐 à ${r.time}\n💆 ${p.label}\n\nMerci de confirmer votre présence 🙏\n\nÀ demain ! 💛\nYouss Mass à Dom 🌸`;}
-function openConfirmModal(rdvData,groupeRdvsList){
-  lastSavedRdv=rdvData;lastSavedGroupeRdvs=groupeRdvsList||[rdvData];confirmGroupeIdx=0;
-  const isGroupe=lastSavedGroupeRdvs.length>1;
-  document.getElementById('confirm-modal-title').textContent=isGroupe?'📩 Confirmations session groupée':'📩 Confirmation réservation';
-  document.getElementById('confirm-subtitle').textContent=isGroupe?`Message 1/${lastSavedGroupeRdvs.length} — ${lastSavedGroupeRdvs[0].name} :`:'Message à envoyer :';
-  const nav=document.getElementById('groupe-confirm-nav');
-  if(isGroupe){nav.style.display='flex';renderGroupeConfirmNav();}else nav.style.display='none';
-  showConfirmForIdx(0);openModal('overlay-confirm');
-}
-function renderGroupeConfirmNav(){
-  const nav=document.getElementById('groupe-confirm-nav');
-  nav.innerHTML=lastSavedGroupeRdvs.map((r,i)=>`<button onclick="showConfirmForIdx(${i})" style="flex:1;padding:8px;border-radius:10px;border:1.5px solid ${i===confirmGroupeIdx?'var(--gold)':'var(--sand)'};background:${i===confirmGroupeIdx?'var(--deep)':'var(--white)'};color:${i===confirmGroupeIdx?'var(--gold)':'var(--warm)'};font-size:0.75rem;font-weight:700;cursor:pointer;font-family:inherit">${r.name}</button>`).join('');
-}
-function showConfirmForIdx(idx){
-  confirmGroupeIdx=idx;lastSavedRdv=lastSavedGroupeRdvs[idx];
-  const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;
-  document.getElementById('confirm-msg-box').textContent=buildConfirmMsg(lastSavedRdv,gm);
-  document.getElementById('rappel-msg-box').textContent=buildRappelMsg(lastSavedRdv);
-  if(lastSavedGroupeRdvs.length>1){document.getElementById('confirm-subtitle').textContent=`Message ${idx+1}/${lastSavedGroupeRdvs.length} — ${lastSavedRdv.name} :`;renderGroupeConfirmNav();}
-}
-function sendConfirmWa(){if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;window.open('https://wa.me/'+normTel(lastSavedRdv.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildConfirmMsg(lastSavedRdv,gm)),'_blank');}
-function sendConfirmSms(){if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;window.location.href='sms:'+normTel(lastSavedRdv.tel)+'?body='+encodeURIComponent(buildConfirmMsg(lastSavedRdv,gm));}
-function copyMsg(msg){navigator.clipboard.writeText(msg).then(()=>alert('✅ Copié !')).catch(()=>{const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copié !');});}
-function copyConfirmMsg(){const gm=lastSavedRdv.groupeId?getGroupeMembers(lastSavedRdv.groupeId):null;copyMsg(buildConfirmMsg(lastSavedRdv,gm));}
-function sendRappelWa(){if(!lastSavedRdv?.tel){alert('Pas de numéro !');return;}window.open('https://wa.me/'+normTel(lastSavedRdv.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildRappelMsg(lastSavedRdv)),'_blank');}
-function copyRappelMsg(){copyMsg(buildRappelMsg(lastSavedRdv));}
-function sendWaRappel(){if(!currentRdvForWa?.tel){alert('Pas de numéro !');return;}window.open('https://wa.me/'+normTel(currentRdvForWa.tel).replace(/^0/,'+33')+'?text='+encodeURIComponent(buildRappelMsg(currentRdvForWa)),'_blank');}
-function sendWaFromCard(key){const r=DB.get('rdvs')[key];if(!r||!r.tel)return;currentRdvForWa=r;sendWaRappel();}
+# Init
+rep("updateEssenceBanner();showNotifBanner();buildPlanning();",
+"refreshTarifSelects();document.getElementById('f-date').addEventListener('change',()=>{refreshTarifSelects();updateNetPreview();});document.getElementById('t-date').addEventListener('change',fillTarifInputs);\nupdateEssenceBanner();showNotifBanner();buildPlanning();")
 
-// ── CLIENTES ──
-function findClienteByTel(tel){const k=telKey(tel);if(!k)return null;return DB.get('clientes').find(c=>telKey(c.tel)===k)||null;}
-function showSugg(list){
-  const s=document.getElementById('tel-suggestions');
-  if(!list.length){s.style.display='none';return;}
-  s.innerHTML=list.slice(0,5).map(c=>`<div class="tel-suggestion-item" onclick="selectSugg('${c.id}')">${c.prenom} ${c.nom||''}<span class="tel-suggestion-code">${c.code||''}</span><div style="font-size:0.65rem;color:var(--warm)">${c.tel||''}</div></div>`).join('');
-  s.style.display='block';
-}
-function onTelInput(){const v=document.getElementById('f-tel').value;if(telKey(v).length<3){showSugg([]);return;}showSugg(DB.get('clientes').filter(c=>matchCliente(c,v)));}
-function onNameInput(){const v=document.getElementById('f-name').value.trim();if(v.length<2){showSugg([]);return;}showSugg(DB.get('clientes').filter(c=>matchCliente(c,v)));}
-function selectSugg(id){const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom||'';document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';document.getElementById('tel-suggestions').style.display='none';}
-function syncCliente(name,tel,adresse,details){
-  if(!name)return;const clientes=DB.get('clientes'),k=telKey(tel),n=stripAcc(name).trim();
-  let idx=k?clientes.findIndex(c=>telKey(c.tel)===k):-1;
-  if(idx<0)idx=clientes.findIndex(c=>stripAcc(c.prenom).trim()===n&&(!k||!telKey(c.tel)));
-  if(idx>=0){const c=clientes[idx];if(tel)c.tel=tel;if(adresse)c.adresse=adresse;if(details)c.details=details;if(!editingRdvKey)c.seances=(c.seances||0)+1;if(!c.code)c.code=nextCode(clientes);}
-  else clientes.push({id:Date.now().toString(),code:nextCode(clientes),prenom:name,nom:'',tel:tel||'',adresse:adresse||'',details:details||'',source:'Planning',seances:1,notes:'',assoc:[]});
-  DB.set('clientes',clientes);
-}
-function deleteClienteDirectly(id,nom){if(confirm(`Supprimer ${nom.trim()} du répertoire ?`)){DB.set('clientes',DB.get('clientes').filter(c=>c.id!==id));renderClientes();}}
-function confirmDeleteCliente(){if(!editingClienteId)return;const c=DB.get('clientes').find(x=>x.id===editingClienteId);if(confirm(`Supprimer ${c?c.prenom+' '+(c.nom||''):'cette cliente'} ?`)){DB.set('clientes',DB.get('clientes').filter(c=>c.id!==editingClienteId));closeModal('overlay-cliente');renderClientes();}}
-function getClienteRdvs(cId){
-  const c=DB.get('clientes').find(x=>x.id===cId);if(!c)return[];
-  const rdvs=DB.get('rdvs');
-  const allTels=[telKey(c.tel),...(c.assoc||[]).map(a=>telKey(a.tel)).filter(Boolean)].filter(Boolean);
-  const allNames=[stripAcc(c.prenom).trim(),...(c.assoc||[]).map(a=>stripAcc(a.prenom).trim())];
-  return Object.entries(rdvs).filter(([,r])=>{const t=telKey(r.tel),n=stripAcc(r.name).trim();return(t&&allTels.includes(t))||(allNames.includes(n));}).sort((a,b)=>b[0].localeCompare(a[0]));
-}
-function addAssocPerson(){const p=prompt('Prénom ?');if(!p)return;const t=prompt('Téléphone (optionnel) ?')||'';assocPersonsTemp.push({prenom:p,tel:t,id:'assoc-'+Date.now()});renderAssocModal();}
-function renderAssocModal(){const s=document.getElementById('assoc-section-modal'),l=document.getElementById('assoc-list-modal');s.style.display='block';l.innerHTML=assocPersonsTemp.map((p,i)=>`<div class="assoc-item"><span>👤 ${p.prenom}${p.tel?' · 📞 '+p.tel:''}</span><button onclick="removeAssoc(${i})" style="background:none;border:none;color:var(--rose);cursor:pointer">✕</button></div>`).join('');}
-function removeAssoc(i){assocPersonsTemp.splice(i,1);renderAssocModal();}
-function rdvFromCliente(){const c=DB.get('clientes').find(x=>x.id===editingClienteId);if(!c)return;closeModal('overlay-cliente');currentGroupeId=null;currentGroupeRdvs=[];setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';},350);},200);}
-function rdvGroupeFromCliente(){const c=DB.get('clientes').find(x=>x.id===editingClienteId);if(!c)return;closeModal('overlay-cliente');currentGroupeId='grp-'+Date.now();currentGroupeRdvs=[];setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';updateGroupeInfoBox();},350);},200);}
-
-// ── DEPENSES ──
-function selectCat(cat){selectedCat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));document.getElementById('cat-'+cat).classList.add('selected');}
-function openDepenseModal(){document.getElementById('d-label').value='';document.getElementById('d-prix').value='';document.getElementById('d-date').value=fmtDate(new Date());selectCat('huile');openModal('overlay-depense');}
-function saveDepense(){const prix=parseFloat(document.getElementById('d-prix').value)||0;if(!prix){alert('Entrez un montant !');return;}const dep=DB.get('depenses')||[];dep.push({id:Date.now().toString(),cat:selectedCat,label:document.getElementById('d-label').value.trim()||CAT_LABELS[selectedCat],prix,date:document.getElementById('d-date').value||fmtDate(new Date())});DB.set('depenses',dep);closeModal('overlay-depense');if(statsView==='depenses')buildStats();}
-function deleteDepense(id){if(!confirm('Supprimer ?'))return;DB.set('depenses',(DB.get('depenses')||[]).filter(d=>d.id!==id));buildStats();}
-
-function getBlockedSlots(rdvs){
-  const blocked=new Set(),travel=new Set();
-  Object.entries(rdvs).forEach(([key,r])=>{const[date,time]=key.split('_'),p=PRESTATIONS[r.prestation]||{duree:60};const total=p.duree+(r.prolongation?20:0),start=timeToMins(time),slots=Math.ceil(total/30);for(let i=1;i<slots;i++)blocked.add(date+'_'+minsToTime(start+i*30));if(r.dep){for(let i=1;i<=2;i++){const t=minsToTime(start-i*30);if(start-i*30>=0)travel.add(date+'_'+t);}const end=start+slots*30;for(let i=0;i<2;i++)travel.add(date+'_'+minsToTime(end+i*30));}});
-  return{blocked,travel};
-}
-function toggleConge(date){const c=DB.get('conges'),idx=c.indexOf(date);if(idx>=0)c.splice(idx,1);else c.push(date);DB.set('conges',c);if(currentView==='semaine')buildPlanning();else buildMonth();}
-function setPayment(mode){currentPayment=mode;document.getElementById('pay-especes').classList.toggle('active',mode==='especes');document.getElementById('pay-virement').classList.toggle('active',mode==='virement');}
-function toggleDepFields(){document.getElementById('dep-group').style.display=document.getElementById('f-dep').value==='1'?'block':'none';updateNetPreview();}
-function callTel(tel){window.location.href='tel:'+normTel(tel);}
-function openWaze(a){window.location.href=`waze://?q=${encodeURIComponent(a)}&navigate=yes`;setTimeout(()=>window.open(`https://waze.com/ul?q=${encodeURIComponent(a)}&navigate=yes`,'_blank'),1500);}
-function showNotifBanner(){const w=document.getElementById('notif-banner-wrap');if(!('Notification'in window)){w.innerHTML='';return;}if(Notification.permission==='granted')w.innerHTML='<div class="notif-banner ok">🔔 Notifications activées</div>';else if(Notification.permission==='denied')w.innerHTML='<div class="notif-banner denied">🔕 Notifications bloquées</div>';else w.innerHTML='<div class="notif-banner" onclick="askNotif()">🔔 Activer les notifications 👆</div>';}
-async function askNotif(){await Notification.requestPermission();showNotifBanner();scheduleNotifs();}
-function scheduleNotifs(){if(Notification.permission!=='granted')return;const rdvs=DB.get('rdvs'),now=Date.now();Object.entries(rdvs).forEach(([key,r])=>{const[date,time]=key.split('_'),delay=new Date(date+'T'+time+':00').getTime()-3600000-now;if(delay>0&&delay<604800000)setTimeout(()=>{const p=PRESTATIONS[r.prestation];new Notification('🌸 RDV dans 1h',{body:`💆♀ ${r.name} · ${p?p.label:'Massage'} à ${time}`});},delay);});}
-function setView(v){currentView=v;document.getElementById('view-semaine').style.display=v==='semaine'?'block':'none';document.getElementById('view-mois').style.display=v==='mois'?'block':'none';document.getElementById('btn-semaine').classList.toggle('active',v==='semaine');document.getElementById('btn-mois').classList.toggle('active',v==='mois');if(v==='semaine')buildPlanning();else buildMonth();}
-function navPrev(){if(currentView==='semaine'){weekOffset--;buildPlanning();}else{monthOffset--;buildMonth();}}
-function navNext(){if(currentView==='semaine'){weekOffset++;buildPlanning();}else{monthOffset++;buildMonth();}}
-function goToday(){weekOffset=0;monthOffset=0;selectedDay=fmtDate(new Date());if(currentView==='semaine')buildPlanning();else buildMonth();}
-function switchTab(tab){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.getElementById('page-'+tab).classList.add('active');document.getElementById('tab-'+tab).classList.add('active');if(tab==='clientes')renderClientes();if(tab==='stats')buildStats();if(tab==='cartes')renderCartes();}
-
-function calcEssAll(rdvList){const gc=new Set();let e=0;rdvList.forEach(r=>{if(r.groupeId){if(r.groupeLeader&&!gc.has(r.groupeId)){gc.add(r.groupeId);e+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}else{e+=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}});return e;}
-
-function setStatsView(v){statsView=v;['mois','global','depenses'].forEach(s=>document.getElementById('sn-'+s).classList.toggle('active',s===v));buildStats();}
-
-function buildStats(){
-  const rdvs=DB.get('rdvs'),depenses=DB.get('depenses')||[];
-  const cartesCA=getTotalCartesCA();
-  const c=document.getElementById('stats-content');
-  if(statsView==='depenses'){
-    const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
-    const totalBrut=Object.values(rdvs).reduce((s,r)=>{const p=PRESTATIONS[r.prestation]||{prix:40};return s+calcTotal(r,p);},0)+cartesCA;
-    const totalEss=calcEssAll(Object.values(rdvs));
-    c.innerHTML=`<div class="depense-summary"><div class="depense-summary-title">💸 Résumé</div><div class="depense-summary-row"><span>CA brut (RDV + cartes)</span><span>${totalBrut}€</span></div><div class="depense-summary-row"><span>⛽ Total essence</span><span>−${totalEss.toFixed(2)}€</span></div><div class="depense-summary-row"><span>💸 Total dépenses</span><span>−${totalDep.toFixed(2)}€</span></div><div class="depense-summary-row"><span><strong>Bénéfice net réel</strong></span><span><strong>${(totalBrut-totalEss-totalDep).toFixed(2)}€</strong></span></div></div><button class="btn-primary" style="margin-bottom:12px" onclick="openDepenseModal()">＋ Ajouter une dépense</button>${!depenses.length?'<div class="month-empty">Aucune dépense</div>':depenses.slice().reverse().map(d=>`<div class="depense-item"><div class="depense-icon">${CAT_ICONS[d.cat]||'📦'}</div><div class="depense-info"><div class="depense-label">${d.label}</div><div class="depense-sub">${CAT_LABELS[d.cat]||'Autre'} · ${d.date}</div></div><div class="depense-prix">−${d.prix}€</div><button class="depense-del" onclick="deleteDepense('${d.id}')">🗑</button></div>`).join('')}`;
-    return;
-  }
-  if(statsView==='global'){
-    let total=0,brut=0,mins=0,esp=0,vir=0;
-    const totalDep=depenses.reduce((s,d)=>s+(d.prix||0),0);
-    const allRdvs=Object.values(rdvs);const ess=calcEssAll(allRdvs);
-    allRdvs.forEach(r=>{const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},b=calcTotal(r,p);total++;brut+=b;mins+=p.duree+(r.prolongation?20:0);if(r.payment==='virement')vir+=b;else esp+=b;});
-    const hh=Math.floor(mins/60),mm=mins%60;
-    const cartes=DB.get('cartes')||[];const cartesEnAttente=cartes.filter(x=>!x.used).length;const cartesUsed=cartes.filter(x=>x.used).length;
-    c.innerHTML=`<div class="global-stat-card"><div class="global-stat-title">🏆 Total depuis le début</div><div class="global-stat-row"><span>Nombre de RDV</span><span>${total}</span></div><div class="global-stat-row"><span>Heures travaillées</span><span>${hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(mins+'min')}</span></div><div class="global-stat-row"><span>CA RDV brut</span><span>${brut}€</span></div><div class="global-stat-row"><span>🎁 CA Cartes cadeaux</span><span>+${cartesCA}€</span></div><div class="global-stat-row"><span>CA total brut</span><span>${brut+cartesCA}€</span></div><div class="global-stat-row"><span>⛽ Total essence</span><span>−${ess.toFixed(2)}€</span></div><div class="global-stat-row"><span>Net après essence</span><span>${(brut+cartesCA-ess).toFixed(2)}€</span></div><div class="global-stat-row"><span>💸 Dépenses pro</span><span>−${totalDep.toFixed(2)}€</span></div><div class="global-stat-row"><span>💰 Bénéfice réel</span><span>${(brut+cartesCA-ess-totalDep).toFixed(2)}€</span></div><div class="global-stat-row"><span>💵 Espèces</span><span>${esp}€</span></div><div class="global-stat-row"><span>🏦 Virement</span><span>${vir}€</span></div><div class="global-stat-row"><span>🎁 Cartes en attente</span><span>${cartesEnAttente}</span></div><div class="global-stat-row"><span>🎁 Cartes utilisées</span><span>${cartesUsed}</span></div></div>`;
-    return;
-  }
-  // Par mois
-  const byMonth={};
-  Object.entries(rdvs).forEach(([key,r])=>{
-    const ym=key.split('_')[0].substring(0,7);
-    if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,mins:0,esp:0,vir:0,dep:0,rdvList:[]};
-    const p=PRESTATIONS[r.prestation]||{prix:40,duree:60},b=calcTotal(r,p);
-    byMonth[ym].rdv++;byMonth[ym].brut+=b;byMonth[ym].mins+=p.duree+(r.prolongation?20:0);byMonth[ym].rdvList.push(r);
-    if(r.payment==='virement')byMonth[ym].vir+=b;else byMonth[ym].esp+=b;
-  });
-  // Ajouter les cartes cadeaux au mois de vente
-  (DB.get('cartes')||[]).forEach(carte=>{
-    const ym=carte.date?carte.date.substring(0,7):'';
-    if(ym){if(!byMonth[ym])byMonth[ym]={rdv:0,brut:0,mins:0,esp:0,vir:0,dep:0,rdvList:[],cartes:0};byMonth[ym].cartes=(byMonth[ym].cartes||0)+carte.montant;}
-  });
-  depenses.forEach(d=>{const ym=d.date?d.date.substring(0,7):'';if(ym&&byMonth[ym])byMonth[ym].dep+=(d.prix||0);});
-  const sorted=Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
-  if(!sorted.length){c.innerHTML='<div class="empty-state"><div class="es-icon">📊</div><p>Aucun RDV enregistré</p></div>';return;}
-  c.innerHTML=sorted.map(ym=>{
-    const[y,m]=ym.split('-'),mName=MONTHS_FR[parseInt(m)-1]+' '+y,d=byMonth[ym];
-    const hh=Math.floor(d.mins/60),mm2=d.mins%60;
-    const ess=calcEssAll(d.rdvList||[]);const cartesM=d.cartes||0;
-    const net=d.brut+cartesM-ess,ben=net-d.dep;
-    return`<div class="month-stat-card"><div class="month-stat-title">📅 ${mName.charAt(0).toUpperCase()+mName.slice(1)}</div><div class="month-stat-row"><span>RDV</span><span>${d.rdv}</span></div><div class="month-stat-row"><span>Heures</span><span>${hh>0?(mm2>0?`${hh}h${mm2}`:`${hh}h`):(d.mins+'min')}</span></div><div class="month-stat-row"><span>💵 Espèces</span><span>${d.esp}€</span></div><div class="month-stat-row"><span>🏦 Virement</span><span>${d.vir}€</span></div><div class="month-stat-row"><span>CA RDV</span><span>${d.brut}€</span></div>${cartesM>0?`<div class="month-stat-row"><span>🎁 Cartes cadeaux</span><span>+${cartesM}€</span></div>`:''}<div class="month-stat-row"><span>⛽ Essence</span><span>−${ess.toFixed(2)}€</span></div><div class="month-stat-row"><span>Net après essence</span><span>${net.toFixed(2)}€</span></div>${d.dep>0?`<div class="month-stat-row"><span>💸 Dépenses</span><span>−${d.dep.toFixed(2)}€</span></div>`:''}<div class="month-stat-row total"><span>Bénéfice réel</span><span>${ben.toFixed(2)}€</span></div></div>`;
-  }).join('');
-}
-
-function updateStats(){
-  const rdvsAll=DB.get('rdvs'),now=new Date();
-  const weekDates=getWeekDates(weekOffset);const weekStart=fmtDate(weekDates[0]),weekEnd=fmtDate(weekDates[6]);
-  const monthStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  let wRdv=0,wCa=0,wNet=0,wMins=0,wEsp=0,wVir=0,wEss=0;
-  const gCW=new Set();
-  Object.entries(rdvsAll).forEach(([key,r])=>{
-    const date=key.split('_')[0],p=PRESTATIONS[r.prestation]||{prix:40,duree:60},brut=calcTotal(r,p);
-    let ess=0;
-    if(r.groupeId){if(r.groupeLeader&&!gCW.has(r.groupeId)&&date>=weekStart&&date<=weekEnd){gCW.add(r.groupeId);ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}
-    else{ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
-    if(date>=weekStart&&date<=weekEnd){wRdv++;wCa+=brut;wNet+=brut-ess;wEss+=ess;wMins+=p.duree+(r.prolongation?20:0);if(r.payment==='virement')wVir+=brut;else wEsp+=brut;}
-  });
-  // Mois en cours
-  let mCa=0,mNet=0;const gCM=new Set();
-  Object.entries(rdvsAll).forEach(([key,r])=>{
-    const date=key.split('_')[0];if(!date.startsWith(monthStr))return;
-    const p=PRESTATIONS[r.prestation]||{prix:40},b=calcTotal(r,p);let e=0;
-    if(r.groupeId){if(r.groupeLeader&&!gCM.has(r.groupeId)){gCM.add(r.groupeId);e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}}else{e=r.dep&&r.kmDist?calcEssence(r.kmDist):0;}
-    mCa+=b;mNet+=b-e;
-  });
-  // Ajouter cartes cadeaux du mois en cours
-  (DB.get('cartes')||[]).forEach(c=>{if(c.date&&c.date.startsWith(monthStr)){mCa+=c.montant;mNet+=c.montant;}});
-
-  document.getElementById('s-rdv').textContent=wRdv;document.getElementById('s-ca').textContent=wCa+'€';document.getElementById('s-net').textContent=wNet.toFixed(0)+'€';
-  const hh=Math.floor(wMins/60),mm=wMins%60;document.getElementById('s-h').textContent=hh>0?(mm>0?`${hh}h${mm}`:`${hh}h`):(wMins+'min');
-  document.getElementById('s-especes').textContent=wEsp+'€';document.getElementById('s-virement').textContent=wVir+'€';document.getElementById('s-essence-week').textContent=wEss.toFixed(2)+'€';
-  if(currentView==='semaine'){document.getElementById('period-label').textContent='Cette semaine';document.getElementById('period-val').textContent=wCa+'€';document.getElementById('period-net').textContent=wNet.toFixed(0)+'€';}
-  else{const mName=MONTHS_FR[now.getMonth()]+' '+now.getFullYear();document.getElementById('period-label').textContent='Ce mois — '+mName.charAt(0).toUpperCase()+mName.slice(1);document.getElementById('period-val').textContent=mCa+'€';document.getElementById('period-net').textContent=mNet.toFixed(0)+'€';}
-}
-
-function buildRdvCard(key,r){
-  const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40,color:'c-gold'};
-  const cv=r.tel?findClienteByTel(r.tel):null;
-  const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;
-  const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';
-  const tipB=r.pourboire&&parseFloat(r.pourboire)>0?`<span class="tip-badge">💰 +${r.pourboire}€</span>`:'';
-  const codeLabel=cv&&cv.code?`<span class="rdv-code">${cv.code}</span>`:'';
-  const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';
-  let groupeBadge='',groupeMembres='';
-  if(r.groupeId){const membres=getGroupeMembers(r.groupeId);if(membres.length>1){groupeBadge=`<div class="rdv-groupe-badge">👥 Session groupée · ${membres.length} clientes</div>`;if(r.groupeLeader)groupeMembres=`<div style="font-size:0.68rem;color:var(--warm);margin-top:3px">📋 ${membres.map(([,m])=>m.name).join(' · ')}</div>`;}}
-  const card=document.createElement('div');card.className='rdv-card '+p.color+(r.groupeId?' groupe':'');
-  card.innerHTML=`${groupeBadge}<div class="rdv-name">💆♀ ${r.name} ${codeLabel}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="rdv-detail">${p.label}${r.prolongation?' · ⏱+20min':''} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}</div>${groupeMembres}${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺</div>`:''}${r.details?`<div class="rdv-detail">📝 ${r.details}</div>`:''}${netLine}<div style="margin-top:4px">${payB}${tipB}</div><div class="rdv-actions">${r.tel?`<button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button>`:''}</div>`;
-  card.onclick=()=>openRdvModal(key);return card;
-}
-
-function buildPlanning(){
-  const dates=getWeekDates(weekOffset),today=fmtDate(new Date());
-  const s=dates[0],e=dates[6];
-  document.getElementById('week-label').textContent=s.getDate()+' '+MONTHS_FR[s.getMonth()]+' – '+e.getDate()+' '+MONTHS_FR[e.getMonth()];
-  const strip=document.getElementById('days-strip');strip.innerHTML='';
-  dates.forEach((d,i)=>{const ds=fmtDate(d),pill=document.createElement('div'),cng=isConge(ds);pill.className='day-pill'+(ds===selectedDay?' active':'')+(ds===today?' today':'')+(cng?' conge':'');const count=Object.keys(DB.get('rdvs')).filter(k=>k.startsWith(ds+'_')).length;pill.innerHTML=`<div class="dname">${DAYS_SHORT[i]}</div><div class="dnum">${d.getDate()}</div><div class="day-badge${count===0?' hidden':''}">${count}</div>`;pill.onclick=()=>{selectedDay=ds;buildPlanning();};strip.appendChild(pill);});
-  const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7,cng=isConge(selectedDay);
-  document.getElementById('day-title-wrap').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS_FR[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
-  document.getElementById('conge-banner-wrap').innerHTML=cng?'<div class="conge-banner">🏖 Jour de congé</div>':'';
-  const rdvs=DB.get('rdvs'),{blocked,travel}=getBlockedSlots(rdvs);
-  const list=document.getElementById('slots-list');list.innerHTML='';
-  HOURS.forEach(h=>{const key=rdvKey(selectedDay,h),item=document.createElement('div');item.className='slot-item';const timeEl=document.createElement('div');timeEl.className='slot-time';timeEl.textContent=h;const area=document.createElement('div');area.className='slot-area';if(rdvs[key]){area.className+=' has-rdv';area.appendChild(buildRdvCard(key,rdvs[key]));}else if(cng){area.className+=' conge-slot';}else if(blocked.has(key)){area.className+=' blocked';}else if(travel.has(key)){area.className+=' travel';area.innerHTML='<div class="travel-label">🚗 Trajet</div>';}else{area.className+=' empty';area.innerHTML='<span class="slot-add">＋</span>';area.onclick=()=>openRdvModal(null,h);}item.appendChild(timeEl);item.appendChild(area);list.appendChild(item);});
-  updateStats();
-}
-
-function buildMonth(){
-  const now=new Date(),year=now.getFullYear(),month=now.getMonth()+monthOffset;
-  const d=new Date(year,month,1),mName=MONTHS_FR[d.getMonth()]+' '+d.getFullYear();
-  document.getElementById('week-label').textContent=mName.charAt(0).toUpperCase()+mName.slice(1);
-  const firstDay=new Date(d.getFullYear(),d.getMonth(),1),lastDay=new Date(d.getFullYear(),d.getMonth()+1,0);
-  let startDow=firstDay.getDay();if(startDow===0)startDow=7;
-  const cells=document.getElementById('month-cells');cells.innerHTML='';const rdvs=DB.get('rdvs'),today=fmtDate(new Date());
-  for(let i=1;i<startDow;i++){const prev=new Date(d.getFullYear(),d.getMonth(),1-(startDow-i));const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${prev.getDate()}</div>`;cells.appendChild(cell);}
-  for(let day=1;day<=lastDay.getDate();day++){const dd=new Date(d.getFullYear(),d.getMonth(),day),ds=fmtDate(dd),cng=isConge(ds);const cell=document.createElement('div');cell.className='month-cell'+(ds===today?' today':'')+(ds===selectedDay?' selected':'')+(cng?' conge':'');const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(ds+'_'));cell.innerHTML=`<div class="cell-num">${day}</div><div class="cell-dots">${cng?'<div style="font-size:0.7rem">🏖</div>':dayRdvs.map(([,r])=>{const p=PRESTATIONS[r.prestation]||{color:'c-gold'};return`<div class="month-dot ${p.color}"></div>`;}).join('')}</div>`;cell.onclick=()=>{selectedDay=ds;buildMonth();};cells.appendChild(cell);}
-  const remaining=(7-cells.children.length%7)%7;for(let i=1;i<=remaining;i++){const cell=document.createElement('div');cell.className='month-cell other-month';cell.innerHTML=`<div class="cell-num">${i}</div>`;cells.appendChild(cell);}
-  const sel=new Date(selectedDay+'T12:00:00'),di=(sel.getDay()+6)%7,cng=isConge(selectedDay);
-  document.getElementById('month-selected-day').innerHTML=`<span>${DAYS_LONG[di]} ${sel.getDate()} ${MONTHS_FR[sel.getMonth()]}</span><button class="btn-conge ${cng?'on':'off'}" onclick="toggleConge('${selectedDay}')">${cng?'🏖 Retirer':'🏖 Congé'}</button>`;
-  document.getElementById('month-conge-banner').innerHTML=cng?'<div class="conge-banner" style="margin:0 14px 10px">🏖 Jour de congé</div>':'';
-  const dayRdvs=Object.entries(rdvs).filter(([k])=>k.startsWith(selectedDay+'_')).sort((a,b)=>a[0].localeCompare(b[0]));
-  const rdvList=document.getElementById('month-rdv-list');
-  if(!dayRdvs.length){rdvList.innerHTML=cng?'':'<div class="month-empty">Aucun RDV ce jour</div>';}
-  else{rdvList.innerHTML='';dayRdvs.forEach(([key,r])=>{const p=PRESTATIONS[r.prestation]||{label:'Massage',prix:40};const cv=r.tel?findClienteByTel(r.tel):null;const total=calcTotal(r,p),ess=r.dep&&r.kmDist?calcEssence(r.kmDist):0;const payB=r.payment==='virement'?'<span class="pay-badge virement">🏦 Virement</span>':'<span class="pay-badge especes">💵 Espèces</span>';const codeLabel=cv&&cv.code?`<span class="rdv-code">${cv.code}</span>`:'';const netLine=ess>0?`<div class="rdv-net">💰 Net : ${(total-ess).toFixed(2)}€ (−${ess}€⛽)</div>`:'';const groupeBadge=r.groupeId?`<span style="background:var(--gold);color:var(--deep);font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px">👥</span>`:'';const item=document.createElement('div');item.className='month-rdv-item';item.innerHTML=`<div class="month-rdv-top"><div class="month-rdv-time">${key.split('_')[1]}</div><div class="month-rdv-info"><div class="month-rdv-name">💆♀ ${r.name} ${codeLabel}${groupeBadge}</div>${r.tel?`<div class="rdv-phone" onclick="event.stopPropagation();callTel('${r.tel}')">📞 ${r.tel}</div>`:''}<div class="month-rdv-detail">${p.label} · ${total}€${r.dep?' 🚗+'+depPrix(r)+'€':''}${r.prolongation?' · ⏱+20min':''}</div>${r.adresse?`<div class="rdv-address" onclick="event.stopPropagation();openWaze('${r.adresse.replace(/'/g,"\\'")}')">📍 ${r.adresse} 🗺</div>`:''}${netLine}<div style="margin-top:4px">${payB}</div></div></div><div class="month-rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();(()=>{currentRdvForWa=DB.get('rdvs')['${key}'];sendWaRappel();})()">📲 Rappel WA</button></div>`;item.onclick=()=>openRdvModal(key);rdvList.appendChild(item);});}
-  updateStats();
-}
-
-function openRdvModal(key,defaultHour){
-  if(isConge(selectedDay)&&!key){alert('Jour de congé 🏖');return;}
-  editingRdvKey=key||null;
-  if(!key&&!currentGroupeId){currentGroupeId=null;currentGroupeRdvs=[];}
-  document.getElementById('rdv-modal-title').textContent=key?'✏ Modifier le RDV':'➕ Nouveau RDV';
-  document.getElementById('btn-delete-rdv').style.display=key?'block':'none';
-  document.getElementById('btn-wa-rappel').style.display='none';
-  document.getElementById('tel-suggestions').style.display='none';
-  document.getElementById('net-preview').style.display='none';
-  document.getElementById('btn-ajouter-groupe').style.display=key?'none':'block';
-  document.getElementById('groupe-info-box').style.display='none';
-  currentRdvForWa=null;
-  if(key&&DB.get('rdvs')[key]){const r=DB.get('rdvs')[key];currentRdvForWa=r;document.getElementById('f-tel').value=r.tel||'';document.getElementById('f-name').value=r.name;document.getElementById('f-date').value=key.split('_')[0];document.getElementById('f-time').value=r.time||key.split('_')[1];document.getElementById('f-prestation').value=r.prestation||'classic_60';document.getElementById('f-dep').value=r.dep?'1':'0';document.getElementById('f-km').value=r.km||'10';document.getElementById('f-km-dist').value=r.kmDist||'';toggleDepFields();document.getElementById('f-adresse').value=r.adresse||'';document.getElementById('f-details').value=r.details||'';document.getElementById('f-prolongation').checked=r.prolongation||false;document.getElementById('f-pourboire').value=r.pourboire||'';setPayment(r.payment||'especes');if(r.tel)document.getElementById('btn-wa-rappel').style.display='flex';updateNetPreview();}
-  else{['f-tel','f-name','f-adresse','f-details','f-km-dist','f-pourboire'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-date').value=selectedDay;document.getElementById('f-time').value=defaultHour||'10:00';document.getElementById('f-prestation').value='classic_60';document.getElementById('f-dep').value='0';document.getElementById('f-km').value='10';document.getElementById('dep-group').style.display='none';document.getElementById('f-prolongation').checked=false;setPayment('especes');updateGroupeInfoBox();}
-  openModal('overlay-rdv');setTimeout(()=>document.getElementById('f-tel').focus(),300);
-}
-
-function saveRdv(){
-  const name=document.getElementById('f-name').value.trim();if(!name){document.getElementById('f-name').focus();return;}
-  const date=document.getElementById('f-date').value||selectedDay,time=document.getElementById('f-time').value;
-  const newKey=rdvKey(date,time),rdvs=DB.get('rdvs');
-  if(editingRdvKey&&editingRdvKey!==newKey)delete rdvs[editingRdvKey];
-  const depOn=document.getElementById('f-dep').value==='1';
-  const tel=document.getElementById('f-tel').value.trim(),adresse=document.getElementById('f-adresse').value.trim(),details=document.getElementById('f-details').value.trim();
-  const rdvData={name,tel,time,date,prestation:document.getElementById('f-prestation').value,dep:depOn,km:depOn?document.getElementById('f-km').value:'10',kmDist:depOn?document.getElementById('f-km-dist').value:'',adresse,details,prolongation:document.getElementById('f-prolongation').checked,pourboire:document.getElementById('f-pourboire').value||0,payment:currentPayment};
-  if(currentGroupeId){rdvData.groupeId=currentGroupeId;rdvData.groupeLeader=currentGroupeRdvs.length===0;currentGroupeRdvs.push({...rdvData,key:newKey});}
-  rdvs[newKey]=rdvData;DB.set('rdvs',rdvs);syncCliente(name,tel,adresse,details);selectedDay=date;
-  const allGroupeRdvs=[...currentGroupeRdvs];currentGroupeId=null;currentGroupeRdvs=[];
-  document.getElementById('tel-suggestions').style.display='none';
-  closeModal('overlay-rdv');if(currentView==='semaine')buildPlanning();else buildMonth();scheduleNotifs();
-  openConfirmModal(allGroupeRdvs.length>0?allGroupeRdvs[0]:rdvData,allGroupeRdvs.length>0?allGroupeRdvs:[rdvData]);
-}
-
-function deleteRdv(){if(!editingRdvKey)return;const rdvs=DB.get('rdvs');delete rdvs[editingRdvKey];DB.set('rdvs',rdvs);closeModal('overlay-rdv');if(currentView==='semaine')buildPlanning();else buildMonth();}
-
-function renderClientes(filter){
-  let clientes=DB.get('clientes');
-  if(filter)clientes=clientes.filter(c=>matchCliente(c,filter));
-  clientes.sort((a,b)=>(a.prenom||'').localeCompare(b.prenom||'','fr'));
-  const list=document.getElementById('clientes-list');list.innerHTML='';
-  if(!clientes.length){list.innerHTML=`<div class="empty-state"><div class="es-icon">👩</div><p>${filter?'Aucune cliente trouvée':'Pas encore de clientes !'}</p></div>`;return;}
-  const groups={};clientes.forEach(c=>{const l=stripAcc((c.prenom||'?')[0]||'?').toUpperCase();if(!groups[l])groups[l]=[];groups[l].push(c);});
-  Object.keys(groups).sort().forEach(lettre=>{
-    const header=document.createElement('div');header.className='alpha-header';header.textContent=lettre;list.appendChild(header);
-    groups[lettre].forEach(c=>{
-      const fidele=isFidele(c),seancesLeft=fidele?0:FIDELITE_SEUIL-(c.seances||0);
-      const card=document.createElement('div');card.className='cliente-card'+(fidele?'':' pending');
-      const assocCount=(c.assoc||[]).length;
-      card.innerHTML=`<div class="cliente-card-top"><div class="cliente-avatar${fidele?' fidele':''}">${initials(c.prenom,c.nom)}</div><div class="cliente-info"><div class="cliente-name">${c.prenom} ${c.nom||''}${fidele&&c.code?`<span class="cliente-code">${c.code}</span>`:!fidele?`<span class="cliente-pending-badge">🔒 ${seancesLeft} RDV restants</span>`:''}</div>${c.tel?`<div class="cliente-tel" onclick="event.stopPropagation();callTel('${c.tel}')">📞 ${c.tel}</div>`:`<div class="cliente-sub">Pas de téléphone</div>`}${c.adresse?`<div class="cliente-sub">📍 ${c.adresse}</div>`:''}${assocCount>0?`<div class="cliente-sub">👥 ${assocCount} personne${assocCount>1?'s':''} associée${assocCount>1?'s':''}</div>`:''}</div><div class="cliente-badge${fidele?' fidele':''}">${fidele?'⭐':''} ${c.seances||0} séance${(c.seances||0)>1?'s':''}</div></div><div class="cliente-actions"><button class="btn-planning" onclick="event.stopPropagation();quickRdvFromCliente('${c.id}')">📅 RDV</button><button class="btn-planning" style="background:var(--warm);color:white" onclick="event.stopPropagation();quickGroupeFromCliente('${c.id}')">👥 Groupé</button>${c.tel?`<button class="btn-call" onclick="event.stopPropagation();callTel('${c.tel}')">📞</button>`:''} ${c.adresse?`<button class="btn-waze-c" onclick="event.stopPropagation();openWaze('${c.adresse.replace(/'/g,"\\'")}')">🗺</button>`:''}<button class="btn-delete-c" onclick="event.stopPropagation();deleteClienteDirectly('${c.id}','${c.prenom} ${c.nom||''}')">🗑</button></div>`;
-      card.onclick=()=>openClienteModal(c.id);list.appendChild(card);
-    });
-  });
-}
-function quickRdvFromCliente(id){const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;currentGroupeId=null;currentGroupeRdvs=[];switchTab('planning');setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';},350);},200);}
-function quickGroupeFromCliente(id){const c=DB.get('clientes').find(x=>x.id===id);if(!c)return;currentGroupeId='grp-'+Date.now();currentGroupeRdvs=[];switchTab('planning');setTimeout(()=>{openRdvModal(null,null);setTimeout(()=>{document.getElementById('f-tel').value=c.tel||'';document.getElementById('f-name').value=c.prenom;document.getElementById('f-adresse').value=c.adresse||'';document.getElementById('f-details').value=c.details||'';updateGroupeInfoBox();},350);},200);}
-function filterClientes(){renderClientes(document.getElementById('search-input').value);}
-
-function openClienteModal(id){
-  editingClienteId=id||null;assocPersonsTemp=[];
-  document.getElementById('cliente-modal-title').textContent=id?'✏ Modifier':'➕ Nouvelle cliente';
-  document.getElementById('btn-delete-cliente').style.display=id?'block':'none';
-  document.getElementById('btn-rdv-from-cliente').style.display=id?'block':'none';
-  document.getElementById('btn-rdv-groupe-from-cliente').style.display=id?'block':'none';
-  document.getElementById('historique-section').style.display='none';
-  document.getElementById('assoc-section-modal').style.display='block';
-  document.getElementById('assoc-list-modal').innerHTML='';
-  const cd=document.getElementById('c-code-display');
-  if(id){
-    const c=DB.get('clientes').find(x=>x.id===id);
-    if(c){
-      document.getElementById('c-prenom').value=c.prenom||'';document.getElementById('c-nom').value=c.nom||'';document.getElementById('c-tel').value=c.tel||'';document.getElementById('c-adresse').value=c.adresse||'';document.getElementById('c-details').value=c.details||'';document.getElementById('c-source').value=c.source||'Instagram';document.getElementById('c-seances').value=c.seances||0;document.getElementById('c-notes').value=c.notes||'';
-      if(c.code){cd.textContent='🏷 '+c.code+((c.seances||0)>=FIDELITE_SEUIL?' · ⭐ Cliente fidèle':'');cd.style.display='block';}else cd.style.display='none';
-      assocPersonsTemp=[...(c.assoc||[])];if(assocPersonsTemp.length>0)renderAssocModal();
-      const rdvs=getClienteRdvs(id);
-      if(rdvs.length>0){document.getElementById('historique-section').style.display='block';const today=fmtDate(new Date());document.getElementById('historique-list').innerHTML=rdvs.map(([key,r])=>{const p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};const date=key.split('_')[0];const isUpcoming=date>=today;const total=calcTotal(r,p);return`<div class="historique-item${isUpcoming?' upcoming':''}"><div class="historique-date">${isUpcoming?'📅 ':'✅ '}${fmtDateFr(date)} à ${r.time}${r.groupeId?` <span style="font-size:0.65rem;color:var(--gold)">👥</span>`:''}<span class="historique-prix">${total}€</span></div><div class="historique-detail">${p.label}${r.prolongation?' · ⏱+20min':''}${r.adresse?' · '+r.adresse:''}</div></div>`;}).join('');}
-    }
-  }else{['c-prenom','c-nom','c-tel','c-adresse','c-details','c-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('c-source').value='Instagram';document.getElementById('c-seances').value='0';cd.style.display='none';}
-  openModal('overlay-cliente');setTimeout(()=>document.getElementById('c-prenom').focus(),300);
-}
-function saveCliente(){
-  const prenom=document.getElementById('c-prenom').value.trim();if(!prenom){document.getElementById('c-prenom').focus();return;}
-  const clientes=DB.get('clientes');const existing=editingClienteId?clientes.find(c=>c.id===editingClienteId):null;
-  const data={id:editingClienteId||Date.now().toString(),code:existing?.code||nextCode(clientes),prenom,nom:document.getElementById('c-nom').value.trim(),tel:document.getElementById('c-tel').value.trim(),adresse:document.getElementById('c-adresse').value.trim(),details:document.getElementById('c-details').value.trim(),source:document.getElementById('c-source').value,seances:parseInt(document.getElementById('c-seances').value)||0,notes:document.getElementById('c-notes').value.trim(),assoc:assocPersonsTemp};
-  if(editingClienteId){const idx=clientes.findIndex(c=>c.id===editingClienteId);if(idx>=0)clientes[idx]=data;}else clientes.push(data);
-  DB.set('clientes',clientes);closeModal('overlay-cliente');renderClientes();
-}
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');editingRdvKey=null;editingClienteId=null;}
-document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
-document.addEventListener('click',e=>{if(!e.target.closest('.tel-input-wrap'))document.getElementById('tel-suggestions').style.display='none';});
-
-// ── RECONSTRUCTION DU RÉPERTOIRE À PARTIR DES RDV (une seule fois) ──
-(function(){try{
-  if(localStorage.getItem('youss-migr-rep-v1'))return;
-  const clientes=DB.get('clientes'),rdvs=Object.values(DB.get('rdvs')),count={};
-  rdvs.forEach(r=>{if(!r.name)return;const k=telKey(r.tel),n=stripAcc(r.name).trim();
-    let c=k?clientes.find(x=>telKey(x.tel)===k):null;
-    if(!c)c=clientes.find(x=>stripAcc(x.prenom).trim()===n&&(!k||!telKey(x.tel)));
-    if(!c){c={id:Date.now()+'-'+clientes.length,code:null,prenom:r.name,nom:'',tel:r.tel||'',adresse:r.adresse||'',details:r.details||'',source:'Planning',seances:0,notes:'',assoc:[]};clientes.push(c);}
-    else if(!c.tel&&r.tel)c.tel=r.tel;
-    count[c.id]=(count[c.id]||0)+1;});
-  clientes.forEach(c=>{c.seances=Math.max(c.seances||0,count[c.id]||0);if(!c.code)c.code=nextCode(clientes);});
-  DB.set('clientes',clientes);localStorage.setItem('youss-migr-rep-v1','1');
-}catch(e){console.error(e);}})();
-
-updateEssenceBanner();showNotifBanner();buildPlanning();
-</script>
-</body>
-</html>
+open(P,'w',encoding='utf-8').write(s)
+print('ok',len(s))
+PYEOF
+python3 /tmp/patch.py
