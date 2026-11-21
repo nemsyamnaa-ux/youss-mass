@@ -1300,7 +1300,7 @@ buildMonth=function(){
   });
 };
 
-// — Historique des annulations dans la fiche cliente —
+/*// — Historique des annulations dans la fiche cliente —
 const _openClienteModal=openClienteModal;
 openClienteModal=function(id){
   _openClienteModal(id);
@@ -1319,7 +1319,203 @@ function supprAnnul(id){
   const keep=editingClienteId;
   DB.set('annulations',getAnnuls().filter(a=>a.id!==id));
   if(keep)openClienteModal(keep);
+}// ═══════════ ANNULATIONS + ACOMPTE ═══════════
+const PAYPAL='https://www.paypal.me/yamnan';
+
+function getAnnuls(){return DB.get('annulations')||[];}
+function annulsDe(tel,name){
+  const k=telKey(tel),n=stripAcc(name).trim();
+  return getAnnuls().filter(a=>(k&&telKey(a.tel)===k)||((!k||!telKey(a.tel))&&n&&stripAcc(a.name).trim()===n));
 }
+function getAc(){return DB.getObj('acomptes2',{});}
+function setAc(o){DB.setObj('acomptes2',o);}
+function getExempt(){return DB.getObj('exemptions',{});}
+// Montant rond selon le prix de la prestation : jusqu'à 40€ → 10€ · jusqu'à 65€ → 15€ · au-dessus → 20€
+function acompteAuto(pk){const p=PRESTATIONS[pk]||{prix:40};return p.prix<=40?10:p.prix<=65?15:20;}
+function clientePourRdv(tel,name){
+  const n=stripAcc(name).trim();
+  return(tel&&findClienteByTel(tel))||(n?DB.get('clientes').find(c=>stripAcc(c.prenom).trim()===n):null)||null;
+}
+function exemptee(tel,name){const c=clientePourRdv(tel,name);return !!(c&&getExempt()[c.id]);}
+function acKey(r){return rdvKey(r.date,r.time);}
+
+// — Interface ajoutée dans la fenêtre RDV —
+let acManuel=false;
+(function(){
+  const st=document.createElement('style');
+  st.textContent='.annul-alert{background:#fbe8e6;border:1.5px solid var(--rose);border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.85rem;line-height:1.5}.btn-annul{width:100%;background:#fbe8e6;color:var(--rose);border:1.5px solid var(--rose);border-radius:13px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit}';
+  document.head.appendChild(st);
+  const box=document.createElement('div');
+  box.id='annul-alert';box.className='annul-alert';box.style.display='none';
+  document.getElementById('rdv-modal-title').parentElement.after(box);
+  const grp=document.createElement('div');
+  grp.id='acompte-group';grp.className='form-row';
+  grp.innerHTML='<div class="form-group"><label>💶 Acompte</label><select id="f-acompte-montant"><option value="0">Pas d\'acompte</option><option value="10">10€</option><option value="15">15€</option><option value="20">20€</option></select></div><div class="form-group"><label>Statut</label><label class="checkbox-group"><input type="checkbox" id="f-acompte-recu"/><span>Reçu</span></label></div>';
+  document.querySelector('#overlay-rdv .btn-primary').before(grp);
+  document.getElementById('f-acompte-montant').onchange=function(){acManuel=true;};
+  const ann=document.createElement('button');
+  ann.className='btn-annul';ann.id='btn-annul-rdv';ann.style.display='none';
+  ann.textContent='🚫 Annulée par la cliente';ann.onclick=function(){annulerRdvCliente();};
+  document.getElementById('btn-delete-rdv').before(ann);
+})();
+
+function updateAnnulAlert(){
+  const tel=document.getElementById('f-tel').value,name=document.getElementById('f-name').value;
+  const has=!!(tel.trim()||name.trim());
+  const list=has?annulsDe(tel,name):[];
+  const n=list.length,ex=has&&exemptee(tel,name),box=document.getElementById('annul-alert');
+  let html='';
+  if(n)html+=`🚫 <strong>${list[n-1].name}</strong> a déjà annulé <strong>${n} fois</strong> (dernier RDV annulé : ${fmtDateFr(list[n-1].rdvDate)}).`;
+  if(ex)html+=(html?'<br>':'')+'⭐ Cliente dispensée d\'acompte.';
+  if(box.innerHTML!==html)box.innerHTML=html;
+  box.style.display=html?'block':'none';
+  if(!acManuel&&!editingRdvKey){
+    document.getElementById('f-acompte-montant').value=ex?'0':String(acompteAuto(document.getElementById('f-prestation').value));
+  }
+}
+setInterval(()=>{if(document.getElementById('overlay-rdv').classList.contains('open'))updateAnnulAlert();},400);
+
+// — Enregistrer une annulation —
+function annulerRdvCliente(){
+  if(!editingRdvKey)return;
+  const rdvs=DB.get('rdvs'),key=editingRdvKey,r=rdvs[key];
+  if(!r)return;
+  if(!confirm(`Enregistrer l'annulation de ${r.name} ?`))return;
+  const[rdvDate,rdvTime]=key.split('_');
+  const an=getAnnuls();
+  an.push({id:Date.now().toString(),name:r.name,tel:r.tel||'',rdvDate,rdvTime,prestation:r.prestation,date:fmtDate(new Date())});
+  DB.set('annulations',an);
+  delete rdvs[key];DB.set('rdvs',rdvs);
+  const ac=getAc(),a=ac[key];delete ac[key];setAc(ac);
+  const cl=r.tel?findClienteByTel(r.tel):null;
+  if(cl&&(cl.seances||0)>0){const cs=DB.get('clientes'),c=cs.find(x=>x.id===cl.id);c.seances--;DB.set('clientes',cs);}
+  const n=annulsDe(r.tel,r.name).length;
+  closeModal('overlay-rdv');
+  if(currentView==='semaine')buildPlanning();else buildMonth();
+  setTimeout(()=>alert(`🚫 Annulation enregistrée : ${r.name} a annulé ${n} fois.`+(a&&a.recu?`\n\n💶 Un acompte de ${a.m}€ avait été reçu pour ce RDV.`:'')),250);
+}
+
+// — Acompte reçu / message —
+function acompteRecuRdv(key){
+  const ac=getAc();if(!ac[key])return;
+  ac[key].recu=true;setAc(ac);
+  if(currentView==='semaine')buildPlanning();else buildMonth();
+  const r=DB.get('rdvs')[key];
+  if(r)openConfirmModal(r,[r]);
+}
+function messageAcompte(key){const r=DB.get('rdvs')[key];if(r)openConfirmModal(r,[r]);}
+function acHtml(key,a){
+  if(a.recu)return`<div style="margin-top:4px"><span class="pay-badge especes">✅ Acompte ${a.m}€ reçu</span></div>`;
+  return`<div style="margin-top:4px"><span class="pay-badge" style="background:#fbe8e6;color:var(--rose)">⏳ En attente d'acompte · ${a.m}€</span></div><div class="rdv-actions"><button class="btn-wa" onclick="event.stopPropagation();acompteRecuRdv('${key}')">✅ Acompte reçu</button><button class="btn-wa" style="background:var(--warm)" onclick="event.stopPropagation();messageAcompte('${key}')">📩 Message</button></div>`;
+}
+
+// — Branchements sur les fonctions existantes —
+const _openRdvModal=openRdvModal;
+openRdvModal=function(key,h){
+  _openRdvModal(key,h);
+  const a=key?getAc()[key]:null;
+  acManuel=!!key;
+  document.getElementById('btn-annul-rdv').style.display=key?'block':'none';
+  document.getElementById('f-acompte-montant').value=a?String(a.m):'0';
+  document.getElementById('f-acompte-recu').checked=!!(a&&a.recu);
+  updateAnnulAlert();
+};
+
+const _saveRdv=saveRdv;
+saveRdv=function(){
+  if(!document.getElementById('f-name').value.trim())return _saveRdv();
+  const key=rdvKey(document.getElementById('f-date').value||selectedDay,document.getElementById('f-time').value);
+  const ac=getAc();
+  if(editingRdvKey&&editingRdvKey!==key)delete ac[editingRdvKey];
+  const m=parseInt(document.getElementById('f-acompte-montant').value)||0;
+  if(m>0)ac[key]={m,recu:document.getElementById('f-acompte-recu').checked};else delete ac[key];
+  setAc(ac);
+  _saveRdv();
+};
+
+const _deleteRdv=deleteRdv;
+deleteRdv=function(){
+  if(editingRdvKey){const ac=getAc();delete ac[editingRdvKey];setAc(ac);}
+  _deleteRdv();
+};
+
+const _buildConfirmMsg=buildConfirmMsg;
+buildConfirmMsg=function(r,gm){
+  const a=getAc()[acKey(r)],p=PRESTATIONS[r.prestation]||{label:'massage',prix:40};
+  if(a&&a.m>0&&!a.recu){
+    return`Bonjour ${r.name} 🌸\n\nSuite à de trop nombreuses annulations, un acompte est désormais demandé systématiquement pour bloquer un créneau.\n\n📅 ${fmtDateFr(r.date)}\n🕐 ${r.time}\n💆 ${p.label}\n\nPour bloquer votre massage, merci d'envoyer un acompte de ${a.m}€ par PayPal :\n💳 ${PAYPAL}\n\nIl sera déduit du montant de la séance. Dès réception, je vous envoie la confirmation de votre réservation 💛\n\nYouss Mass à Dom 🌸`;
+  }
+  let m=_buildConfirmMsg(r,gm);
+  if(a&&a.m>0&&a.recu){
+    m=m.replace('Un rappel vous sera envoyé la veille.',`💶 Acompte de ${a.m}€ bien reçu, merci ! Il restera ${calcTotal(r,p)-a.m}€ à régler le jour du RDV.\n\nUn rappel vous sera envoyé la veille.`);
+  }
+  return m;
+};
+
+const _showConfirmForIdx=showConfirmForIdx;
+showConfirmForIdx=function(i){
+  _showConfirmForIdx(i);
+  const a=lastSavedRdv?getAc()[acKey(lastSavedRdv)]:null;
+  if(a&&a.m>0&&!a.recu)document.getElementById('confirm-modal-title').textContent='💶 Demande d\'acompte';
+};
+
+const _buildRdvCard=buildRdvCard;
+buildRdvCard=function(key,r){
+  const card=_buildRdvCard(key,r),a=getAc()[key];
+  if(a&&a.m>0)card.insertAdjacentHTML('beforeend',acHtml(key,a));
+  return card;
+};
+
+const _buildMonth=buildMonth;
+buildMonth=function(){
+  _buildMonth();
+  const day=Object.entries(DB.get('rdvs')).filter(([k])=>k.startsWith(selectedDay+'_')).sort((x,y)=>x[0].localeCompare(y[0]));
+  const ac=getAc();
+  document.querySelectorAll('#month-rdv-list .month-rdv-item').forEach((it,i)=>{
+    if(!day[i])return;
+    const k=day[i][0],a=ac[k];
+    if(a&&a.m>0)it.querySelector('.month-rdv-info').insertAdjacentHTML('beforeend',acHtml(k,a));
+  });
+};
+
+// — Fiche cliente : dispense d'acompte + historique des annulations —
+const _openClienteModal=openClienteModal;
+openClienteModal=function(id){
+  _openClienteModal(id);
+  const anchor=document.getElementById('historique-section');
+  let e=document.getElementById('exempt-box');
+  if(!e){
+    e=document.createElement('div');e.id='exempt-box';e.className='form-group';
+    e.innerHTML='<label class="checkbox-group"><input type="checkbox" id="c-exempt"/><span>⭐ Dispensée d\'acompte</span></label>';
+    anchor.before(e);
+    document.getElementById('c-exempt').onchange=function(){
+      if(!editingClienteId)return;
+      const ex=getExempt();
+      if(this.checked)ex[editingClienteId]=true;else delete ex[editingClienteId];
+      DB.setObj('exemptions',ex);
+    };
+  }
+  e.style.display=id?'block':'none';
+  document.getElementById('c-exempt').checked=!!(id&&getExempt()[id]);
+  let s=document.getElementById('annul-section');
+  if(!s){
+    s=document.createElement('div');s.id='annul-section';s.className='assoc-section';s.style.background='#fbe8e6';
+    anchor.before(s);
+  }
+  const c=id?DB.get('clientes').find(x=>x.id===id):null;
+  const list=c?annulsDe(c.tel,c.prenom):[];
+  s.style.display=list.length?'block':'none';
+  s.innerHTML='<div class="assoc-title" style="color:var(--rose)">🚫 Annulations ('+list.length+')</div>'+list.map(a=>`<div class="assoc-item"><span>RDV du ${fmtDateFr(a.rdvDate)} à ${a.rdvTime}</span><button onclick="supprAnnul('${a.id}')" style="background:none;border:none;color:var(--rose);cursor:pointer">✕</button></div>`).join('');
+};
+function supprAnnul(id){
+  if(!confirm('Retirer cette annulation ?'))return;
+  const keep=editingClienteId;
+  DB.set('annulations',getAnnuls().filter(a=>a.id!==id));
+  if(keep)openClienteModal(keep);
+}
+// ═══════════ FIN ANNULATIONS + ACOMPTE ═══════════
+if(currentView==='semaine')buildPlanning();else buildMonth();
+
 </script>
 </body>
 </html>
